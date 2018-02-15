@@ -78,7 +78,8 @@ export default {
   url: {
     login: '/api/login',
     getDept: '/api/getDept',
-    getUserByDeptId: '/api/getUserByDeptId'
+    getUserByDeptId: '/api/getUserByDeptId',
+    getAnnous: '/api/getAnnous'
   },
 
   login(data) {
@@ -92,5 +93,9 @@ export default {
 
   getUserByDeptId(data) {
     return get(this.url.getUserByDeptId, data)
+  },
+
+  getAnnous(data) {
+    return get(this.url.getAnnous, data)
   }
 }
