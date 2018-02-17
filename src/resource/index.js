@@ -79,7 +79,9 @@ export default {
     login: '/api/login',
     getDept: '/api/getDept',
     getUserByDeptId: '/api/getUserByDeptId',
-    getAnnous: '/api/getAnnous'
+    getAnnous: '/api/getAnnous',
+    addAnnous: '/api/addAnnous',
+    editAnnous: '/api/editAnnous',
   },
 
   login(data) {
@@ -97,5 +99,13 @@ export default {
 
   getAnnous(data) {
     return get(this.url.getAnnous, data)
+  },
+
+  addAnnous(data) {
+    return get(this.url.addAnnous, data)
+  },
+
+  editAnnous(data) {
+    return get(this.url.editAnnous, data)
   }
 }

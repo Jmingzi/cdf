@@ -21,54 +21,16 @@
 </template>
 
 <script>
-  import resource from '../resource'
+  // import resource from '../resource'
   import { mapState, mapMutations, mapActions } from 'vuex'
+  import dept from '../mixins/dept'
 
   export default {
     name: 'tree',
-
-    created() {
-      // get dept
-      if (this.dept) {
-        return void 0
-      }
-
-      resource.getDept().then(res=> {
-        res = _dealLabel(res.data)
-        this.setState({
-          key: 'array',
-          value: {
-            dept: res,
-            currentDept: { ...res[0], children: null }
-          }
-        })
-        // setCurrentKey
-        this.$nextTick(()=> {
-          this.$refs.tree2.setCurrentKey(res[0].id)
-        })
-
-        // get current dept user
-        if (this.isNeedUser) {
-          this.getUserById(res[0].id)
-        }
-
-        function _dealLabel(arr) {
-          arr.forEach((item, i)=> {
-            arr[i] = { ...item, label: `${item.label} (${item.userNum})` }
-
-            if (item.children && item.children.length > 0) {
-              _dealLabel(item.children)
-            }
-          })
-          return arr
-        }
-      })
-    },
-
+    mixins: [dept],
     mounted() {
 
     },
-
     watch: {
       filterText(val) {
         this.$refs.tree2.filter(val)
@@ -78,6 +40,18 @@
     methods: {
       ...mapMutations(['setState']),
       ...mapActions(['getUserById']),
+
+      getDeptCallback(deptArr) {
+        // setCurrentKey
+        this.$nextTick(()=> {
+          this.$refs.tree2.setCurrentKey(deptArr[0].id)
+        })
+
+        // get current dept user
+        if (this.isNeedUser) {
+          this.getUserById(deptArr[0].id)
+        }
+      },
 
       filterNode(value, data) {
         if (!value) return true
@@ -98,16 +72,8 @@
       }
     },
 
-    props: {
-      isNeedUser: {
-        type: Boolean,
-        default: true
-      }
-    },
-
     computed: {
       ...mapState([
-        'dept',
         'currentDept',
         'userMap'
       ])

@@ -8,7 +8,7 @@
         :class="`px-width-100 text-center px-font-16 ib-middle cursor-p ${currentTab === 2 ? 'annous__tab-curr' : ''}`"
         @click="changeTab(2)">我收到的</div>
       <div class="fr px-margin-r20">
-        <el-button type="danger" size="mini" @click="">新建公告</el-button>
+        <el-button type="danger" size="mini" @click="addAnnous()">新建公告</el-button>
       </div>
     </div>
 
@@ -42,15 +42,21 @@
       </div>
     </div>
 
-    <div v-if="currentDetail" class="annous__detail-panel position-f top-0 bottom-0 right-0 bg-fff bd-ccc-l">
+    <div
+      v-if="currentDetail || showAddPanel"
+      class="annous__detail-panel position-f top-0 bottom-0 right-0 bg-fff bd-ccc-l">
       <div class="annous__detail-title px-line-40 bg-f2 text-center position-r">
         <div class="position-a height-100 px-width-40 cursor-p" @click="closeDetailPanel">
           <i class="el-icon-close"></i>
         </div>
-        <span>公告详情</span>
+        <span>{{currentDetail ? '公告详情' : '新建公告'}}</span>
       </div>
       <div class="position-a px-top-40 bottom-0 width-100 overflow-a px-padding-10">
-        <template v-if="currentDetail.status === 1">
+        <template v-if="showAddPanel">
+          <add-annous>
+          </add-annous>
+        </template>
+        <template v-else-if="currentDetail.status === 1">
           <p class="px-font-24">{{currentDetail.title}}</p>
           <p class="color-c999">
             <span class="ib-middle">发布者：{{currentDetail.pubUser.name}}</span>
@@ -74,14 +80,19 @@
 
 <script>
   import resource from '../resource'
+  import AddAnnous from './AddAnnous'
 
   export default {
+    components: {
+      AddAnnous
+    },
     name: 'annous',
     data() {
       return {
         list: [],
         currentDetail: null,
-        currentTab: 1
+        currentTab: 1,
+        showAddPanel: false
       }
     },
     created() {
@@ -106,6 +117,7 @@
       },
       closeDetailPanel() {
         this.currentDetail = null
+        this.showAddPanel = false
       },
       delAnnous(item) {
         this.$msgbox.confirm('确定要删除该条公告吗').then(()=> {
@@ -122,6 +134,10 @@
       },
       changeTab(tab) {
         this.currentTab = tab
+      },
+      addAnnous() {
+        this.currentDetail = null
+        this.showAddPanel = true
       }
     }
   }
