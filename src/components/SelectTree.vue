@@ -12,23 +12,26 @@
         <el-tree
           class="filter-tree"
           node-key="id"
-          @node-click=""
           :data="dept"
           :props="defaultProps"
           :show-checkbox="true"
           :default-expanded-keys="[0]"
           :highlight-current="true"
+          @node-click=""
+          @check-change="handleSelectDept"
           ref="tree">
         </el-tree>
       </div>
 
       <div class="select-tree__user overflow-a bd-gray-lighter-l ib-middle">
         <el-table
-          ref="multipleTable"
           :data="userList"
           tooltip-effect="dark"
           style="width: 100%"
-          @selection-change="handleUserChange">
+          @select="handleSelectUser"
+          @select-all="handleSelectUserAll"
+          @selection-change="handleSelectUserAll"
+          ref="multipleTable">
           <el-table-column
             type="selection"
             width="55">
@@ -48,16 +51,21 @@
       </div>
 
       <div class="select-tree__selected overflow-a bd-gray-lighter-t px-font-12">
-        <p><span class="color-c999">已选择</span> <span class="cursor-p color-info">清空已选择</span></p>
-        <div class="select-tree__tag">
-          <span class="over-text ib-middle">技术部技术部技术部技术部</span>
-          <i class="el-icon-close ib-middle"></i>
+        <p><span class="color-c999">已选择</span> <span class="cursor-p color-info" @click="delDeptSelect(null)">清空已选择</span></p>
+        <div class="select-tree__tag" v-for="(item, i) in selectDeptArr" :key="item.id">
+          <span class="over-text ib-middle">{{item | getLabel}}</span>
+          <i class="el-icon-close ib-middle" @click="delDeptSelect(item, i)"></i>
+        </div>
+
+        <div class="select-tree__tag" v-for="(item, i) in selectUserArr" :key="item.id">
+          <span class="over-text ib-middle">{{item.name}}</span>
+          <i class="el-icon-close ib-middle" @click="delUserSelect(item, i)"></i>
         </div>
       </div>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确定选择</el-button>
+        <el-button @click="reset()">取消</el-button>
+        <el-button type="primary" @click="confirm">确定选择</el-button>
       </div>
     </el-dialog>
   </div>
@@ -77,12 +85,13 @@
     mixins: [dept],
     data() {
       return {
-        dialogFormVisible: true,
+        dialogFormVisible: false,
         defaultProps: {
           children: 'children',
           label: 'label'
         },
-        multipleSelection: []
+        selectDeptArr: [],
+        selectUserArr: []
       }
     },
     created() {
@@ -102,8 +111,57 @@
         }
       },
 
-      handleUserChange(item) {
-        // console.log(item)
+      handleSelectDept(item, isSelfCheck) {
+        if (isSelfCheck) {
+          this.selectDeptArr.push({ ...item, children: null })
+        } else {
+          this.selectDeptArr.splice(this.selectDeptArr.findIndex(x=> x.id === item.id), 1)
+        }
+      },
+
+      delDeptSelect(item) {
+        let tree = this.$refs.tree
+        // 此处无需手动更新 selectDeptArr
+        // 因为触发此方法时，tree组件会触发handleSelectDept方法
+        // 也就是帮你做了复选框选择
+        if (item === null) {
+          tree.getCheckedKeys().forEach(key=> tree.setChecked(key, false, true))
+        } else {
+          tree.setChecked(item.id, false, true)
+        }
+      },
+
+      delUserSelect(item) {
+        // this.selectUserArr.splice(this.selectUserArr.find(x=> x.id === item.id), 1)
+        this.$refs.multipleTable.toggleRowSelection(item, false)
+      },
+
+      handleSelectUser(selection) {
+        // toggleRowSelection
+        // clearSelection
+        this.selectUserArr = [ ...selection ]
+      },
+
+      handleSelectUserAll(selection) {
+        this.selectUserArr = [ ...selection ]
+      },
+
+      reset() {
+        this.delDeptSelect(null)
+        this.$refs.multipleTable.clearSelection()
+        this.selectDeptArr = []
+        this.selectUserArr = []
+        this.dialogFormVisible = false
+      },
+
+      show() {
+        this.dialogFormVisible = true
+        this.initDept()
+      },
+
+      confirm() {
+        this.dialogFormVisible = false
+        this.$emit('confirm', this.selectDeptArr, this.selectUserArr)
       }
     },
     computed: {

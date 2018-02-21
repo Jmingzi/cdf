@@ -6,8 +6,15 @@
         </el-input>
       </el-form-item>
       <el-form-item label="接收对象">
-        <div class="ib-middle cursor-p">
-          <span class="color-info">全体员工</span>
+        <div class="ib-middle cursor-p"  @click="selectObj">
+          <span class="color-info" v-if="form.annousReceiveDept.length === 0 && form.annousReceiveUser.length === 0">全体员工</span>
+          <div class="color-info" v-else>
+            <span
+              v-for="item in form.annousReceiveDept">{{item | getLabel}}、</span>
+            <span
+              v-if="form.annousReceiveUser.length > 0"
+              v-for="item in form.annousReceiveUser">{{item.name}}、</span>
+          </div>
         </div>
       </el-form-item>
       <el-form-item label="公告内容" prop="annousContent">
@@ -21,6 +28,11 @@
         <el-button type="primary" @click="submitForm('form')">立即发布</el-button>
       </div>
     </el-form>
+
+    <select-tree
+      ref="selectTree"
+      @confirm="confirmSelect">
+    </select-tree>
   </div>
 </template>
 
@@ -49,6 +61,11 @@
         }
       }
     },
+    filters: {
+      getLabel(item) {
+        return item.label.replace(` (${item.userNum})`, '')
+      }
+    },
     mixins: [http],
     methods: {
       submitForm(formName) {
@@ -68,6 +85,13 @@
             type: 'success'
           })
         })
+      },
+      selectObj() {
+        this.$refs.selectTree.show()
+      },
+      confirmSelect(dept, user) {
+        this.form.annousReceiveDept = dept
+        this.form.annousReceiveUser = user
       }
     }
   }

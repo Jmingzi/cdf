@@ -161,6 +161,7 @@
   }
   .annous__detail-panel {
     width: 600px;
+    z-index: 3000;
   }
   .annous__detail-ych {
     text-align: center;
