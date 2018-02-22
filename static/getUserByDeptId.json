@@ -13,9 +13,7 @@
       "job": "js",
       "loginAble": true,
       "idCardNumber": "3242425465756788",
-      "address": [
-        {  }
-      ],
+      "address": "",
       "detailAddress": "上海市普陀区金沙江路 1518 弄",
       "joinDate": "2005-01-01",
       "transferDate": "2007-01-01",
@@ -34,9 +32,7 @@
       "job": "js",
       "loginAble": true,
       "idCardNumber": "3242425465756788",
-      "address": [
-        {  }
-      ],
+      "address": "",
       "detailAddress": "上海市普陀区金沙江路 1518 弄",
       "joinDate": "2005-01-01",
       "transferDate": "2007-01-01",
@@ -55,9 +51,7 @@
       "job": "js",
       "loginAble": true,
       "idCardNumber": "3242425465756788",
-      "address": [
-        {  }
-      ],
+      "address": "",
       "detailAddress": "上海市普陀区金沙江路 1518 弄",
       "joinDate": "2005-01-01",
       "transferDate": "2007-01-01",

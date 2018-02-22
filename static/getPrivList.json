@@ -4,8 +4,35 @@
     "menu": [
       {
         "id": 1,
-        "targetDept": [],
-        "targetUser": [],
+        "targetDept": [
+          {
+            "id": 0,
+            "label": "阿里巴巴商务有限公司",
+            "userNum": 100,
+            "sequence": 0
+          }
+        ],
+        "targetUser": [
+          {
+            "id": 0,
+            "name": "王小虎0",
+            "mobile": "18358185826",
+            "userId": 0,
+            "sex": 1,
+            "birthday": "1993-05-26",
+            "department": "前端部",
+            "departmentId": 1,
+            "job": "js",
+            "loginAble": true,
+            "idCardNumber": "3242425465756788",
+            "address": "",
+            "detailAddress": "上海市普陀区金沙江路 1518 弄",
+            "joinDate": "2005-01-01",
+            "transferDate": "2007-01-01",
+            "leaveDate": "2009-01-01",
+            "remark": "f435345353453"
+          }
+        ],
         "privList": [0, 1, 2]
       },
       {
