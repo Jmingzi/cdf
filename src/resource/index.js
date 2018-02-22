@@ -82,6 +82,7 @@ export default {
     getAnnous: '/api/getAnnous',
     addAnnous: '/api/addAnnous',
     editAnnous: '/api/editAnnous',
+    getPrivList: '/api/getPrivList'
   },
 
   login(data) {
@@ -107,5 +108,9 @@ export default {
 
   editAnnous(data) {
     return get(this.url.editAnnous, data)
+  },
+
+  getPrivList(data) {
+    return get(this.url.getPrivList, data)
   }
 }

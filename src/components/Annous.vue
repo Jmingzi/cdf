@@ -79,14 +79,16 @@
 </template>
 
 <script>
-  import resource from '../resource'
+  // import resource from '../resource'
   import AddAnnous from './AddAnnous'
+  import http from '../mixins/http'
 
   export default {
     components: {
       AddAnnous
     },
     name: 'annous',
+    mixins: [http],
     data() {
       return {
         list: [],
@@ -105,11 +107,11 @@
     },
     methods: {
       getList() {
-        resource.getAnnous({
+        this.http('getAnnous', {
           currentPage: 1,
           pageSize: 10
         }).then(res=> {
-          this.list = res.data
+          this.list = res
         })
       },
       lookDetail(item) {

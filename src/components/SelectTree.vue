@@ -15,9 +15,10 @@
           node-key="id"
           :data="dept"
           :props="defaultProps"
-          :show-checkbox="true"
+          :show-checkbox="isNeedDept"
           :default-expanded-keys="[0]"
           :highlight-current="true"
+          :expand-on-click-node="false"
           @node-click="handleClickDept"
           @check-change="handleSelectDept"
           ref="tree">
@@ -121,7 +122,10 @@
         this.$nextTick(()=> {
           this.$refs.tree.setCurrentKey(deptArr[0].id)
         })
-        this.checkDefaultDept()
+
+        if (this.isNeedDept) {
+          this.checkDefaultDept()
+        }
 
         // get current dept user
         if (this.isNeedUser) {
@@ -134,11 +138,9 @@
 
       handleClickDept(item) {
         if (item.id !== this.currentDept.id) {
-          // this.setState({
-          //   key: 'currentDept',
-          //   value: { ...item, children: null }
-          // })
-          this.checkDefaultDept()
+          if (this.isNeedDept) {
+            this.checkDefaultDept()
+          }
 
           if (this.isNeedUser) {
             this.getUserById({
@@ -204,7 +206,11 @@
     },
     computed: {
       ...mapState(['dept']),
-      ...mapGetters(['userList'])
+      ...mapGetters(['userList']),
+
+      isNeedDept() {
+        return this.selectType !== 2
+      }
     },
     props: {
       title: {
@@ -217,6 +223,7 @@
       },
       // 0 全部
       // 1 部门
+      // 2 人员
       selectType: {
         type: Number,
         default: 0

@@ -1,0 +1,28 @@
+{
+  "code": 200,
+  "data": {
+    "menu": [
+      {
+        "id": 1,
+        "targetDept": [],
+        "targetUser": [],
+        "privList": [0, 1, 2]
+      },
+      {
+        "id": 2,
+        "targetDept": [],
+        "targetUser": [],
+        "privList": [0, 1]
+      }
+    ],
+    "contact": [
+      {
+        "id": 3,
+        "targetDept": [],
+        "targetUser": [],
+        "privList": [0, 1]
+      }
+    ]
+  },
+  "msg": ""
+}

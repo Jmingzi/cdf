@@ -85,6 +85,7 @@
         })
       },
       add(data) {
+        console.log(data)
         this.http(data.id ? 'editAnnous' : 'addAnnous', data).then(()=> {
           this.$message({
             message: '添加成功',

@@ -5,3 +5,10 @@ export const menu = [
   { title: '财务系统', id: 3, icon: 'el-icon-printer', componentName: 'MoneySystem' },
   { title: '权限设置', id: 4, icon: 'el-icon-setting', componentName: 'Priv' }
 ]
+
+export const contactPriv = [
+  { title: '操作员工', id: 0, componentName: 'user' },
+  { title: '操作部门', id: 1, componentName: 'dept' },
+  { title: '导入通讯录', id: 2, componentName: 'import' },
+  { title: '岗位管理', id: 3, componentName: 'job' }
+]

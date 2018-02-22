@@ -9,11 +9,13 @@
         class="filter-tree"
         node-key="id"
         @node-click="handleClick"
+        @node-expand="handleExpand"
         :data="dept"
         :props="defaultProps"
         :default-expanded-keys="[0]"
         :filter-node-method="filterNode"
         :highlight-current="true"
+        :expand-on-click-node="false"
         ref="tree2">
       </el-tree>
     </div>
@@ -59,6 +61,7 @@
       },
 
       handleClick(item) {
+        console.log(item)
         if (item.id !== this.currentDept.id) {
           this.setState({
             key: 'currentDept',
@@ -69,6 +72,10 @@
             this.getUserById(item.id)
           }
         }
+      },
+
+      handleExpand(data) {
+        // console.log(data)
       }
     },
 

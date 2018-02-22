@@ -41,7 +41,7 @@ export default new Vuex.Store({
   },
   actions: {
     getUserById({ state, commit }, payload) {
-      let deptId = payload.deptId || payload
+      let deptId = payload.deptId !== undefined ? payload.deptId : payload
       let callback = payload.callback
       let cacheDept = state.userMap[deptId]
 
