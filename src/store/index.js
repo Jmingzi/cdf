@@ -40,9 +40,14 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    getUserById({ state, commit }, deptId) {
-      if (state.userMap[deptId]) {
-        return state.userMap[deptId]
+    getUserById({ state, commit }, payload) {
+      let deptId = payload.deptId || payload
+      let callback = payload.callback
+      let cacheDept = state.userMap[deptId]
+
+      if (cacheDept) {
+        callback && callback(cacheDept)
+        return cacheDept
       }
 
       resource.getUserByDeptId({ deptId }).then(res=> {
@@ -50,6 +55,7 @@ export default new Vuex.Store({
           return void 0
         }
         Vue.set(state.userMap, deptId, res.data)
+        callback && callback(res.data)
       })
     }
   }

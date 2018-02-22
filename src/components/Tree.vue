@@ -29,7 +29,7 @@
     name: 'tree',
     mixins: [dept],
     mounted() {
-
+      this.initDept()
     },
     watch: {
       filterText(val) {

@@ -60,6 +60,7 @@
   }
 
   export default {
+    name: 'dept-user',
     components: {
       Page,
       UserTable,
@@ -75,7 +76,9 @@
         dialogWidth: ''
       }
     },
-    name: 'dept-user',
+    created() {
+
+    },
     computed: {
       ...mapState(['currentDept'])
     },

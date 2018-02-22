@@ -10,10 +10,14 @@
           <span class="color-info" v-if="form.annousReceiveDept.length === 0 && form.annousReceiveUser.length === 0">全体员工</span>
           <div class="color-info" v-else>
             <span
-              v-for="item in form.annousReceiveDept">{{item | getLabel}}、</span>
+              v-for="(item, i) in form.annousReceiveDept">
+              {{item | getLabel}}{{i !== form.annousReceiveDept.length - 1 || form.annousReceiveUser.length > 0 ? '、' : ''}}
+            </span>
             <span
               v-if="form.annousReceiveUser.length > 0"
-              v-for="item in form.annousReceiveUser">{{item.name}}、</span>
+              v-for="(item, i) in form.annousReceiveUser">
+              {{item.name}}{{i !== form.annousReceiveUser.length - 1 ? '、' : ''}}
+            </span>
           </div>
         </div>
       </el-form-item>
@@ -31,6 +35,8 @@
 
     <select-tree
       ref="selectTree"
+      :selectedDept="form.annousReceiveDept"
+      :selectedUser="form.annousReceiveUser"
       @confirm="confirmSelect">
     </select-tree>
   </div>

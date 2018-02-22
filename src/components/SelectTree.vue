@@ -5,6 +5,7 @@
       :title="title"
       :show-close="false"
       :close-on-click-modal="false"
+      :modal="modal"
       top="10vh"
       :visible.sync="dialogFormVisible">
 
@@ -17,13 +18,13 @@
           :show-checkbox="true"
           :default-expanded-keys="[0]"
           :highlight-current="true"
-          @node-click=""
+          @node-click="handleClickDept"
           @check-change="handleSelectDept"
           ref="tree">
         </el-tree>
       </div>
 
-      <div class="select-tree__user overflow-a bd-gray-lighter-l ib-middle">
+      <div class="select-tree__user overflow-a bd-gray-lighter-l ib-middle" v-if="isNeedUser">
         <el-table
           :data="userList"
           tooltip-effect="dark"
@@ -47,17 +48,16 @@
             label="手机号">
           </el-table-column>
         </el-table>
-
       </div>
 
       <div class="select-tree__selected overflow-a bd-gray-lighter-t px-font-12">
         <p><span class="color-c999">已选择</span> <span class="cursor-p color-info" @click="delDeptSelect(null)">清空已选择</span></p>
-        <div class="select-tree__tag" v-for="(item, i) in selectDeptArr" :key="item.id">
+        <div class="select-tree__tag" v-for="(item, i) in selectDeptArr" :key="'dept-' + item.id">
           <span class="over-text ib-middle">{{item | getLabel}}</span>
           <i class="el-icon-close ib-middle" @click="delDeptSelect(item, i)"></i>
         </div>
 
-        <div class="select-tree__tag" v-for="(item, i) in selectUserArr" :key="item.id">
+        <div class="select-tree__tag" v-for="(item, i) in selectUserArr" :key="'user-' + item.id">
           <span class="over-text ib-middle">{{item.name}}</span>
           <i class="el-icon-close ib-middle" @click="delUserSelect(item, i)"></i>
         </div>
@@ -94,20 +94,58 @@
         selectUserArr: []
       }
     },
-    created() {
-    },
     methods: {
       ...mapActions(['getUserById']),
+      ...mapMutations(['setState']),
+
+      checkDefaultUser(user) {
+        this.$nextTick(()=> {
+          let tableSelect
+          this.selectedUser.forEach(select=> {
+            if (user.some(item=> item.id === select.id)) {
+              tableSelect = this.userList.find(x=> x.id === select.id)
+              this.$refs.multipleTable.toggleRowSelection(tableSelect, true)
+            }
+          })
+        })
+      },
+
+      checkDefaultDept() {
+        this.$nextTick(()=> {
+          this.selectedDept.forEach(x=> this.$refs.tree.setChecked(x.id, true, false))
+        })
+      },
 
       getDeptCallback(deptArr) {
         // setCurrentKey
         this.$nextTick(()=> {
           this.$refs.tree.setCurrentKey(deptArr[0].id)
         })
+        this.checkDefaultDept()
 
         // get current dept user
         if (this.isNeedUser) {
-          this.getUserById(deptArr[0].id)
+          this.getUserById({
+            deptId: deptArr[0].id,
+            callback: this.checkDefaultUser.bind(this)
+          })
+        }
+      },
+
+      handleClickDept(item) {
+        if (item.id !== this.currentDept.id) {
+          // this.setState({
+          //   key: 'currentDept',
+          //   value: { ...item, children: null }
+          // })
+          this.checkDefaultDept()
+
+          if (this.isNeedUser) {
+            this.getUserById({
+              deptId: item.id,
+              callback: this.checkDefaultUser.bind(this)
+            })
+          }
         }
       },
 
@@ -132,7 +170,6 @@
       },
 
       delUserSelect(item) {
-        // this.selectUserArr.splice(this.selectUserArr.find(x=> x.id === item.id), 1)
         this.$refs.multipleTable.toggleRowSelection(item, false)
       },
 
@@ -148,7 +185,7 @@
 
       reset() {
         this.delDeptSelect(null)
-        this.$refs.multipleTable.clearSelection()
+        this.isNeedUser && this.$refs.multipleTable.clearSelection()
         this.selectDeptArr = []
         this.selectUserArr = []
         this.dialogFormVisible = false
@@ -160,8 +197,9 @@
       },
 
       confirm() {
-        this.dialogFormVisible = false
         this.$emit('confirm', this.selectDeptArr, this.selectUserArr)
+        this.reset()
+        this.dialogFormVisible = false
       }
     },
     computed: {
@@ -177,10 +215,28 @@
         type: String,
         default: '600px'
       },
+      // 0 全部
+      // 1 部门
       selectType: {
         type: Number,
         default: 0
-      }
+      },
+      selectedDept: {
+        type: Array,
+        default() {
+          return []
+        }
+      },
+      selectedUser: {
+        type: Array,
+        default() {
+          return []
+        }
+      },
+      modal: {
+        type: Boolean,
+        default: true
+      },
     }
   }
 </script>

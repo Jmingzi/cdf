@@ -4,7 +4,7 @@ import http from '../mixins/http'
 export default {
   mixins: [http],
   computed: {
-    ...mapState(['dept'])
+    ...mapState(['dept', 'currentDept'])
   },
   mounted() {
     // get dept
@@ -26,6 +26,7 @@ export default {
 
     initDept() {
       if (this.dept) {
+        this.getDeptCallback(this.dept)
         return void 0
       }
 
