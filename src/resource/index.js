@@ -41,9 +41,10 @@ instance.interceptors.request.use(function (config) {
   return Promise.reject(error)
 })
 
+let responseSafeCode = [200, 601]
 // Add a response interceptor
 instance.interceptors.response.use(function (response) {
-  if (response.data.code === 200) {
+  if (responseSafeCode.includes(response.data.code)) {
     return response.data
   } else {
     alert(response.data.msg)
