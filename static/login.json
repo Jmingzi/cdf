@@ -3,8 +3,26 @@
   "data": {
     "name": "jmingzi",
     "sex": "男",
-    "age": "1",
-    "_token": "sdsdsfdsfsdf"
+    "avatarUrl": "1",
+    "_token": "sdsdsfdsfsdf",
+    "priv": {
+      "contact": [
+        {
+          "id": 3,
+          "targetDept": [],
+          "targetUser": [],
+          "privList": [0, 1]
+        }
+      ],
+      "menu": [
+        {
+          "id": 2,
+          "targetDept": [],
+          "targetUser": [],
+          "privList": [0, 1]
+        }
+      ],
+    }
   },
   "msg": ""
 }
