@@ -2,27 +2,13 @@
   "code": 200,
   "data": {
     "name": "jmingzi",
-    "sex": "男",
+    "userId": "男",
     "avatarUrl": "1",
     "_token": "sdsdsfdsfsdf",
-    "priv": {
-      "contact": [
-        {
-          "id": 3,
-          "targetDept": [],
-          "targetUser": [],
-          "privList": [0, 1]
-        }
-      ],
-      "menu": [
-        {
-          "id": 2,
-          "targetDept": [],
-          "targetUser": [],
-          "privList": [0, 1]
-        }
-      ],
-    }
+    "contactPriv": [0, 1],
+    "menuPriv": [0, 1],
+    "dept": {},
+    "is_update": -1 // -1表示未修改  需提示起对密码进行修改  1表示已经修改  不需要进行修改
   },
   "msg": ""
 }
