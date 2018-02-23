@@ -11,6 +11,7 @@
   import Annous from '../components/Annous'
   import DeptUser from '../components/DeptUser'
   import Priv from '../components/Priv'
+  import Job from '../components/Job'
   import MoneySystem from '../components/MoneySystem'
   import { mapState } from 'vuex'
   import { menu } from '../constant'
@@ -44,7 +45,8 @@
       Annous,
       DeptUser,
       Priv,
-      MoneySystem
+      MoneySystem,
+      Job
     }
   }
 </script>

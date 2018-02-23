@@ -86,6 +86,7 @@ export default {
     getPrivList: '/api/getPrivList',
     addPriv: '/api/addPriv',
     editPriv: '/api/editPriv',
+    jobList: '/api/jobList'
   },
 
   login(data) {
@@ -123,5 +124,9 @@ export default {
 
   editPriv(data) {
     return get(this.url.editPriv, data)
+  },
+
+  jobList() {
+    return get(this.url.jobList)
   }
 }

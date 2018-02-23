@@ -54,6 +54,7 @@
           if (valid) {
             this.http('login', this.form).then(res=> {
               Object.keys(res).forEach(key=> {
+                // is_update -1表示未修改  需提示起对密码进行修改  1表示已经修改  不需要进行修改
                 cookie.set(key, res[key], {expires: 1})
               })
               this.$router.push('/')
