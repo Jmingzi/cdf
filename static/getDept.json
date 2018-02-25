@@ -1,66 +1,64 @@
 {
   "code": 200,
-  "data": [
-    {
-      "id": 0,
-      "label": "阿里巴巴商务有限公司",
-      "userNum": 100,
-      "sequence": 0,
-      "children": [
-        {
-          "id": 1,
-          "label": "技术部",
-          "userNum": 50,
-          "sequence": 0,
-          "children": [
-            {
-              "id": 4,
-              "label": "java部",
-              "userNum": 30,
-              "sequence": 0,
-              "children": []
-            },
-            {
-              "id": 9,
-              "label": "前端部",
-              "userNum": 20,
-              "sequence": 1,
-              "children": []
-            }
-          ]
-        },
-        {
-          "id": 2,
-          "label": "财务部",
-          "userNum": 10,
-          "sequence": 1,
-          "children": [{
-            "id": 5,
-            "userNum": 5,
+  "data": {
+    "id": 0,
+    "label": "阿里巴巴商务有限公司",
+    "userNum": 100,
+    "sequence": 0,
+    "children": [
+      {
+        "id": 1,
+        "label": "技术部",
+        "userNum": 50,
+        "sequence": 0,
+        "children": [
+          {
+            "id": 4,
+            "label": "java部",
+            "userNum": 30,
             "sequence": 0,
-            "label": "入账部"
-          }, {
-            "id": 6,
-            "userNum": 5,
+            "children": []
+          },
+          {
+            "id": 9,
+            "label": "前端部",
+            "userNum": 20,
             "sequence": 1,
-            "label": "出纳部"
-          }]
-        },
-        {
-          "id": 3,
-          "label": "人事部",
-          "userNum": 30,
-          "sequence": 2,
-          "children": []
-        },
-        {
-          "id": 7,
-          "label": "总经办",
-          "userNum": 10,
-          "sequence": 3,
-          "children": []
-        }
-      ]
-    }
-  ]
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "label": "财务部",
+        "userNum": 10,
+        "sequence": 1,
+        "children": [{
+          "id": 5,
+          "userNum": 5,
+          "sequence": 0,
+          "label": "入账部"
+        }, {
+          "id": 6,
+          "userNum": 5,
+          "sequence": 1,
+          "label": "出纳部"
+        }]
+      },
+      {
+        "id": 3,
+        "label": "人事部",
+        "userNum": 30,
+        "sequence": 2,
+        "children": []
+      },
+      {
+        "id": 7,
+        "label": "总经办",
+        "userNum": 10,
+        "sequence": 3,
+        "children": []
+      }
+    ]
+  }
 }
