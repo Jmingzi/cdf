@@ -90,6 +90,8 @@ export default {
     addJob: '/api/addJob',
     addUserToJob: '/api/addUserToJob',
     delJobUser: '/api/delJobUser',
+    getProcess: '/api/getProcess',
+    applyExpense: '/api/applyExpense',
   },
 
   login(data) {
@@ -143,5 +145,13 @@ export default {
 
   delJobUser(data) {
     return get(this.url.delJobUser, data)
+  },
+
+  getProcess(data) {
+    return get(this.url.getProcess, data)
+  },
+
+  applyExpense(data) {
+    return get(this.url.applyExpense, data)
   }
 }

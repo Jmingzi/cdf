@@ -32,16 +32,26 @@ import {
   Pagination,
   Dialog,
   Collapse,
-  CollapseItem
+  CollapseItem,
+  Tabs,
+  TabPane,
+  Upload,
+  Alert,
+  Cascader
 } from 'element-ui'
 
 Vue.config.productionTip = false
 // Vue.component(Button.name, Button)
+Vue.use(Alert)
+Vue.use(Cascader)
 Vue.use(Button)
+Vue.use(Upload)
 Vue.use(Form)
 Vue.use(Collapse)
 Vue.use(CollapseItem)
 Vue.use(Dialog)
+Vue.use(Tabs)
+Vue.use(TabPane)
 Vue.use(Select)
 Vue.use(FormItem)
 Vue.use(Input)
