@@ -1,10 +1,10 @@
 <template>
   <div class="job height-100 bg-fff position-r">
     <div class="px-line-50 px-padding-lr10 bd-gray-lighter-b">
-      <el-button type="danger" size="mini">添加岗位</el-button>
+      <el-button type="danger" size="mini" @click="addJob()">添加岗位</el-button>
       <template v-if="currJob">
-        <el-button type="info" size="mini">编辑岗位</el-button>
-        <el-button type="info" size="mini">添加人员</el-button>
+        <el-button type="info" size="mini" @click="addJob(true)">编辑岗位</el-button>
+        <el-button type="info" size="mini" @click="addUserToJob">添加人员</el-button>
       </template>
     </div>
     <div class="job__list position-a px-top-50 bottom-0 bd-gray-lighter-r overflow-a">
@@ -31,10 +31,38 @@
         <div class="px-line-40 bd-gray-lighter-r px-padding-lr10 w200 ib-middle">{{user.name}}</div>
         <div class="px-line-40 bd-gray-lighter-r px-padding-lr10 w200 ib-middle">{{user.deptName}}</div>
         <div class="px-line-40 bd-gray-lighter-r px-padding-lr10 w200 ib-middle">
-          <a href="">删除</a>
+          <a href="javascript:" @click="delJobUser(user)">删除</a>
         </div>
       </div>
     </div>
+
+    <el-dialog
+      :title="dialogTitle"
+      :visible.sync="dialogVisible"
+      width="400px">
+      <el-form ref="form" :rules="rules" :model="form" label-width="80px">
+        <el-form-item label="岗位名称" prop="label">
+          <el-input v-model="form.label">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="岗位排序">
+          <el-input v-model="form.sequence">
+          </el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="confirmAdd">确 定</el-button>
+      </span>
+    </el-dialog>
+
+    <select-tree
+      ref="selectTree"
+      :selectedDept="[]"
+      :selectedUser="[]"
+      :selectType="2"
+      @confirm="confirmSelect">
+    </select-tree>
   </div>
 </template>
 
@@ -46,7 +74,20 @@
     data() {
       return {
         jobList: [],
-        currJob: null
+        currJob: null,
+        isEdit: false,
+        dialogTitle: '',
+        dialogVisible: false,
+        form: {
+          label: '',
+          sequence: ''
+        },
+        rules: {
+          label: [
+            { required: true, message: '请输入岗位名称', trigger: 'blur' },
+            { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
+          ],
+        }
       }
     },
     mixins: [http],
@@ -60,6 +101,56 @@
             this.jobList = res
             this.currJob = res[0]
           }
+        })
+      },
+      addJob(isEdit) {
+        this.isEdit = isEdit
+        this.dialogVisible = true
+        this.dialogTitle = isEdit ? `编辑岗位 - ${this.currJob.name}` : '添加岗位'
+      },
+      confirmAdd() {
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            let data = { ...this.form }
+            if (this.isEdit) {
+              data.id = this.currJob.id
+            }
+            this.http('addJob', this.form).then(()=> {
+              this.$message({
+                message: this.isEdit ? '编辑岗位成功' : '添加岗位成功',
+                type: 'success'
+              })
+            })
+            this.dialogVisible = false
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
+      },
+      addUserToJob() {
+        this.$refs.selectTree.show()
+      },
+      confirmSelect(dept, user) {
+        if (user.length === 0) {
+          this.$message('请选择人员')
+          return
+        }
+        this.http('addUserToJob', user).then(()=> {
+          this.$message({
+            message: `${this.currJob.name}岗位添加人员成功`,
+            type: 'success'
+          })
+        })
+      },
+      delJobUser(user) {
+        this.$confirm('确定要删除吗？').then(()=> {
+          this.http('delJobUser', { ...user, jobId: this.currJob.id }).then(res=> {
+            this.$message({
+              message: `${this.currJob.name}岗位删除人员成功`,
+              type: 'success'
+            })
+          })
         })
       }
     }

@@ -86,7 +86,10 @@ export default {
     getPrivList: '/api/getPrivList',
     addPriv: '/api/addPriv',
     editPriv: '/api/editPriv',
-    jobList: '/api/jobList'
+    jobList: '/api/jobList',
+    addJob: '/api/addJob',
+    addUserToJob: '/api/addUserToJob',
+    delJobUser: '/api/delJobUser',
   },
 
   login(data) {
@@ -128,5 +131,17 @@ export default {
 
   jobList() {
     return get(this.url.jobList)
+  },
+
+  addJob(data) {
+    return get(this.url.addJob, data)
+  },
+
+  addUserToJob(data) {
+    return get(this.url.addUserToJob, data)
+  },
+
+  delJobUser(data) {
+    return get(this.url.delJobUser, data)
   }
 }
