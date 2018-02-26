@@ -33,6 +33,11 @@
           placeholder="选择日期">
         </el-date-picker>
       </el-form-item>
+      <el-form-item label="报销部门">
+        <div class="display-ib cursor-p" @click="toSelectDept">
+          <span class="color-info" v-if="form.expenseDept">{{form.expenseDept.name}}</span>
+        </div>
+      </el-form-item>
       <el-form-item label="相关图片">
         <el-upload
           class="upload-demo"
@@ -61,18 +66,37 @@
         <el-button @click="resetForm('form')">重置表单</el-button>
       </el-form-item>
     </el-form>
+
+    <select-tree
+      ref="selectTree"
+      :selectedDept="[]"
+      :selectedUser="[]"
+      :selectType="1"
+      :isNeedUser="false"
+      @confirm="confirmSelectDept">
+    </select-tree>
   </div>
 </template>
 
 <script>
   import {PAY_TYPE, PAY_WAY} from '../constant'
   import http from '../mixins/http'
-  const payWay = PAY_WAY
-  const payType = PAY_TYPE
+  import { mapState } from 'vuex'
 
   export default {
     name: 'money-system-apply',
     mixins: [http],
+    watch: {
+      userInfo: function (val) {
+        if (val) {
+          this.form.expenseDept = val.dept
+        }
+        return val
+      }
+    },
+    created() {
+      this.form.expenseDept = this.userInfo && this.userInfo.dept
+    },
     data() {
       const checkMoneySize = (rule, value, callback)=> {
         if (value > rule.max || value <= rule.min) {
@@ -83,15 +107,16 @@
       }
 
       return {
-        payWay,
-        payType,
+        payWay: PAY_WAY,
+        payType: PAY_TYPE,
         imagesList: [],
         form: {
           money: '',
           way: '',
           desc: '',
           payTime: '',
-          payType: []
+          payType: [],
+          expenseDept: null
         },
         rules: {
           desc: [
@@ -124,6 +149,7 @@
       }
     },
     computed: {
+      ...mapState(['userInfo']),
       processStr() {
         return ['我(发起人)'].concat(this.process.map(item=> {
           return `${item.name}${item.jobName ? `(${item.jobName})` : ''}`
@@ -142,6 +168,7 @@
           if (valid) {
             this.http('applyExpense', {
               ...this.form,
+              expenseDept: this.form.expenseDept.id,
               payTime: this.form.payTime.getTime(),
               process: this.process
             }).then(()=> {
@@ -158,6 +185,18 @@
       },
       resetForm(formName) {
         this.$refs[formName].resetFields()
+      },
+      toSelectDept() {
+        this.$refs.selectTree.show()
+      },
+      confirmSelectDept(dept) {
+        // console.log(dept)
+        if (dept.length === 0) {
+          return void 0
+        } else if (dept.length > 1) {
+          this.$message('默认取第一个部门')
+        }
+        this.form.expenseDept = { ...dept[0] }
       }
     }
   }

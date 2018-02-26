@@ -13,8 +13,9 @@
   import Priv from '../components/Priv'
   import Job from '../components/Job'
   import MoneySystem from '../components/MoneySystem'
-  import { mapState } from 'vuex'
+  import { mapState, mapMutations } from 'vuex'
   import { menu } from '../constant'
+  import http from '../mixins/http'
 
   export default {
     data() {
@@ -22,20 +23,36 @@
         currentView: ''
       }
     },
-
+    mixins: [http],
     created() {
       let queryId = this.$route.query.menuId
       this.menuChange(queryId ? Number(queryId) : 0)
+      this.getUserInfo()
     },
 
     computed: {
-      ...mapState(['currMenuId'])
+      ...mapState(['currMenuId', 'userInfo'])
     },
 
     methods: {
+      ...mapMutations(['setState']),
+
       menuChange(menuId) {
         let item = menu.find(x => x.id === menuId)
         this.currentView = item.componentName
+      },
+
+      getUserInfo() {
+        if (this.userInfo) {
+          return void 0
+        }
+
+        this.http('getInfos').then(value=> {
+          this.setState({
+            key: 'userInfo',
+            value
+          })
+        })
       }
     },
 

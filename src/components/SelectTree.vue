@@ -199,7 +199,10 @@
       },
 
       confirm() {
-        this.$emit('confirm', this.selectDeptArr, this.selectUserArr)
+        this.$emit('confirm', this.selectDeptArr.map(item=> {
+          item.name = item.label.replace(` (${item.userNum})`, '')
+          return item
+        }), this.selectUserArr)
         this.reset()
         this.dialogFormVisible = false
       }

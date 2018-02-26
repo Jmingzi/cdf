@@ -31,7 +31,7 @@ export default {
       }
 
       this.http('getDept').then(res=> {
-        res = _dealLabel(res)
+        res = _dealLabel([res])
         this.setState({
           key: 'array',
           value: {

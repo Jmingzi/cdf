@@ -11,10 +11,10 @@
       </div>
     </div>
     <div class="left-aside position-a px-top-50 bottom-0">
-      <div class="user color-fff cl px-padding-15">
+      <div class="user color-fff cl px-padding-15" v-if="userInfo">
         <img src="../assets/avatar3.png" class="px-width-50 px-height-50 avatar fl">
-        <p class="px-margin-t5">杨明</p>
-        <p class="px-font-12 color-aaa">技术部</p>
+        <p class="px-margin-t5">{{userInfo.name}}</p>
+        <p class="px-font-12 color-aaa">{{userInfo.dept.name}}</p>
       </div>
       <ul class="color-fff">
         <li
@@ -54,7 +54,7 @@
     },
 
     computed: {
-      ...mapState(['currMenuId']),
+      ...mapState(['currMenuId', 'userInfo']),
 
       currentMenuId() {
         let { menuId } = this.$route.query

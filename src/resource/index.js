@@ -92,6 +92,7 @@ export default {
     delJobUser: '/api/delJobUser',
     getProcess: '/api/getProcess',
     applyExpense: '/api/applyExpense',
+    getInfos: '/api/getInfos'
   },
 
   login(data) {
@@ -153,5 +154,9 @@ export default {
 
   applyExpense(data) {
     return get(this.url.applyExpense, data)
+  },
+
+  getInfos(data) {
+    return get(this.url.getInfos, data)
   }
 }

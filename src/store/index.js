@@ -16,6 +16,7 @@ export default new Vuex.Store({
     currentDept: null,
     currentUser: null,
 
+    userInfo: null,
     // 权限
     // 部门和人员权限的范围都是针对部门
     priv: [{ dept: [1, 2] }, { user: [1, 2] }, 'menu', 'annous', 'money'],

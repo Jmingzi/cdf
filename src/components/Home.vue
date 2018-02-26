@@ -5,12 +5,22 @@
 </template>
 
 <script>
+  // import http from '../mixins/http'
+  // import { mapState, mapMutations } from 'vuex'
+
   export default {
     created() {
 
     },
-    mounted() {
-
-    }
+    // mixins: [http],
+    // computed: {
+    //   ...mapState(['userInfo'])
+    // },
+    // mounted() {
+    //
+    // },
+    // methods: {
+    //   ...mapMutations(['setState'])
+    // }
   }
 </script>
