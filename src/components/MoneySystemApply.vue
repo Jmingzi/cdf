@@ -185,6 +185,8 @@
       },
       resetForm(formName) {
         this.$refs[formName].resetFields()
+        this.form.expenseDept = this.userInfo.dept
+        this.imagesList = []
       },
       toSelectDept() {
         this.$refs.selectTree.show()

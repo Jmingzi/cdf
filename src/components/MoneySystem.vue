@@ -25,7 +25,8 @@
         </el-tab-pane>
         <el-tab-pane name="five">
           <span slot="label"><i class="el-icon-setting"></i> 流程配置</span>
-          <money-system-setting>
+          <money-system-setting
+            :isActive="activeName === 'five'">
           </money-system-setting>
         </el-tab-pane>
       </el-tabs>
