@@ -5,7 +5,15 @@ export default {
     return {
     }
   },
-
+  filters: {
+    formatDeptUser(obj) {
+      let dept = obj.dept.map(x=> {
+        return x.label.replace(` (${x.userNum})`, '')
+      }).join('、')
+      let user = obj.user.map(x=> x.name).join('、')
+      return `${dept}${dept ? '、' : ''}${user}`
+    }
+  },
   methods: {
     http(uri, data) {
       let loadingService = this.$loading({

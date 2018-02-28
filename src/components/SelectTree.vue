@@ -11,6 +11,7 @@
 
       <div class="select-tree__dept ib-middle">
         <el-tree
+          v-if="dialogFormVisible"
           class="filter-tree"
           node-key="id"
           :data="dept"
@@ -94,6 +95,14 @@
         selectDeptArr: [],
         selectUserArr: []
       }
+    },
+    watch: {
+      // selectType: function (val, oldVal) {
+      //   if (val !== oldVal) {
+      //     console.log(val)
+      //   }
+      //   return val
+      // }
     },
     methods: {
       ...mapActions(['getUserById']),

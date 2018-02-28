@@ -37,12 +37,14 @@ import {
   TabPane,
   Upload,
   Alert,
-  Cascader
+  Cascader,
+  Card
 } from 'element-ui'
 
 Vue.config.productionTip = false
 // Vue.component(Button.name, Button)
 Vue.use(Alert)
+Vue.use(Card)
 Vue.use(Cascader)
 Vue.use(Button)
 Vue.use(Upload)

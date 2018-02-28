@@ -21,4 +21,5 @@
     font-size: 14px;
   }
   .w200 { width: 200px; }
+  .w600 { width: 600px; }
 </style>

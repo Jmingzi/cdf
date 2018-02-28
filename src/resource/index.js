@@ -93,7 +93,9 @@ export default {
     getProcess: '/api/getProcess',
     applyExpense: '/api/applyExpense',
     getInfos: '/api/getInfos',
-    getSetting: '/api/getSetting'
+    getSetting: '/api/getSetting',
+    addProcess: '/api/addProcess',
+    delProcess: '/api/delProcess'
   },
 
   login(data) {
@@ -163,5 +165,13 @@ export default {
 
   getSetting(data) {
     return get(this.url.getSetting, data)
+  },
+
+  addProcess(data) {
+    return get(this.url.addProcess, data)
+  },
+
+  delProcess(data) {
+    return get(this.url.delProcess, data)
   }
 }
