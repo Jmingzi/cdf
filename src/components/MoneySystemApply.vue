@@ -38,13 +38,13 @@
           <span class="color-info" v-if="form.expenseDept">{{form.expenseDept.name}}</span>
         </div>
       </el-form-item>
-      <el-form-item label="相关图片">
+      <el-form-item label="相关图片" prop="imagesList">
         <el-upload
           class="upload-demo"
           action="/upload/"
           :on-preview="handlePreview"
           :on-remove="handleRemove"
-          :file-list="imagesList"
+          :file-list="form.imagesList"
           list-type="picture">
           <el-button size="small" type="danger">点击上传</el-button>
           <div slot="tip" class="el-upload__tip">tips: 1-9张，只能上传jpg/png文件，且不超过500kb</div>
@@ -92,6 +92,13 @@
           this.form.expenseDept = val.dept
         }
         return val
+      },
+      isActive(val) {
+        if (val) {
+          console.log('first apply')
+          // this.getSetting()
+        }
+        return val
       }
     },
     created() {
@@ -109,14 +116,15 @@
       return {
         payWay: PAY_WAY,
         payType: PAY_TYPE,
-        imagesList: [],
+        // imagesList: [],
         form: {
           money: '',
           way: '',
           desc: '',
           payTime: '',
           payType: [],
-          expenseDept: null
+          expenseDept: null,
+          imagesList: []
         },
         rules: {
           desc: [
@@ -136,6 +144,9 @@
           ],
           payTime: [
             { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
+          ],
+          imagesList: [
+            { required: true }
           ]
         }
       }
@@ -146,7 +157,8 @@
         default: function () {
           return []
         }
-      }
+      },
+      isActive: false
     },
     computed: {
       ...mapState(['userInfo']),
@@ -186,7 +198,7 @@
       resetForm(formName) {
         this.$refs[formName].resetFields()
         this.form.expenseDept = this.userInfo.dept
-        this.imagesList = []
+        this.form.imagesList = []
       },
       toSelectDept() {
         this.$refs.selectTree.show()

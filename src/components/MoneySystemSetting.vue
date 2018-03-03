@@ -39,7 +39,7 @@
     <div class="w1000" v-else>
       <el-button type="danger" @click="newProcess">新建流程</el-button>
       <div class="" v-if="setting.process">
-        <el-card class="box-card px-margin-t20" v-for="item in setting.process">
+        <el-card class="box-card px-margin-t20" v-for="item in setting.process" :key="item.id">
           <div slot="header" class="clearfix">
             <span class="color-c999">流程名称: </span>
             <span>{{item.processName}}</span>
