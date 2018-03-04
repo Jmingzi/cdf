@@ -95,7 +95,8 @@ export default {
     getInfos: '/api/getInfos',
     getSetting: '/api/getSetting',
     addProcess: '/api/addProcess',
-    delProcess: '/api/delProcess'
+    delProcess: '/api/delProcess',
+    getExpenseList: '/api/getExpenseList'
   },
 
   login(data) {
@@ -173,5 +174,9 @@ export default {
 
   delProcess(data) {
     return get(this.url.delProcess, data)
+  },
+
+  getExpenseList(data) {
+    return get(this.url.getExpenseList, data)
   }
 }

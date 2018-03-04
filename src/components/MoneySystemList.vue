@@ -1,24 +1,92 @@
 <template>
   <div class="list">
     <div class="position-f px-left-10 px-right-10 px-top-60 px-bottom-50 overflow-a">
+      <div v-if="isTotal">
+        <div class="fr">
+          <el-button type="danger">搜索查询</el-button>
+        </div>
+        <div class="search__wrap ib-middle">
+          <span class="ib-middle">报销人</span>
+          <div class="ib-middle">
+            <el-input placeholder="请输入">
+            </el-input>
+          </div>
+        </div>
+        <div class="search__wrap ib-middle">
+          <span class="ib-middle">报销金额</span>
+          <div class="ib-middle">
+            <el-input placeholder="请输入">
+            </el-input>
+          </div>
+        </div>
+        <div class="search__wrap ib-middle">
+          <span class="ib-middle">支出类别</span>
+          <div class="ib-middle">
+            <el-cascader
+              expand-trigger="hover"
+              :options="payType">
+            </el-cascader>
+          </div>
+        </div><br>
+        <div class="search__wrap search__wrap-date ib-middle">
+          <span class="ib-middle">报销发起时间</span>
+          <div class="ib-middle">
+            <el-date-picker
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期">
+            </el-date-picker>
+          </div>
+        </div>
+        <div class="search__wrap search__wrap-dept ib-middle">
+          <span class="ib-middle">报销部门或人</span>
+          <div class="ib-middle dept">
+            <span class="color-info">请选择</span>
+          </div>
+        </div>
+      </div>
+
       <el-table
         :data="listData"
         border
+        show-summary
         :height="tableWrapHeight"
         style="width: 100%">
         <el-table-column
-          prop="date"
-          label="日期"
-          width="180">
-        </el-table-column>
-        <el-table-column
           prop="name"
-          label="姓名"
-          width="180">
+          label="报销人"
+          width="80">
         </el-table-column>
         <el-table-column
-          prop="address"
-          label="地址">
+          prop="money"
+          label="报销金额"
+          sortable
+          width="120">
+        </el-table-column>
+        <el-table-column
+          prop="createTime"
+          label="报销时间"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          prop="payType"
+          label="支出类别"
+          width="140">
+        </el-table-column>
+        <el-table-column
+          prop="expenseDept"
+          label="报销部门"
+          width="80">
+        </el-table-column>
+        <el-table-column
+          prop="payTime"
+          label="支出时间"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          prop="way"
+          label="支出方式">
         </el-table-column>
         <el-table-column
           label="操作"
@@ -38,6 +106,7 @@
         </el-table-column>
       </el-table>
     </div>
+
     <div class="position-f px-bottom-10 width-100 text-center">
       <el-pagination
         @size-change="handleSizeChange"
@@ -57,78 +126,8 @@
       :modal="false"
       top="10px"
       width="500px">
-      <div class="expense-detail">
-        <div class="detail-item">
-          <span class="text-right color-c999">报销状态：</span>
-          <span class="color-warning">审批中</span>
-        </div>
-        <div class="detail-item">
-          <span class="text-right color-c999">报销事由：</span>
-          <span>反而你回家给人体韩国和投入 </span>
-        </div>
-        <div class="detail-item">
-          <span class="text-right color-c999">报销金额：</span>
-          <span>1000.00元</span>
-        </div>
-        <div class="detail-item">
-          <span class="text-right color-c999">支出类别：</span>
-          <span>办公室/硬件</span>
-        </div>
-        <div class="detail-item">
-          <span class="text-right color-c999">支出方式：</span>
-          <span>支付宝</span>
-        </div>
-        <div class="detail-item">
-          <span class="text-right color-c999">支出时间：</span>
-          <span>2018年3月3日 11:14:45</span>
-        </div>
-        <div class="detail-item">
-          <span class="text-right color-c999">报销部门：</span>
-          <span>技术部</span>
-        </div>
-        <div class="detail-item">
-          <span class="text-right color-c999">报销时间：</span>
-          <span>2018年3月3日 11:15:29</span>
-        </div>
-        <div class="detail-item">
-          <span class="text-right color-c999 ib-top">相关图片：</span>
-          <div class="ib-top">
-            <a class="ib-middle px-margin-10" href="https://avatars0.githubusercontent.com/u/9743418?s=460&v=4" target="_blank">
-              <img src="https://avatars0.githubusercontent.com/u/9743418?s=460&v=4" width="70" height="70">
-            </a>
-            <a class="ib-middle px-margin-10" href="https://avatars0.githubusercontent.com/u/9743418?s=460&v=4" target="_blank">
-              <img src="https://avatars0.githubusercontent.com/u/9743418?s=460&v=4" width="70" height="70">
-            </a>
-          </div>
-        </div>
-        <p class="px-margin-t20">报销流程</p>
-        <div class="px-margin-t10 bg-f2 px-padding-10">
-          <span class="ib-middle px-margin-r10">我</span>
-          <span class="ib-middle px-margin-r10 color-success">发起申请</span>
-          <span class="fr color-c999">2018年3月3日 11:23:09</span>
-        </div>
-        <div class="px-margin-t10 bg-f2 px-padding-10">
-          <span class="ib-middle px-margin-r10">杨明 (总经理)</span>
-          <span class="ib-middle px-margin-r10 color-success">已同意</span>
-          <span class="fr color-c999">2018年3月3日 11:23:09</span>
-          <p>
-            <span class="color-c999">同意意见：</span>
-            <span>烦呢我看和伏尔加河顾客和狗头人</span>
-          </p>
-        </div>
-        <div class="px-margin-t10 bg-f2 px-padding-10">
-          <span class="ib-middle px-margin-r10">老柴 (老板)</span>
-          <span class="ib-middle px-margin-r10 color-warning">审批中</span>
-        </div>
-        <div class="px-margin-t10 bg-f2 px-padding-10">
-          <span class="ib-middle px-margin-r10">牛逼 (董事长)</span>
-          <span class="ib-middle px-margin-r10 color-c999">待审批</span>
-        </div>
-        <div class="px-margin-t10 bg-f2 px-padding-10">
-          <span class="ib-middle px-margin-r10">小芳 (财务)</span>
-          <span class="ib-middle px-margin-r10 color-c999">待打款</span>
-        </div>
-      </div>
+      <detail>
+      </detail>
       <span slot="footer" class="dialog-footer">
         <template v-if="isToMe">
           <el-button type="success" @click="doOption(1)" size="small">同 意</el-button>
@@ -142,47 +141,35 @@
 </template>
 
 <script>
+  import Detail from './MoneySystemDetail'
+  import http from '../mixins/http'
+  import {PAY_TYPE} from '../constant'
+
   export default {
     name: 'money-system-list',
 
     data() {
       return {
+        payType: PAY_TYPE,
         tableWrapHeight: 0,
         currentPage: 1,
         dialogVisible: false,
         currentChooseItem: null,
-        listData: [
-          {
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          }, {
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄'
-          }, {
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄'
-          }, {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          }
-        ]
+        listData: []
       }
     },
 
+    mixins: [http],
+
     watch: {
       wrapHeight(val) {
-        this.tableWrapHeight = val - 110
+        this.tableWrapHeight = val - 110 - 110
         return val
       }
     },
 
     mounted() {
-      // console.log(this.wrapHeight)
-      // this.tableWrapHeight = this.$parent.$refs.expense.getBoundingClientRect().height
+      this.getExpenseList()
     },
 
     methods: {
@@ -191,6 +178,20 @@
       },
       handleCurrentChange(val) {
         console.log(`当前页: ${val}`);
+      },
+      getExpenseList() {
+        this.http('getExpenseList', {
+          currentPage: 1,
+          pageSize: 10,
+          listType: 1, // 1 我发起的 2 我收到的 3 统计列表
+          payType: [], // 支出类别
+          createStartTime: '',  // 筛选时间段 - 开始时间
+          createEndTime: '',  // 筛选时间段 - 结束时间
+          expenseDept: '',  // 报销部门
+          expenseUserId: '' // 报销人
+        }).then(data=> {
+          this.listData = data
+        })
       },
       doOption(type, item) {
         if (item) {
@@ -243,10 +244,57 @@
       isCaiWu() {
         return true
       }
+    },
+    components: {
+      Detail
     }
   }
 </script>
 
 <style lang="scss">
+  .process__item {
+    margin: 10px 0 0 30px;
+  }
+  .process__item-icon {
+    top: 1px;
+    left: -30px;
+    z-index: 2;
+  }
+  .process__info {
+    padding: 5px 10px;
+  }
+  .process_line {
+    width: 1px;
+    top: 10px;
+    bottom: 10px;
+    left: 6px;
+    background-color: #ccc;
+    z-index: 1;
+  }
 
+  .search__wrap {
+    width: 280px;
+    margin-bottom: 15px;
+  }
+  .search__wrap-dept {
+    width: 350px;
+    .dept {
+      width: 250px;
+      height: 40px;
+      line-height: 40px;
+      border: 1px solid #dcdfe6;
+      border-radius: 4px;
+      padding: 0 10px;
+      cursor: pointer;
+    }
+  }
+  .search__wrap-date {
+    width: 450px;
+  }
+
+  .expense .el-table__header {
+    th, tr {
+      background-color: #f5f7fa;
+    }
+  }
 </style>

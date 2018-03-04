@@ -1,0 +1,17 @@
+{
+  "code": 200,
+  "data": [
+    {
+      "name": "杨明",
+      "money": "2000",
+      "createTime": "2320947u325",
+      "payType": ["办公室", "硬件"],
+      "expenseDept": {
+        "name": "技术部"
+      },
+      "payTime": "3243594i96ui045",
+      "way": "支付宝"
+    }
+  ],
+  "msg": ""
+}
