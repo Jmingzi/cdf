@@ -116,7 +116,6 @@
       return {
         payWay: PAY_WAY,
         payType: PAY_TYPE,
-        // imagesList: [],
         form: {
           money: '',
           way: '',
@@ -146,7 +145,7 @@
             { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
           ],
           imagesList: [
-            { required: true }
+            { required: true, message: '请上传图片材料' }
           ]
         }
       }

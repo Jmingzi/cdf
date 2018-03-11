@@ -145,6 +145,14 @@
 
       handleClick(row) {
         this.dialogVisible = true
+        this.setState({
+          key: 'handleType',
+          value: 'edit'
+        })
+        this.setState({
+          key: 'currentUser',
+          value: row
+        })
         this.$nextTick(()=> {
           this.$refs['editUserPanel'].form = { ...row }
         })

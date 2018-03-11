@@ -15,12 +15,12 @@ export default new Vuex.Store({
     userMap: {},
     currentDept: null,
     currentUser: null,
-
+    handleType: '',
     userInfo: null,
     // 权限
     // 部门和人员权限的范围都是针对部门
     priv: [{ dept: [1, 2] }, { user: [1, 2] }, 'menu', 'annous', 'money'],
-    isSuperAdmin: false,
+    isSuperAdmin: false
   },
   getters: {
     userList(state) {

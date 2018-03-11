@@ -54,7 +54,7 @@
   import Page from "./Page"
   import DeptForm from './DeptForm'
   import UserForm from './UserForm'
-  import { mapState } from 'vuex'
+  import { mapState, mapMutations } from 'vuex'
   const filterLabel = (item) => {
     return `${item.label.replace(`(${item.userNum})`, '')}`
   }
@@ -83,6 +83,7 @@
       ...mapState(['currentDept'])
     },
     methods: {
+      ...mapMutations(['setState']),
       handleClose(done) {
         this.$confirm('确认关闭？').then(_ => {
           done()
@@ -93,10 +94,14 @@
         this.currentDialogComponent = DeptForm.name
         this.deptDialogTitle = type ? '编辑部门' : '添加部门'
         this.dialogVisible = true
+        this.setState({
+          key: 'handleType',
+          value: type ? 'edit' : 'add'
+        })
+
         this.$nextTick(()=> {
           let deptForm = this.$refs['dialog'].$refs['form']
           if (type) {
-            // console.log(deptForm)
             deptForm.model.label = filterLabel(this.currentDept)
             deptForm.model.sequence = this.currentDept.sequence
           } else {
@@ -115,6 +120,10 @@
         this.currentDialogComponent = UserForm.name
         this.deptDialogTitle = type ? '编辑员工' : '添加员工'
         this.dialogVisible = true
+        this.setState({
+          key: 'handleType',
+          value: type ? 'edit' : 'add'
+        })
       }
     },
     filters: {

@@ -96,7 +96,9 @@ export default {
     getSetting: '/api/getSetting',
     addProcess: '/api/addProcess',
     delProcess: '/api/delProcess',
-    getExpenseList: '/api/getExpenseList'
+    getExpenseList: '/api/getExpenseList',
+    saveUser: '/api/saveUser',
+    saveDept: '/api/saveDept'
   },
 
   login(data) {
@@ -178,5 +180,13 @@ export default {
 
   getExpenseList(data) {
     return get(this.url.getExpenseList, data)
+  },
+
+  saveUser(data) {
+    return get(this.uri.saveUser, data)
+  },
+
+  saveDept(data) {
+    return get(this.uri.saveDept, data)
   }
 }

@@ -17,8 +17,12 @@
 </template>
 
 <script>
+  import http from '../mixins/http'
+  import { mapState } from 'vuex'
+
   export default {
     name: 'dept-form',
+    mixins: [http],
     data() {
       return {
         form: {
@@ -29,15 +33,27 @@
           label: [
             { required: true, message: '请输入部门名称', trigger: 'blur' },
             { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
+          ]
         }
       }
+    },
+    computed: {
+      ...mapState(['handleType', 'currentDept'])
     },
     methods: {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!')
+            let data = { ...this.form }
+            if (this.handleType === 'edit') {
+              data.id = this.currentDept.id
+            }
+            this.http('saveDept', data).then(()=> {
+              this.$message({
+                message: '保存成功',
+                type: 'success'
+              })
+            })
           } else {
             console.log('error submit!!')
             return false
