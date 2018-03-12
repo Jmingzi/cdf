@@ -123,7 +123,7 @@
     <el-dialog
       :title="(isFromMe ? '我' : '小名') + '的报销详情'"
       :visible.sync="dialogVisible"
-      :modal="false"
+      :append-to-body="true"
       top="10px"
       width="500px">
       <detail>

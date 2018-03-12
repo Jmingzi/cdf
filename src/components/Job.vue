@@ -120,6 +120,7 @@
                 message: this.isEdit ? '编辑岗位成功' : '添加岗位成功',
                 type: 'success'
               })
+              this.getJobList()
             })
             this.dialogVisible = false
           } else {
@@ -141,6 +142,7 @@
             message: `${this.currJob.name}岗位添加人员成功`,
             type: 'success'
           })
+          this.getJobList()
         })
       },
       delJobUser(user) {
@@ -150,6 +152,7 @@
               message: `${this.currJob.name}岗位删除人员成功`,
               type: 'success'
             })
+            this.getJobList()
           })
         })
       }
