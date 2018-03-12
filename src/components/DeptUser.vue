@@ -42,6 +42,7 @@
       <component
         :is="currentDialogComponent"
         @handleClick="editUser"
+        @toggle="dialogVisible = false"
         ref="dialog">
       </component>
     </el-dialog>

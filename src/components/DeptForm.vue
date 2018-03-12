@@ -53,6 +53,7 @@
                 message: '保存成功',
                 type: 'success'
               })
+              this.$emit('toggle')
             })
           } else {
             console.log('error submit!!')
