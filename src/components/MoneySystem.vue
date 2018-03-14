@@ -13,6 +13,7 @@
           <span slot="label"><i class="el-icon-sort-up"></i> 我发起的</span>
           <money-system-list
             :wrap-height="wrapHeight"
+            :is-active="activeName === 'second'"
             :type="1">
           </money-system-list>
         </el-tab-pane>
@@ -20,6 +21,7 @@
           <span slot="label"><i class="el-icon-sort-down"></i> 我收到的</span>
           <money-system-list
             :wrap-height="wrapHeight"
+            :is-active="activeName === 'third'"
             :type="2">
           </money-system-list>
         </el-tab-pane>
@@ -27,6 +29,7 @@
           <span slot="label"><i class="el-icon-tickets"></i> 统计</span>
           <money-system-list
             :wrap-height="wrapHeight"
+            :is-active="activeName === 'fourth'"
             :type="3">
           </money-system-list>
         </el-tab-pane>
@@ -73,6 +76,7 @@
     methods: {
       handleClick(tab, event) {
         // console.log(tab, event)
+        console.log(this.activeName)
       }
     }
   }

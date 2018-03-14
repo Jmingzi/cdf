@@ -47,7 +47,10 @@
             let data = { ...this.form }
             if (this.handleType === 'edit') {
               data.id = this.currentDept.id
+            } else {
+              data.parentId = this.currentDept.id
             }
+
             this.http('saveDept', data).then(()=> {
               this.$message({
                 message: '保存成功',

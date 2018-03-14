@@ -44,6 +44,7 @@
           action="/upload/"
           :on-preview="handlePreview"
           :on-remove="handleRemove"
+          :on-success="handleSuccess"
           :file-list="form.imagesList"
           list-type="picture">
           <el-button size="small" type="danger">点击上传</el-button>
@@ -169,10 +170,14 @@
     },
     methods: {
       handleRemove(file, fileList) {
-        console.log(file, fileList)
+        let index = this.form.imagesList.findIndex(x => x.id || x.uid === file.id || file.uid)
+        this.form.imagesList.splice(index, 1)
       },
       handlePreview(file) {
-        console.log(file)
+        window.open(file.url)
+      },
+      handleSuccess(file, fileList) {
+        this.form.imagesList.push(file)
       },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {

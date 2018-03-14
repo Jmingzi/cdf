@@ -162,14 +162,14 @@
     mixins: [http],
 
     watch: {
-      wrapHeight(val) {
+      wrapHeight: function(val) {
         this.tableWrapHeight = val - 110 - 110
         return val
       }
     },
 
     mounted() {
-      this.getExpenseList()
+      // this.getExpenseList()
     },
 
     methods: {

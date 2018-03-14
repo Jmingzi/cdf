@@ -59,7 +59,7 @@
         <template v-else-if="currentDetail.status === 1">
           <p class="px-font-24">{{currentDetail.title}}</p>
           <p class="color-c999">
-            <span class="ib-middle">发布者：{{currentDetail.pubUser.name}}</span>
+            <span class="ib-middle">发布者：{{ currentDetail.pubUser ? currentDetail.pubUser.name : '' }}</span>
             <span class="ib-middle px-margin-l20">发布时间：{{currentDetail.pubTime}}</span>
             <span class="ib-middle px-margin-l20">接收人：{{currentDetail.receiveUser | formatReceiveUser}}</span>
           </p>
@@ -102,7 +102,7 @@
     },
     filters: {
       formatReceiveUser(arr) {
-        return arr.map(x=> x.name).join('、')
+        return arr.map(x=> x ? x.name : '').join('、')
       }
     },
     methods: {
