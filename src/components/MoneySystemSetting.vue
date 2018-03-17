@@ -2,7 +2,7 @@
   <div class="setting">
     <div v-if="setting.process === null"></div>
 
-    <div class="px-padding-tb50 text-center" v-else-if="setting.process.length === 0">
+    <div class="px-padding-tb50 text-center" v-else-if="setting.process.length === 0 && !isNewProcess">
       <p class="px-margin-b20 color-c666">你还没有配置流程哦~</p>
       <el-button type="danger" @click="newProcess">新建流程</el-button>
     </div>
