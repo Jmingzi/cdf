@@ -134,11 +134,13 @@
           this.setting.process = res.processList
         })
       },
+
       toMessage(type) {
         let msg1 = '流程环节是指：流程从A到B再到C等等的节点，此处点击按顺序添加即是流程的顺序。'
         let msg2 = '流程管理范围是指：这条流程对哪些人或部门生效，人的优先级要高于部门。例如：A在技术部，对技术部设置了x流程，对A又设置了y流程，此时对A来说生效的是y流程。'
         this.$msgbox.alert(eval(`${type}`))
       },
+
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -165,6 +167,7 @@
           }
         })
       },
+
       toSelect(field) {
         this.currentSelect = field
         if (field === 'processRange') {
@@ -178,6 +181,7 @@
         }
         this.$refs.selectTree.show()
       },
+
       confirmSelectDept(dept, user) {
         if (this.currentSelect === 'processRange') {
           this.form.target.dept = dept
@@ -186,6 +190,7 @@
           this.form.process = user
         }
       },
+
       delProcess(item) {
         this.$msgbox.confirm('确定要删除该条流程吗？').then(()=> {
           this.http('delProcess', { id: item.id }).then(()=> {
@@ -193,10 +198,14 @@
           })
         })
       },
+
       newProcess() {
         this.editProcessId = null
         this.isNewProcess = true
+        this.clear(1)
+        this.clear(2)
       },
+
       editProcess(item) {
         this.editProcessId = item.id
         this.form.processName = item.processName
@@ -204,6 +213,7 @@
         this.form.process = [ ...item.process ]
         this.isNewProcess = true
       },
+
       clear(type) {
         if (type === 1) {
           this.form.process = []
