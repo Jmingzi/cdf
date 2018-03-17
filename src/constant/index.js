@@ -15,51 +15,53 @@ export const contactPriv = [
 ]
 
 export const PAY_TYPE = [
-  { label: '办公室支出', value: '办公室支出', children: [
-      { label: '办公室耗材', value: '办公室耗材' },
-      { label: '通讯费用（话费、手机卡等）', value: '通讯费用（话费、手机卡等）' },
-      { label: '水电', value: '水电' },
-      { label: '房租', value: '房租' },
-      { label: '文化建设（装修、绿植、文化宣传）', value: '文化建设（装修、绿植、文化宣传）' },
-      { label: '固件（桌椅、冰箱、微波炉等）', value: '固件（桌椅、冰箱、微波炉等）' },
+  { label: '办公室支出', value: '1', children: [
+      { label: '办公室耗材', value: '1' },
+      { label: '通讯费用（话费、手机卡等）', value: '2' },
+      { label: '水电', value: '3' },
+      { label: '房租', value: '4' },
+      { label: '文化建设（装修、绿植、文化宣传）', value: '5' },
+      { label: '固定资产（桌椅、冰箱、微波炉等）', value: '6' },
     ] },
-  { label: '人事支出', value: '人事支出', children: [
-      { label: '工资', value: '工资' },
-      { label: '奖金', value: '奖金' },
-      { label: '招聘', value: '招聘' },
-      { label: '员工福利', value: '员工福利' },
-      { label: '差旅费', value: '差旅费' },
-      { label: '文化活动', value: '文化活动' }
+  { label: '人事支出', value: '2', children: [
+      { label: '工资', value: '1' },
+      { label: '奖金', value: '2' },
+      { label: '招聘', value: '3' },
+      { label: '员工福利', value: '4' },
+      { label: '差旅费', value: '5' },
+      { label: '文化活动', value: '6' }
     ] },
-  { label: '技术支出', value: '技术支出', children: [
-      { label: '第三方平台使用费', value: '第三方平台使用费' },
-      { label: '插件开发', value: '插件开发' },
-      { label: '技术外包', value: '技术外包' }
+  { label: '技术支出', value: '3', children: [
+      { label: '第三方平台使用费', value: '1' },
+      { label: '插件开发', value: '2' },
+      { label: '技术外包', value: '3' }
     ] },
-  { label: '宿舍支出', value: '宿舍支出', children: [
-      { label: '房租', value: '房租' },
-      { label: '水电', value: '水电' },
-      { label: '固件（如床位、洗衣机）', value: '固件（如床位、洗衣机）' }
+  { label: '宿舍支出', value: '4', children: [
+      { label: '房租', value: '1' },
+      { label: '水电', value: '2' },
+      { label: '固定资产（如床位、洗衣机）', value: '3' }
     ] },
-  { label: '硬件设备', value: '硬件设备', children: [
-      { label: '电脑', value: '电脑' },
-      { label: '手机', value: '手机' },
-      { label: '路由器', value: '路由器' },
-      { label: '交换机', value: '交换机' },
-      { label: '摄像头', value: '摄像头' },
-      { label: '打印机', value: '打印机' },
-      { label: '投影仪', value: '投影仪' }
+  { label: '硬件设备', value: '5', children: [
+      { label: '电脑', value: '1' },
+      { label: '手机', value: '2' },
+      { label: '路由器', value: '3' },
+      { label: '交换机', value: '4' },
+      { label: '摄像头', value: '5' },
+      { label: '打印机', value: '6' },
+      { label: '投影仪', value: '7' },
+      { label: '显示器', value: '8' },
+      { label: '其他', value: '9' }
     ] },
-  { label: '仓储支出', value: '仓储支出', children: [
-      { label: '退换货', value: '退换货' },
-      { label: '运输费', value: '运输费' },
-      { label: '包装耗材', value: '包装耗材' },
-      { label: '产品进货', value: '产品进货' }
+  { label: '仓储支出', value: '6', children: [
+      { label: '退换货', value: '1' },
+      { label: '运输费', value: '2' },
+      { label: '包装耗材', value: '3' },
+      { label: '产品进货', value: '4' }
     ] },
-  { label: '品牌建设', value: '品牌建设', children: [
-      { label: '包装设计（设计、包材、修图等）', value: '包装设计（设计、包材、修图等）' },
-      { label: 'SEO推广费', value: 'SEO推广费' },
-      { label: '宣传推广费（宣传册、横幅等）', value: '宣传推广费（宣传册、横幅等）' }
+  { label: '品牌建设', value: '7', children: [
+      { label: '包装设计（设计、包材、修图等）', value: '1' },
+      { label: 'SEO推广费', value: '2' },
+      { label: '宣传推广费（宣传册、横幅等）', value: '3' }
     ] }
 ]
 

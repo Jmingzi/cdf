@@ -102,9 +102,14 @@
         return val
       }
     },
+
     created() {
+      // 赋值dept
       this.form.expenseDept = this.userInfo && this.userInfo.dept
+        ? { ...this.userInfo.dept, id: this.userInfo.dept.deptId }
+        : {}
     },
+
     data() {
       const checkMoneySize = (rule, value, callback)=> {
         if (value > rule.max || value <= rule.min) {
@@ -151,42 +156,52 @@
         }
       }
     },
+
     props: {
       process: {
-        type: Array,
+        type: Object,
         default: function () {
-          return []
+          return {}
         }
       },
       isActive: false
     },
+
     computed: {
       ...mapState(['userInfo']),
+
       processStr() {
-        return ['我(发起人)'].concat(this.process.map(item=> {
+        const process = this.process.process || []
+        return ['我(发起人)'].concat(process.map(item=> {
           return `${item.name}${item.jobName ? `(${item.jobName})` : ''}`
         })).join(' -> ')
       }
     },
+
     methods: {
       handleRemove(file, fileList) {
         let index = this.form.imagesList.findIndex(x => x.id || x.uid === file.id || file.uid)
         this.form.imagesList.splice(index, 1)
       },
+
       handlePreview(file) {
         window.open(file.url)
       },
+
       handleSuccess(file, fileList) {
         this.form.imagesList.push(file)
       },
+
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.http('applyExpense', {
               ...this.form,
-              expenseDept: this.form.expenseDept.id,
+              processId: this.process.id,
+              expenseDept: JSON.stringify(this.form.expenseDept),
               payTime: this.form.payTime.getTime(),
-              process: this.process
+              payType: JSON.stringify(this.form.payType),
+              imagesList: JSON.stringify(this.form.imagesList)
             }).then(()=> {
               this.$message({
                 message: '申请成功',
@@ -199,14 +214,17 @@
           }
         })
       },
+
       resetForm(formName) {
         this.$refs[formName].resetFields()
         this.form.expenseDept = this.userInfo.dept
         this.form.imagesList = []
       },
+
       toSelectDept() {
         this.$refs.selectTree.show()
       },
+
       confirmSelectDept(dept) {
         // console.log(dept)
         if (dept.length === 0) {

@@ -11,7 +11,7 @@
         <!--</div>-->
         <div class="search__wrap search__wrap-dept ib-middle">
           <span class="ib-middle">报销部门或人</span>
-          <div class="ib-middle dept">
+          <div class="ib-middle dept" @click="$refs.selectTree.show()">
             <span class="color-info">请选择</span>
           </div>
         </div>
@@ -29,7 +29,7 @@
         </div>
         <div class="search__wrap ib-middle">
           <span class="ib-middle">审批状态</span>
-          <el-select :value="2" placeholder="请选择">
+          <el-select v-model="listBxStatus" placeholder="请选择">
             <el-option
               v-for="item in bxStatus"
               :key="item.value"
@@ -42,6 +42,7 @@
           <span class="ib-middle px-width-90">报销发起时间</span>
           <div class="ib-middle">
             <el-date-picker
+              v-model="listTime"
               type="daterange"
               range-separator="至"
               start-placeholder="开始日期"
@@ -52,7 +53,7 @@
         <div class="search__wrap ib-middle">
           <span class="ib-middle">关键字</span>
           <div class="ib-middle">
-            <el-input placeholder="请输入">
+            <el-input placeholder="请输入" v-model="listKeyword">
             </el-input>
           </div>
         </div>
@@ -112,12 +113,12 @@
           :width="isFromMe ? 90 : 150">
           <template slot-scope="scope">
             <el-button @click="doOption(0, scope.row)" type="text" size="small">查看</el-button>
-            <a href="javascript:" class="color-error" v-if="isFromMe" @click="doOption(3, scope.row)">撤回</a>
-            <template v-else-if="isToMe">
+            <!--<a href="javascript:" class="color-error" v-if="isFromMe" @click="doOption(3, scope.row)">撤回</a>-->
+            <template v-if="isToMe">
               <a href="javascript:" class="color-success" @click="doOption(1, scope.row)">同意</a>
               <a href="javascript:" class="color-error" @click="doOption(2, scope.row)">拒绝</a>
             </template>
-            <template v-else>
+            <template v-else-if="isTotal">
               <a href="javascript:" class="color-success" @click="doOption(4, scope.row)">打款</a>
               <a href="javascript:" class="color-error" @click="doOption(5, scope.row)">撤销打款</a>
             </template>
@@ -156,6 +157,13 @@
         <el-button v-else-if="isTotal" type="primary" @click="doOption(4)" size="small">打 款</el-button>
       </span>
     </el-dialog>
+
+    <select-tree
+      ref="selectTree"
+      :selectedDept="listBxDept"
+      :selectedUser="listBxUser"
+      @confirm="confirmSelectTree">
+    </select-tree>
   </div>
 </template>
 
@@ -177,8 +185,14 @@
         listData: [],
         bxStatus: BX_STATUS,
 
+        // 筛选条件
         listType: 0,
-        listPayType: []
+        listPayType: [],
+        listTime: [],
+        listKeyword: '',
+        listBxStatus: '',
+        listBxDept: [],
+        listBxUser: []
       }
     },
 
@@ -194,10 +208,7 @@
         return val
       },
       activeName: function (name) {
-        this.listData = []
-        this.currentChooseItem = null
-        this.currentPage = 1
-
+        this.reset()
         if (name !== 'fourth') {
           this.getExpenseList()
         }
@@ -214,31 +225,62 @@
 
     methods: {
       confirmSearch() {
-        console.log(this.listPayType)
+        this.reset()
+        this.getExpenseList()
       },
 
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
       },
+
       handleCurrentChange(val) {
         console.log(`当前页: ${val}`);
       },
+
+      confirmSelectTree(dept, user) {
+        this.listBxDept = dept
+        this.listBxUser = user
+      },
+
+      reset() {
+        this.listData = []
+        this.currentChooseItem = null
+        this.currentPage = 1
+      },
+
       getExpenseList() {
+        let createTimeBetween = []
+        let expenseDept = []
+        let expenseUserId = []
+
+        if (this.listTime.length > 0) {
+          createTimeBetween = [
+            this.listTime[0].getTime(),
+            this.listTime[1].getTime()
+          ]
+        }
+        if (this.listBxDept.length > 0) {
+          expenseDept = this.listBxDept.map(x => x.id)
+        }
+        if (this.listBxUser.length > 0) {
+          expenseUserId = this.listBxUser.map(x => x.userId)
+        }
+
         this.http('getExpenseList', {
           currentPage: 1,
           pageSize: 10,
           listType: this.listType, // 1 我发起的 2 我收到的 3 统计列表
-          payType: [], // 支出类别
-          createStartTime: '',  // 筛选时间段 - 开始时间
-          createEndTime: '',  // 筛选时间段 - 结束时间
-          expenseDept: '',  // 报销部门
-          expenseUserId: '', // 报销人
-          keyword: '',      // 关键字
-          expenseStatus: '' // 报销状态
+          payType: JSON.stringify(this.listPayType), // 支出类别 [1, 2]
+          createTimeBetween: JSON.stringify(createTimeBetween),  // 筛选时间段 - [开始时间, 结束时间]
+          expenseDept: JSON.stringify(expenseDept),  // 报销部门  [2]
+          expenseUserId: JSON.stringify(expenseUserId), // 报销人 [1]
+          keyword: this.keyword,      // 关键字
+          expenseStatus: this.listBxStatus // 报销状态
         }).then(data=> {
           this.listData = data
         })
       },
+
       doOption(type, item) {
         if (item) {
           this.currentChooseItem = item
@@ -252,7 +294,12 @@
             this.$msgbox.prompt('请输入同意意见(非必填)')
           } break
           case 2: {
-            this.$msgbox.prompt('请输入拒绝意见(必填)')
+            this.$msgbox.prompt('请输入拒绝意见(必填)').then(res => {
+              if (res.value) {
+              } else {
+                this.$message.error('请输入意见')
+              }
+            })
           } break
           case 3: {
             this.$msgbox.confirm('确定要撤回吗？')

@@ -37,7 +37,7 @@
       <money-system-apply
         v-if="activeName === 'first'"
         :is-active="activeName === 'first'"
-        :process="process">
+        :process="processData">
       </money-system-apply>
       <money-system-setting
         v-else-if="activeName === 'five'">
@@ -63,13 +63,13 @@
     data() {
       return {
         activeName: 'first',
-        process: [],
+        processData: {},
         wrapHeight: 0
       }
     },
     created() {
       this.http('getProcess', { userId: 1, deptId: 2 }).then(res=> {
-        this.process = res
+        this.processData = res
       })
     },
     mounted() {
