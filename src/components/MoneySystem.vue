@@ -35,9 +35,8 @@
       </el-tabs>
 
       <money-system-apply
-        v-if="activeName === 'first'"
-        :is-active="activeName === 'first'"
-        :process="processData">
+        v-if="userInfo && activeName === 'first'"
+        :is-active="activeName === 'first'">
       </money-system-apply>
       <money-system-setting
         v-else-if="activeName === 'five'">
@@ -56,6 +55,7 @@
   import MoneySystemList from './MoneySystemList'
   import MoneySystemSetting from './MoneySystemSetting'
   import http from '../mixins/http'
+  import { mapState } from 'vuex'
 
   export default {
     name: 'money-system',
@@ -63,17 +63,17 @@
     data() {
       return {
         activeName: 'first',
-        processData: {},
         wrapHeight: 0
       }
     },
     created() {
-      this.http('getProcess', { userId: 1, deptId: 2 }).then(res=> {
-        this.processData = res
-      })
+
     },
     mounted() {
       this.wrapHeight = this.$refs.expense.getBoundingClientRect().height
+    },
+    computed: {
+      ...mapState(['userInfo'])
     },
     components: {
       MoneySystemApply,

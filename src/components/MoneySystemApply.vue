@@ -108,6 +108,7 @@
       this.form.expenseDept = this.userInfo && this.userInfo.dept
         ? { ...this.userInfo.dept, id: this.userInfo.dept.deptId }
         : {}
+        this.getProcess(this.userInfo.dept.deptId)
     },
 
     data() {
@@ -153,17 +154,12 @@
           imagesList: [
             { required: true, message: '请上传图片材料' }
           ]
-        }
+        },
+        processData: {}
       }
     },
 
     props: {
-      process: {
-        type: Object,
-        default: function () {
-          return {}
-        }
-      },
       isActive: false
     },
 
@@ -171,7 +167,7 @@
       ...mapState(['userInfo']),
 
       processStr() {
-        const process = this.process.process || []
+        const process = this.processData.process || []
         return ['我(发起人)'].concat(process.map(item=> {
           return `${item.name}${item.jobName ? `(${item.jobName})` : ''}`
         })).join(' -> ')
@@ -179,6 +175,12 @@
     },
 
     methods: {
+      getProcess(deptId) {
+        this.http('getProcess', { userId: 1, deptId }).then(res=> {
+          this.processData = res
+        })
+      },
+
       handleRemove(file, fileList) {
         let index = this.form.imagesList.findIndex(x => x.id || x.uid === file.id || file.uid)
         this.form.imagesList.splice(index, 1)
@@ -197,7 +199,7 @@
           if (valid) {
             this.http('applyExpense', {
               ...this.form,
-              processId: this.process.id,
+              processId: this.processData.id,
               expenseDept: JSON.stringify(this.form.expenseDept),
               payTime: this.form.payTime.getTime(),
               payType: JSON.stringify(this.form.payType),
@@ -233,6 +235,7 @@
           this.$message('默认取第一个部门')
         }
         this.form.expenseDept = { ...dept[0] }
+        this.getProcess(dept[0].id)
       }
     }
   }
