@@ -318,7 +318,11 @@
         }
 
         function _do(options) {
-          this.http('handleProcessStatus', { ...options, expenseId: item.id })
+          this.http('handleProcessStatus', { ...options, expenseId: this.currentChooseItem.id }).then(() => {
+            let msg = options.status === 3 ? '同意' : options.status === 4 ? '拒绝' : '打款'
+            this.$message.success(`${msg}成功`)
+            this.dialogVisible = false
+          })
         }
       }
     },
