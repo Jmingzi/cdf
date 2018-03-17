@@ -119,8 +119,8 @@
               <a href="javascript:" class="color-error" @click="doOption(2, scope.row)">拒绝</a>
             </template>
             <template v-else-if="isTotal">
-              <a href="javascript:" class="color-success" @click="doOption(4, scope.row)">打款</a>
-              <a href="javascript:" class="color-error" @click="doOption(5, scope.row)">撤销打款</a>
+              <a href="javascript:" class="color-success" v-if="scope.row.expenseStatus === 5" @click="doOption(4, scope.row)">打款</a>
+              <!--<a href="javascript:" class="color-error" @click="doOption(5, scope.row)">撤销打款</a>-->
             </template>
           </template>
         </el-table-column>
@@ -291,11 +291,14 @@
             this.dialogVisible = true
           } break
           case 1: {
-            this.$msgbox.prompt('请输入同意意见(非必填)')
+            this.$msgbox.prompt('请输入同意意见(非必填)').then(res => {
+              _do.call(this, { status: 3, message: res.value })
+            })
           } break
           case 2: {
             this.$msgbox.prompt('请输入拒绝意见(必填)').then(res => {
               if (res.value) {
+                _do.call(this, { status: 4, message: res.value })
               } else {
                 this.$message.error('请输入意见')
               }
@@ -305,11 +308,17 @@
             this.$msgbox.confirm('确定要撤回吗？')
           } break
           case 4: {
-            this.$msgbox.confirm('即将打款金额为90.00元给杨明，确定要继续吗？')
+            this.$msgbox.confirm('即将打款金额为90.00元给杨明，确定要继续吗？').then(() => {
+              _do.call(this, { status: 6 })
+            })
           } break
           case 5: {
             this.$msgbox.confirm('确定要撤销打款吗？')
           } break
+        }
+
+        function _do(options) {
+          this.http('handleProcessStatus', { ...options, expenseId: item.id })
         }
       }
     },
