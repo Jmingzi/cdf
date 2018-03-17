@@ -145,7 +145,13 @@
             if (this.form.target.dept.length === 0 && this.form.target.user.length === 0) {
               this.$msgbox.alert('请选择流程管理范围')
             } else {
-              let data = { ...this.form }
+              const dept = this.form.target.dept.map(x => x.id)
+              const user = this.form.target.user.map(x => x.userId)
+              let data = {
+                ...this.form,
+                target: JSON.stringify({ dept, user }),
+                process: JSON.stringify(this.form.process.map(x => x.userId))
+              }
               if (this.editProcessId) {
                 data.id = this.editProcessId
               }
