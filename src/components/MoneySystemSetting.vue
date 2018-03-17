@@ -76,9 +76,7 @@
   export default {
     name: 'money-system-setting',
     created() {
-      if (this.isActive) {
-        this.getSetting()
-      }
+      this.getSetting()
     },
     data() {
       return {

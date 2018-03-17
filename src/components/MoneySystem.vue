@@ -4,42 +4,49 @@
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane name="first">
           <span slot="label"><i class="el-icon-edit"></i> 填写申请</span>
-          <money-system-apply
-            :is-active="activeName === 'first'"
-            :process="process">
-          </money-system-apply>
         </el-tab-pane>
         <el-tab-pane name="second">
           <span slot="label"><i class="el-icon-sort-up"></i> 我发起的</span>
-          <money-system-list
-            :wrap-height="wrapHeight"
-            :is-active="activeName === 'second'"
-            :type="1">
-          </money-system-list>
+          <!--<money-system-list-->
+            <!--:wrap-height="wrapHeight"-->
+            <!--:is-active="activeName === 'second'"-->
+            <!--:type="1">-->
+          <!--</money-system-list>-->
         </el-tab-pane>
         <el-tab-pane name="third">
           <span slot="label"><i class="el-icon-sort-down"></i> 我收到的</span>
-          <money-system-list
-            :wrap-height="wrapHeight"
-            :is-active="activeName === 'third'"
-            :type="2">
-          </money-system-list>
+          <!--<money-system-list-->
+            <!--:wrap-height="wrapHeight"-->
+            <!--:is-active="activeName === 'third'"-->
+            <!--:type="2">-->
+          <!--</money-system-list>-->
         </el-tab-pane>
         <el-tab-pane name="fourth">
           <span slot="label"><i class="el-icon-tickets"></i> 统计</span>
-          <money-system-list
-            :wrap-height="wrapHeight"
-            :is-active="activeName === 'fourth'"
-            :type="3">
-          </money-system-list>
+          <!--<money-system-list-->
+            <!--:wrap-height="wrapHeight"-->
+            <!--:is-active="activeName === 'fourth'"-->
+            <!--:type="3">-->
+          <!--</money-system-list>-->
         </el-tab-pane>
         <el-tab-pane name="five">
           <span slot="label"><i class="el-icon-setting"></i> 流程配置</span>
-          <money-system-setting
-            :is-active="activeName === 'five'">
-          </money-system-setting>
         </el-tab-pane>
       </el-tabs>
+
+      <money-system-apply
+        v-if="activeName === 'first'"
+        :is-active="activeName === 'first'"
+        :process="process">
+      </money-system-apply>
+      <money-system-setting
+        v-else-if="activeName === 'five'">
+      </money-system-setting>
+      <money-system-list
+        v-else
+        :wrap-height="wrapHeight"
+        :active-name="activeName">
+      </money-system-list>
     </div>
   </div>
 </template>
@@ -76,7 +83,7 @@
     methods: {
       handleClick(tab, event) {
         // console.log(tab, event)
-        console.log(this.activeName)
+        // console.log(this.activeName)
       }
     }
   }

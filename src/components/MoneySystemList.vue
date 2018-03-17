@@ -2,34 +2,44 @@
   <div class="list">
     <div class="position-f px-left-10 px-right-10 px-top-60 px-bottom-50 overflow-a">
       <div v-if="isTotal">
-        <div class="fr">
-          <el-button type="danger">搜索查询</el-button>
-        </div>
-        <div class="search__wrap ib-middle">
-          <span class="ib-middle">报销人</span>
-          <div class="ib-middle">
-            <el-input placeholder="请输入">
-            </el-input>
-          </div>
-        </div>
-        <div class="search__wrap ib-middle">
-          <span class="ib-middle">报销金额</span>
-          <div class="ib-middle">
-            <el-input placeholder="请输入">
-            </el-input>
+        <!--<div class="search__wrap ib-middle">-->
+          <!--<span class="ib-middle">报销金额</span>-->
+          <!--<div class="ib-middle">-->
+            <!--<el-input placeholder="请输入">-->
+            <!--</el-input>-->
+          <!--</div>-->
+        <!--</div>-->
+        <div class="search__wrap search__wrap-dept ib-middle">
+          <span class="ib-middle">报销部门或人</span>
+          <div class="ib-middle dept">
+            <span class="color-info">请选择</span>
           </div>
         </div>
         <div class="search__wrap ib-middle">
           <span class="ib-middle">支出类别</span>
           <div class="ib-middle">
             <el-cascader
+              v-model="listPayType"
               expand-trigger="hover"
-              :options="payType">
+              :options="payType"
+              filterable
+              change-on-select>
             </el-cascader>
           </div>
+        </div>
+        <div class="search__wrap ib-middle">
+          <span class="ib-middle">审批状态</span>
+          <el-select :value="2" placeholder="请选择">
+            <el-option
+              v-for="item in bxStatus"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </div><br>
         <div class="search__wrap search__wrap-date ib-middle">
-          <span class="ib-middle">报销发起时间</span>
+          <span class="ib-middle px-width-90">报销发起时间</span>
           <div class="ib-middle">
             <el-date-picker
               type="daterange"
@@ -39,11 +49,15 @@
             </el-date-picker>
           </div>
         </div>
-        <div class="search__wrap search__wrap-dept ib-middle">
-          <span class="ib-middle">报销部门或人</span>
-          <div class="ib-middle dept">
-            <span class="color-info">请选择</span>
+        <div class="search__wrap ib-middle">
+          <span class="ib-middle">关键字</span>
+          <div class="ib-middle">
+            <el-input placeholder="请输入">
+            </el-input>
           </div>
+        </div>
+        <div class="ib-middle px-margin-b15">
+          <el-button type="danger" @click="confirmSearch">搜索查询</el-button>
         </div>
       </div>
 
@@ -86,7 +100,12 @@
         </el-table-column>
         <el-table-column
           prop="way"
-          label="支出方式">
+          label="支出方式"
+          width="80">
+        </el-table-column>
+        <el-table-column
+          prop="desc"
+          label="报销事由">
         </el-table-column>
         <el-table-column
           label="操作"
@@ -143,7 +162,7 @@
 <script>
   import Detail from './MoneySystemDetail'
   import http from '../mixins/http'
-  import {PAY_TYPE} from '../constant'
+  import {PAY_TYPE, BX_STATUS} from '../constant'
 
   export default {
     name: 'money-system-list',
@@ -155,8 +174,16 @@
         currentPage: 1,
         dialogVisible: false,
         currentChooseItem: null,
-        listData: []
+        listData: [],
+        bxStatus: BX_STATUS,
+
+        listType: 0,
+        listPayType: []
       }
+    },
+
+    created() {
+      this.listType = this.isFromMe ? 1 : this.isToMe ? 2 : 3
     },
 
     mixins: [http],
@@ -165,14 +192,31 @@
       wrapHeight: function(val) {
         this.tableWrapHeight = val - 110 - 110
         return val
+      },
+      activeName: function (name) {
+        this.listData = []
+        this.currentChooseItem = null
+        this.currentPage = 1
+
+        if (name !== 'fourth') {
+          this.getExpenseList()
+        }
+        return name
       }
     },
 
     mounted() {
-      // this.getExpenseList()
+      console.log('mount')
+      if (!this.isTotal) {
+        this.getExpenseList()
+      }
     },
 
     methods: {
+      confirmSearch() {
+        console.log(this.listPayType)
+      },
+
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
       },
@@ -183,12 +227,14 @@
         this.http('getExpenseList', {
           currentPage: 1,
           pageSize: 10,
-          listType: 1, // 1 我发起的 2 我收到的 3 统计列表
+          listType: this.listType, // 1 我发起的 2 我收到的 3 统计列表
           payType: [], // 支出类别
           createStartTime: '',  // 筛选时间段 - 开始时间
           createEndTime: '',  // 筛选时间段 - 结束时间
           expenseDept: '',  // 报销部门
-          expenseUserId: '' // 报销人
+          expenseUserId: '', // 报销人
+          keyword: '',      // 关键字
+          expenseStatus: '' // 报销状态
         }).then(data=> {
           this.listData = data
         })
@@ -206,7 +252,7 @@
             this.$msgbox.prompt('请输入同意意见(非必填)')
           } break
           case 2: {
-            this.$msgbox.prompt('请输入拒绝意见(非必填)')
+            this.$msgbox.prompt('请输入拒绝意见(必填)')
           } break
           case 3: {
             this.$msgbox.confirm('确定要撤回吗？')
@@ -222,10 +268,7 @@
     },
 
     props: {
-      type: {
-        type: Number,
-        default: 1
-      },
+      activeName: String,
       wrapHeight: {
         type: Number,
         default: 0
@@ -233,13 +276,13 @@
     },
     computed: {
       isFromMe() {
-        return this.type === 1
+        return this.activeName === 'second'
       },
       isToMe() {
-        return this.type === 2
+        return this.activeName === 'third'
       },
       isTotal() {
-        return this.type === 3
+        return this.activeName === 'fourth'
       },
       isCaiWu() {
         return true
@@ -277,9 +320,9 @@
     margin-bottom: 15px;
   }
   .search__wrap-dept {
-    width: 350px;
+    width: 300px;
     .dept {
-      width: 250px;
+      width: 200px;
       height: 40px;
       line-height: 40px;
       border: 1px solid #dcdfe6;
@@ -289,12 +332,20 @@
     }
   }
   .search__wrap-date {
-    width: 450px;
+    width: 480px;
   }
 
   .expense .el-table__header {
     th, tr {
       background-color: #f5f7fa;
     }
+  }
+
+  .expense .el-table .cell {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-break: break-all;
   }
 </style>

@@ -69,3 +69,11 @@ export const PAY_WAY = [
   { label: '银行转账', value: '银行转账' },
   { label: '现金', value: '现金' }
 ]
+
+export const BX_STATUS = [
+  { label: '审批中', value: '2' },
+  { label: '已通过', value: '3' },
+  { label: '已拒绝', value: '4' },
+  { label: '待打款', value: '5' },
+  { label: '已完成', value: '6' }
+]
