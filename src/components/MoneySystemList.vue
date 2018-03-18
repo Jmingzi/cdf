@@ -64,7 +64,6 @@
 
       <el-table
         :data="listData"
-        border
         show-summary
         :height="tableWrapHeight"
         style="width: 100%">
@@ -110,7 +109,7 @@
         </el-table-column>
         <el-table-column
           label="操作"
-          :width="isFromMe ? 90 : 150">
+          :width="120">
           <template slot-scope="scope">
             <el-button @click="doOption(0, scope.row)" type="text" size="small">查看</el-button>
             <!--<a href="javascript:" class="color-error" v-if="isFromMe" @click="doOption(3, scope.row)">撤回</a>-->
@@ -153,7 +152,7 @@
           <el-button type="success" @click="doOption(1)" size="small">同 意</el-button>
           <el-button type="danger" @click="doOption(2)" size="small">拒 绝</el-button>
         </template>
-        <el-button v-else-if="isFromMe" type="danger" @click="doOption(3)" size="small">撤 回</el-button>
+        <!--<el-button v-else-if="isFromMe" type="danger" @click="doOption(3)" size="small">撤 回</el-button>-->
         <el-button v-else-if="isTotal" type="primary" @click="doOption(4)" size="small">打 款</el-button>
       </span>
     </el-dialog>

@@ -66,10 +66,10 @@ export const PAY_TYPE = [
 ]
 
 export const PAY_WAY = [
-  { label: '支付宝', value: '支付宝' },
-  { label: '微信', value: '微信' },
-  { label: '银行转账', value: '银行转账' },
-  { label: '现金', value: '现金' }
+  { label: '支付宝', value: '1' },
+  { label: '微信', value: '2' },
+  { label: '银行转账', value: '3' },
+  { label: '现金', value: '4' }
 ]
 
 export const BX_STATUS = [

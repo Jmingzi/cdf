@@ -93,13 +93,6 @@
           this.form.expenseDept = val.dept
         }
         return val
-      },
-      isActive(val) {
-        if (val) {
-          console.log('first apply')
-          // this.getSetting()
-        }
-        return val
       }
     },
 
@@ -159,10 +152,6 @@
       }
     },
 
-    props: {
-      isActive: false
-    },
-
     computed: {
       ...mapState(['userInfo']),
 
@@ -197,13 +186,16 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
+            const { deptId, id } = this.form.expenseDept
+            const imagesList = this.form.imagesList.map(x => x.id)
+
             this.http('applyExpense', {
               ...this.form,
               processId: this.processData.id,
-              expenseDept: JSON.stringify(this.form.expenseDept),
+              expenseDept: deptId || id,
               payTime: this.form.payTime.getTime(),
               payType: JSON.stringify(this.form.payType),
-              imagesList: JSON.stringify(this.form.imagesList)
+              imagesList: JSON.stringify(imagesList)
             }).then(()=> {
               this.$message({
                 message: '申请成功',
