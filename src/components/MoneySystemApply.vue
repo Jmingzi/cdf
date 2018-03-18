@@ -1,5 +1,12 @@
 <template>
   <div class="money-apply">
+    <div class="px-margin-b20" v-if="!hasSetProcess">
+      <el-alert
+        type="error"
+        description="当前部门还未设置对应报销流程，请联系管理员设置后使用"
+        :closable="false">
+      </el-alert>
+    </div>
     <el-form ref="form" :rules="rules" :model="form" label-width="80px">
       <el-form-item label="报销事由" prop="desc">
         <el-input type="textarea" v-model="form.desc">
@@ -155,6 +162,10 @@
     computed: {
       ...mapState(['userInfo']),
 
+      hasSetProcess() {
+        return this.processData.process && this.processData.process.length > 0
+      },
+
       processStr() {
         const process = this.processData.process || []
         return ['我(发起人)'].concat(process.map(item=> {
@@ -184,6 +195,11 @@
       },
 
       submitForm(formName) {
+        if (!this.hasSetProcess) {
+          this.$msgbox.alert('当前部门还未设置对应报销流程，请联系管理员设置后使用')
+          return false
+        }
+
         this.$refs[formName].validate((valid) => {
           if (valid) {
             const { deptId, id } = this.form.expenseDept

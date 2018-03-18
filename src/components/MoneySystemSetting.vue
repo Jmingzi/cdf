@@ -8,12 +8,13 @@
     </div>
 
     <div class="w600" v-else-if="isNewProcess">
+      <!--<p class="px-font-18 px-padding-tb10">新增流程</p>-->
       <el-form ref="form" :rules="rules" :model="form" label-width="110px">
-        <el-form-item label="流程名称" prop="processName">
+        <el-form-item label="名称" prop="processName">
           <el-input type="text" v-model="form.processName">
           </el-input>
         </el-form-item>
-        <el-form-item label="流程环节" prop="process">
+        <el-form-item label="流程节点" prop="process">
           <div class="color-c666">
             <i class="el-icon-info color-c999" @click="toMessage('msg1')"></i>
             <span>{{form.process.map(x=> x.name).join('->')}}</span>
@@ -21,7 +22,7 @@
             <span class="cursor-p color-error" @click="clear(1)">清空</span>
           </div>
         </el-form-item>
-        <el-form-item label="流程管理范围" prop="target">
+        <el-form-item label="管理范围" prop="target">
           <div class="color-c666">
             <i class="el-icon-info color-c999" @click="toMessage('msg2')"></i>
             <span>{{form.target | formatDeptUser}}</span>
@@ -47,7 +48,7 @@
             <el-button style="float: right; padding: 3px 5px" type="text" @click="editProcess(item)">编辑</el-button>
           </div>
           <p>
-            <span class="color-c999">流程环节: </span>
+            <span class="color-c999">流程节点: </span>
             <span>{{item.process.map(x=> x.name).join(' -> ')}}</span>
           </p>
           <p>
@@ -93,14 +94,14 @@
         },
         rules: {
           processName: [
-            { required: true, processName: '请流程名称', trigger: 'blur' },
+            { required: true, message: '请流程名称', trigger: 'blur' },
             { min: 2, max: 100, message: '长度在 2 到 100 个字符', trigger: 'blur' }
           ],
           target: [
-            { required: true }
+            { required: true, message: '请选择流程管理范围' }
           ],
           process: [
-            { required: true }
+            { required: true, message: '请选择流程节点' }
           ]
         },
         isNewProcess: false,
