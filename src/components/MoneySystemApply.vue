@@ -2,6 +2,7 @@
   <div class="money-apply">
     <div class="px-margin-b20" v-if="!hasSetProcess">
       <el-alert
+        title="提示"
         type="error"
         description="当前部门还未设置对应报销流程，请联系管理员设置后使用"
         :closable="false">
@@ -191,7 +192,7 @@
       },
 
       handleSuccess(file, fileList) {
-        this.form.imagesList.push(file)
+        this.form.imagesList.push(file.data)
       },
 
       submitForm(formName) {
@@ -203,7 +204,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             const { deptId, id } = this.form.expenseDept
-            const imagesList = this.form.imagesList.map(x => x.id)
+            const imagesList = this.form.imagesList.map(x => x.iid)
 
             this.http('applyExpense', {
               ...this.form,
