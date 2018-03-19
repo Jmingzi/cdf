@@ -195,9 +195,7 @@
       }
     },
 
-    created() {
-      this.listType = this.isFromMe ? 1 : this.isToMe ? 2 : 3
-    },
+    created() {},
 
     mixins: [http],
 
@@ -268,7 +266,7 @@
         this.http('getExpenseList', {
           currentPage: 1,
           pageSize: 10,
-          listType: this.listType, // 1 我发起的 2 我收到的 3 统计列表
+          listType: this.isFromMe ? 1 : this.isToMe ? 2 : 3, // 1 我发起的 2 我收到的 3 统计列表
           payType: JSON.stringify(this.listPayType), // 支出类别 [1, 2]
           createTimeBetween: JSON.stringify(createTimeBetween),  // 筛选时间段 - [开始时间, 结束时间]
           expenseDept: JSON.stringify(expenseDept),  // 报销部门  [2]

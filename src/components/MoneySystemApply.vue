@@ -2,6 +2,7 @@
   <div class="money-apply">
     <div class="px-margin-b20" v-if="!hasSetProcess">
       <el-alert
+        title="提示"
         type="error"
         description="当前部门还未设置对应报销流程，请联系管理员设置后使用"
         :closable="false">
