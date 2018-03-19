@@ -112,14 +112,12 @@
           :width="120">
           <template slot-scope="scope">
             <el-button @click="doOption(0, scope.row)" type="text" size="small">查看</el-button>
-            <!--<a href="javascript:" class="color-error" v-if="isFromMe" @click="doOption(3, scope.row)">撤回</a>-->
-            <template v-if="isToMe">
+            <template v-if="isToMe && scope.row.rstatus === 1">
               <a href="javascript:" class="color-success" @click="doOption(1, scope.row)">同意</a>
               <a href="javascript:" class="color-error" @click="doOption(2, scope.row)">拒绝</a>
             </template>
-            <template v-else-if="isTotal">
+            <template v-else-if="isTotal && scope.row.rstatus === 1">
               <a href="javascript:" class="color-success" v-if="scope.row.expenseStatus === 5" @click="doOption(4, scope.row)">打款</a>
-              <!--<a href="javascript:" class="color-error" @click="doOption(5, scope.row)">撤销打款</a>-->
             </template>
           </template>
         </el-table-column>

@@ -59,15 +59,17 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="所属部门" size="mini">
-            <!--<el-input-->
-            <!--size="mini"-->
-            <!--v-model="form.department">-->
-            <!--</el-input>-->
-            <p class="color-info cursor-p over-text" @click="selectParentDept">
-              {{form.department ? form.department : currentDept | getLabel}}
-            </p>
-          </el-form-item>
+          <div @click="selectParentDept">
+            <el-form-item label="所属部门" size="mini">
+              <!--<el-input-->
+              <!--size="mini"-->
+              <!--v-model="form.department">-->
+              <!--</el-input>-->
+              <p class="color-info cursor-p over-text">
+                {{form.department ? form.department : currentDept | getLabel}}
+              </p>
+            </el-form-item>
+          </div>
         </el-col>
       </el-row>
       <el-row :gutter="10">
@@ -227,8 +229,7 @@
           userId: 0,
           sex: 1,
           birthday: '',
-          department: '',
-          departmentId: 1,
+          department: {},
           job: '',
           loginAble: true,
           idCardNumber: '',
@@ -287,7 +288,18 @@
       onSubmit() {
         this.$refs['form'].validate((valid) => {
           if (valid) {
-            let data = { ...this.form }
+            const { department, birthday, joinDate, transferDate, leaveDate } = this.form
+
+            let data = {
+              ...this.form,
+              departmentId: department.id,
+              birthday: birthday ? birthday.getTime() : '',
+              joinDate: joinDate ? joinDate.getTime() : '',
+              transferDate: transferDate ? transferDate.getTime() : '',
+              leaveDate: leaveDate ? leaveDate.getTime() : ''
+            }
+            delete data.department
+
             if (this.handleType === 'edit') {
               data.id = this.currentUser.id
             }

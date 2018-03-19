@@ -199,6 +199,7 @@
         this.http(url, reqData).then(()=> {
           this.$message.success(message)
           this.dialogVisible = false
+          this.getPriv()
         })
       },
 

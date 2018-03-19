@@ -137,7 +137,10 @@
           this.$message('请选择人员')
           return
         }
-        this.http('addUserToJob', { ...user, jobId: this.currJob.id }).then(()=> {
+        this.http('addUserToJob', {
+          userIds: JSON.stringify(user.map(x => x.userId)),
+          jobId: this.currJob.id
+        }).then(()=> {
           this.$message({
             message: `${this.currJob.name}岗位添加人员成功`,
             type: 'success'
