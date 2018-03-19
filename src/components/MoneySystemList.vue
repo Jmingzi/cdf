@@ -271,7 +271,7 @@
           createTimeBetween: JSON.stringify(createTimeBetween),  // 筛选时间段 - [开始时间, 结束时间]
           expenseDept: JSON.stringify(expenseDept),  // 报销部门  [2]
           expenseUserId: JSON.stringify(expenseUserId), // 报销人 [1]
-          keyword: this.keyword,      // 关键字
+          keyword: this.listKeyword,      // 关键字
           expenseStatus: this.listBxStatus // 报销状态
         }).then(data=> {
           this.listData = data
