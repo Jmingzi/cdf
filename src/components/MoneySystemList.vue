@@ -177,7 +177,7 @@
     data() {
       return {
         payType: PAY_TYPE,
-        tableWrapHeight: this.wrapHeight - 110 - 110,
+        tableWrapHeight: this.wrapHeight - 110,
         currentPage: 1,
         dialogVisible: false,
         currentChooseItem: null,
@@ -201,7 +201,7 @@
 
     watch: {
       wrapHeight: function(val) {
-        this.tableWrapHeight = val - 110 - 110
+        this.tableWrapHeight = val - 110
         return val
       },
       activeName: function (name) {
