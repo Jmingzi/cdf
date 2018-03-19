@@ -13,8 +13,12 @@ export default new Vuex.Store({
     dept: null,
     // object
     userMap: {},
+
     currentDept: null,
     currentUser: null,
+    // 当前展示人员的部门
+    currentUserDeptId: 0,
+
     handleType: '',
     userInfo: null,
     // 权限
@@ -24,9 +28,7 @@ export default new Vuex.Store({
   },
   getters: {
     userList(state) {
-      return state.currentDept && state.userMap
-        ? state.userMap[state.currentDept.id] || []
-        : []
+      return state.userMap[state.currentUserDeptId] || []
     }
   },
   mutations: {
@@ -45,6 +47,7 @@ export default new Vuex.Store({
       let deptId = payload.deptId !== undefined ? payload.deptId : payload
       let callback = payload.callback
       let cacheDept = state.userMap[deptId]
+      state.currentUserDeptId = deptId
 
       if (cacheDept) {
         callback && callback(cacheDept)
