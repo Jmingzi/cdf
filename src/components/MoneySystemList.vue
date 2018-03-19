@@ -177,7 +177,7 @@
     data() {
       return {
         payType: PAY_TYPE,
-        tableWrapHeight: 0,
+        tableWrapHeight: this.wrapHeight - 110 - 110,
         currentPage: 1,
         dialogVisible: false,
         currentChooseItem: null,
