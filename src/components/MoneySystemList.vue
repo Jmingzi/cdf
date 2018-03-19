@@ -183,7 +183,7 @@
         this.http('getExpenseList', {
           currentPage: 1,
           pageSize: 10,
-          listType: 1, // 1 我发起的 2 我收到的 3 统计列表
+          listType: this.isFromMe ? 1 : this.isToMe ? 2 : 3, // 1 我发起的 2 我收到的 3 统计列表
           payType: [], // 支出类别
           createStartTime: '',  // 筛选时间段 - 开始时间
           createEndTime: '',  // 筛选时间段 - 结束时间
