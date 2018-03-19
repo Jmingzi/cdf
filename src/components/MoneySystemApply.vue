@@ -192,7 +192,7 @@
       },
 
       handleSuccess(file, fileList) {
-        this.form.imagesList.push(file)
+        this.form.imagesList.push(file.data)
       },
 
       submitForm(formName) {
@@ -204,7 +204,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             const { deptId, id } = this.form.expenseDept
-            const imagesList = this.form.imagesList.map(x => x.id)
+            const imagesList = this.form.imagesList.map(x => x.iid)
 
             this.http('applyExpense', {
               ...this.form,
