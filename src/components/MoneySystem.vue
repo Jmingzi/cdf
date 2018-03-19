@@ -4,39 +4,32 @@
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane name="first">
           <span slot="label"><i class="el-icon-edit"></i> 填写申请</span>
-          <money-system-apply
-            :is-active="activeName === 'first'"
-            :process="process">
-          </money-system-apply>
         </el-tab-pane>
         <el-tab-pane name="second">
           <span slot="label"><i class="el-icon-sort-up"></i> 我发起的</span>
-          <money-system-list
-            :wrap-height="wrapHeight"
-            :type="1">
-          </money-system-list>
         </el-tab-pane>
         <el-tab-pane name="third">
           <span slot="label"><i class="el-icon-sort-down"></i> 我收到的</span>
-          <money-system-list
-            :wrap-height="wrapHeight"
-            :type="2">
-          </money-system-list>
         </el-tab-pane>
         <el-tab-pane name="fourth">
           <span slot="label"><i class="el-icon-tickets"></i> 统计</span>
-          <money-system-list
-            :wrap-height="wrapHeight"
-            :type="3">
-          </money-system-list>
         </el-tab-pane>
         <el-tab-pane name="five">
           <span slot="label"><i class="el-icon-setting"></i> 流程配置</span>
-          <money-system-setting
-            :is-active="activeName === 'five'">
-          </money-system-setting>
         </el-tab-pane>
       </el-tabs>
+
+      <money-system-apply
+        v-if="userInfo && activeName === 'first'">
+      </money-system-apply>
+      <money-system-setting
+        v-else-if="activeName === 'five'">
+      </money-system-setting>
+      <money-system-list
+        v-else-if="wrapHeight"
+        :wrap-height="wrapHeight"
+        :active-name="activeName">
+      </money-system-list>
     </div>
   </div>
 </template>
@@ -46,6 +39,7 @@
   import MoneySystemList from './MoneySystemList'
   import MoneySystemSetting from './MoneySystemSetting'
   import http from '../mixins/http'
+  import { mapState } from 'vuex'
 
   export default {
     name: 'money-system',
@@ -53,17 +47,17 @@
     data() {
       return {
         activeName: 'first',
-        process: [],
         wrapHeight: 0
       }
     },
     created() {
-      this.http('getProcess', { userId: 1, deptId: 2 }).then(res=> {
-        this.process = res
-      })
+
     },
     mounted() {
       this.wrapHeight = this.$refs.expense.getBoundingClientRect().height
+    },
+    computed: {
+      ...mapState(['userInfo'])
     },
     components: {
       MoneySystemApply,
@@ -73,6 +67,7 @@
     methods: {
       handleClick(tab, event) {
         // console.log(tab, event)
+        // console.log(this.activeName)
       }
     }
   }

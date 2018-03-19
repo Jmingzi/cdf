@@ -1,5 +1,12 @@
 <template>
   <div class="money-apply">
+    <div class="px-margin-b20" v-if="!hasSetProcess">
+      <el-alert
+        type="error"
+        description="当前部门还未设置对应报销流程，请联系管理员设置后使用"
+        :closable="false">
+      </el-alert>
+    </div>
     <el-form ref="form" :rules="rules" :model="form" label-width="80px">
       <el-form-item label="报销事由" prop="desc">
         <el-input type="textarea" v-model="form.desc">
@@ -44,6 +51,7 @@
           action="/upload/"
           :on-preview="handlePreview"
           :on-remove="handleRemove"
+          :on-success="handleSuccess"
           :file-list="form.imagesList"
           list-type="picture">
           <el-button size="small" type="danger">点击上传</el-button>
@@ -92,18 +100,17 @@
           this.form.expenseDept = val.dept
         }
         return val
-      },
-      isActive(val) {
-        if (val) {
-          console.log('first apply')
-          // this.getSetting()
-        }
-        return val
       }
     },
+
     created() {
+      // 赋值dept
       this.form.expenseDept = this.userInfo && this.userInfo.dept
+        ? { ...this.userInfo.dept, id: this.userInfo.dept.deptId }
+        : {}
+        this.getProcess(this.userInfo.dept.deptId)
     },
+
     data() {
       const checkMoneySize = (rule, value, callback)=> {
         if (value > rule.max || value <= rule.min) {
@@ -127,8 +134,8 @@
         },
         rules: {
           desc: [
-            { required: true, message: '请输入岗位名称', trigger: 'blur' },
-            { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
+            { required: true, message: '请输入报销事由', trigger: 'blur' },
+            { min: 1, max: 500, message: '长度在 1 到 500 个字符', trigger: 'blur' }
           ],
           money: [
             { required: true, message: '请输入金额', trigger: 'blur' },
@@ -147,41 +154,64 @@
           imagesList: [
             { required: true, message: '请上传图片材料' }
           ]
-        }
+        },
+        processData: {}
       }
     },
-    props: {
-      process: {
-        type: Array,
-        default: function () {
-          return []
-        }
-      },
-      isActive: false
-    },
+
     computed: {
       ...mapState(['userInfo']),
+
+      hasSetProcess() {
+        return this.processData.process && this.processData.process.length > 0
+      },
+
       processStr() {
-        return ['我(发起人)'].concat(this.process.map(item=> {
+        const process = this.processData.process || []
+        return ['我(发起人)'].concat(process.map(item=> {
           return `${item.name}${item.jobName ? `(${item.jobName})` : ''}`
         })).join(' -> ')
       }
     },
+
     methods: {
+      getProcess(deptId) {
+        this.http('getProcess', { userId: 1, deptId }).then(res=> {
+          this.processData = res
+        })
+      },
+
       handleRemove(file, fileList) {
-        console.log(file, fileList)
+        let index = this.form.imagesList.findIndex(x => x.id || x.uid === file.id || file.uid)
+        this.form.imagesList.splice(index, 1)
       },
+
       handlePreview(file) {
-        console.log(file)
+        window.open(file.url)
       },
+
+      handleSuccess(file, fileList) {
+        this.form.imagesList.push(file)
+      },
+
       submitForm(formName) {
+        if (!this.hasSetProcess) {
+          this.$msgbox.alert('当前部门还未设置对应报销流程，请联系管理员设置后使用')
+          return false
+        }
+
         this.$refs[formName].validate((valid) => {
           if (valid) {
+            const { deptId, id } = this.form.expenseDept
+            const imagesList = this.form.imagesList.map(x => x.id)
+
             this.http('applyExpense', {
               ...this.form,
-              expenseDept: this.form.expenseDept.id,
+              processId: this.processData.id,
+              expenseDept: deptId || id,
               payTime: this.form.payTime.getTime(),
-              process: this.process
+              payType: JSON.stringify(this.form.payType),
+              imagesList: JSON.stringify(imagesList)
             }).then(()=> {
               this.$message({
                 message: '申请成功',
@@ -194,14 +224,17 @@
           }
         })
       },
+
       resetForm(formName) {
         this.$refs[formName].resetFields()
         this.form.expenseDept = this.userInfo.dept
         this.form.imagesList = []
       },
+
       toSelectDept() {
         this.$refs.selectTree.show()
       },
+
       confirmSelectDept(dept) {
         // console.log(dept)
         if (dept.length === 0) {
@@ -210,6 +243,7 @@
           this.$message('默认取第一个部门')
         }
         this.form.expenseDept = { ...dept[0] }
+        this.getProcess(dept[0].id)
       }
     }
   }

@@ -1,6 +1,37 @@
 <template>
-  <div class="bg-fff px-padding-20">
-    <div class="priv-wrap" v-if="priv">
+  <div class="bg-fff px-padding-20 height-100">
+    <div class="priv__wrap">
+      <div class="fr">
+        <el-button type="danger" size="mini" @click="addPriv()">添加权限</el-button>
+      </div>
+      <h1 class="px-font-18 color-c666 px-margin-b20">权限列表</h1>
+
+      <el-table
+        v-if="priv"
+        :data="priv"
+        style="width: 100%">
+        <el-table-column
+          prop="aliasName"
+          label="权限对象">
+        </el-table-column>
+        <el-table-column
+          prop="aliasList"
+          label="权限列表">
+        </el-table-column>
+        <el-table-column
+          label="操作"
+          width="120">
+          <template slot-scope="scope">
+            <a href="javascript:" class="color-info" @click="editPriv(scope.row)">编辑</a>
+            <a href="javascript:" class="color-error" @click="delPriv(scope.row)">删除</a>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+
+
+
+    <div class="priv-wrap" v-if="false">
       <h1 class="px-font-18 color-c666">菜单权限<small class="color-ccc">（部门或人）</small></h1>
       <template v-for="item in priv.menu">
         <div class="priv-item ib-middle" :key="item.id" @click="editPriv(item, 'menu')">
@@ -15,7 +46,7 @@
       </div>
     </div>
 
-    <div class="priv-wrap px-margin-t20 px-padding-t20 bd-ccc-t" v-if="priv">
+    <div class="priv-wrap px-margin-t20 px-padding-t20 bd-ccc-t" v-if="false">
       <h1 class="px-font-18 color-c666">组织架构操作权限<small class="color-ccc">（人）</small></h1>
       <template v-for="item in priv.contact">
         <div class="priv-item ib-middle" :key="item.id" @click="editPriv(item, 'contact')">
@@ -32,15 +63,15 @@
 
     <!--选择菜单-->
     <el-dialog
-      :width="`400px`"
-      :title="dialogMenuTitle"
-      :visible.sync="dialogMenuVisible">
+      width="400px"
+      :title="dialogTitle"
+      :visible.sync="dialogVisible">
       <el-form ref="form" :model="form" label-width="100px">
-        <div class="px-padding-l5">
-          <span>选择部门或人员：</span>
-          <a href="javascript:" @click="toSelect">{{showDialogSelectName('menu')}}</a>
+        <div>
+          <span class="ib-middle px-width-100 text-right px-padding-r15">选择对象</span>
+          <a href="javascript:" @click="$refs.selectTree.show()">{{showDialogSelectName()}}</a>
         </div>
-        <el-form-item label="选择菜单权限">
+        <el-form-item label="菜单权限">
           <el-checkbox-group v-model="form.selectedMenu">
             <el-checkbox
               v-for="item in menu"
@@ -50,23 +81,7 @@
             </el-checkbox>
           </el-checkbox-group>
         </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="onSubmit">保存</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
-
-    <!--通讯录权限-->
-    <el-dialog
-      :width="`400px`"
-      :title="dialogContactTitle"
-      :visible.sync="dialogContactVisible">
-      <el-form ref="form" :model="form" label-width="120px">
-        <div class="px-padding-l10">
-          <span>选择人员：</span>
-          <a href="javascript:" @click="toSelect">{{showDialogSelectName('contact')}}</a>
-        </div>
-        <el-form-item label="选择通讯录权限">
+        <el-form-item label="通讯录权限">
           <el-checkbox-group v-model="form.selectedContact">
             <el-checkbox
               v-for="item in contactPriv"
@@ -86,7 +101,7 @@
       ref="selectTree"
       :selectedDept="form.targetDept"
       :selectedUser="form.targetUser"
-      :selectType="selectType"
+      :selectType="0"
       @confirm="confirmSelect">
     </select-tree>
   </div>
@@ -98,12 +113,11 @@
 
   export default {
     name: 'priv',
+
     data() {
       return {
-        dialogMenuTitle: '',
-        dialogMenuVisible: false,
-        dialogContactTitle: '',
-        dialogContactVisible: false,
+        dialogTitle: '',
+        dialogVisible: false,
         menu,
         contactPriv,
         currentDialog: '',
@@ -114,57 +128,55 @@
           targetDept: [],
           targetUser: []
         },
-        priv: null,
-        selectType: 0
+        priv: null
       }
     },
-    created() {
-      this.http('getPrivList').then(res=> {
-        _handleRes(res.menu, this.menu)
-        _handleRes(res.contact, this.contactPriv)
-        this.priv = res
 
-        function _handleRes(data, privConstant) {
-          data.forEach(item=> {
-            item.privListName = item.privList.map(id=> privConstant.find(item=> item.id === id).title).join('、')
-            item.targetName = item.targetDept.map(x=> x.label).join('、')
-              + `${item.targetUser.length > 0 ? '、' : ''}`
-              + item.targetUser.map(x=> x.name).join('、')
-          })
-        }
-      })
+    created() {
+      this.getPriv()
     },
     mixins: [http],
     computed: {
-      isMenuDialog() {
-        return this.currentDialog === 'menu'
-      }
+
     },
     methods: {
+      getPriv() {
+        this.http('getPrivList').then(res=> {
+          this.priv = res.map(item => {
+            item.aliasName = [].concat(
+              item.targetDept.map(x => x.label),
+              item.targetUser.map(x => x.name)
+            ).join('、')
+            item.aliasList = [].concat(
+              item.privMenu.map(id => {
+                return menu.find(x => x.id === id).title
+              }),
+              item.privContact.map(id => {
+                return contactPriv.find(x => x.id === id).title
+              })
+            ).join('、')
+            return item
+          })
+          // function _handleRes(data, privConstant) {
+          //   data.forEach(item=> {
+          //     item.privListName = item.privList.map(id=> privConstant.find(item=> item.id === id).title).join('、')
+          //     item.targetName = item.targetDept.map(x=> x.label).join('、')
+          //       + `${item.targetUser.length > 0 ? '、' : ''}`
+          //       + item.targetUser.map(x=> x.name).join('、')
+          //   })
+          // }
+        })
+      },
+
       onSubmit() {
         let { targetDept, targetUser, selectedMenu, selectedContact } = this.form
-        if (this.isMenuDialog && targetDept.length === 0 && targetUser.length === 0) {
-          this.$message({
-            message: '请选择部门或人员',
-            type: 'error'
-          })
-          return void 0
-        } else if (!this.isMenuDialog && targetUser.length === 0) {
-          this.$message({
-            message: '请选择人员',
-            type: 'error'
-          })
+        if (targetDept.length === 0 && targetUser.length === 0) {
+          this.$message.error('请选择部门或人员')
           return void 0
         }
 
-        if (
-          this.isMenuDialog && selectedMenu.length === 0 ||
-          !this.isMenuDialog && selectedContact.length === 0
-        ) {
-          this.$message({
-            message: '请选择对应权限',
-            type: 'error'
-          })
+        if (selectedMenu.length === 0 && selectedContact.length === 0) {
+          this.$message.error('请选择对应权限')
           return void 0
         }
 
@@ -172,10 +184,10 @@
         let menuPrivIdList = selectedMenu.map(name=> this.menu.find(x=> x.title === name).id)
         let contactPrivIdList = selectedContact.map(name=> this.contactPriv.find(x=> x.title === name).id)
         let reqData = {
-          targetDept,
-          targetUser,
-          menuPrivIdList,
-          contactPrivIdList
+          targetDept: JSON.stringify(targetDept.map(x => ({ id: x.id, label: x.label }))),
+          targetUser: JSON.stringify(targetUser.map(x => ({ userId: x.userId, name: x.name }))),
+          menuPrivIdList: JSON.stringify(menuPrivIdList),
+          contactPrivIdList: JSON.stringify(contactPrivIdList)
         }
         let url = 'addPriv'
         let message = '添加权限成功'
@@ -185,50 +197,40 @@
           reqData.id = this.currentEditPriv.id
         }
         this.http(url, reqData).then(()=> {
-          this.$message({
-            message,
-            type: 'success'
-          })
-          this[this.isMenuDialog ? 'dialogMenuVisible' : 'dialogContactVisible'] = false
+          this.$message.success(message)
+          this.dialogVisible = false
         })
       },
 
-      editPriv(item, type) {
+      editPriv(item) {
         this.currentEditPriv = item
-        this.currentDialog = type
+        this.dialogVisible = true
+        this.dialogTitle = '编辑权限'
+
         this.form.targetDept = item.targetDept
         this.form.targetUser = item.targetUser
-
-        if (this.isMenuDialog) {
-          this.dialogMenuTitle = '修改菜单权限'
-          this.dialogMenuVisible = true
-          this.selectType = 0
-          this.form.selectedMenu = item.privList.map(id=> this.menu.find(x=> x.id === id).title)
-        } else {
-          this.dialogContactTitle = '修改组织架构操作权限'
-          this.dialogContactVisible = true
-          this.selectType = 2
-          this.form.selectedContact = item.privList.map(id=> this.contactPriv.find(x=> x.id === id).title)
-        }
+        this.form.selectedMenu = item.privMenu.map(id=> this.menu.find(x=> x.id === id).title)
+        this.form.selectedContact = item.privContact.map(id=> this.contactPriv.find(x=> x.id === id).title)
       },
 
-      addPriv(type) {
+      delPriv(item) {
+        this.$msgbox.confirm('确定要删除吗？').then(() => {
+          this.http('delPriv', { id: item.id }).then(() => {
+            this.$message.success('删除成功')
+            this.getPriv()
+          })
+        })
+      },
+
+      addPriv() {
         this.currentEditPriv = null
-        this.currentDialog = type
+        this.dialogVisible = true
+        this.dialogTitle = '添加权限'
+
         this.form.targetDept = []
         this.form.targetUser = []
-
-        if (this.isMenuDialog) {
-          this.dialogMenuTitle = '添加菜单权限'
-          this.dialogMenuVisible = true
-          this.selectType = 0
-          this.form.selectedMenu = []
-        } else {
-          this.dialogContactTitle = '添加组织架构操作权限'
-          this.dialogContactVisible = true
-          this.selectType = 2
-          this.form.selectedContact = []
-        }
+        this.form.selectedMenu = []
+        this.form.selectedContact = []
       },
 
       confirmSelect(dept, user) {
@@ -236,22 +238,11 @@
         this.form.targetUser = user
       },
 
-      toSelect() {
-        this.$refs.selectTree.show()
-      },
-
-      showDialogSelectName(type) {
-        let isMenu = type === 'menu'
+      showDialogSelectName() {
         let { targetDept, targetUser } = this.form
-        if (isMenu) {
-          return targetDept.length === 0 && targetUser.length === 0
-            ? '请选择'
-            : targetDept.map(x=> x.label.replace(`(${x.userNum})`, '')).join('、') + (targetUser.length > 0 ? '、' : '') + targetUser.map(x=> x.name).join('、')
-        } else {
-          return targetUser.length === 0
-            ? '请选择'
-            : targetUser.map(x=> x.name).join('、')
-        }
+        return targetDept.length === 0 && targetUser.length === 0
+          ? '请选择'
+          : targetDept.map(x=> x.label.replace(`(${x.userNum})`, '')).join('、') + (targetUser.length > 0 ? '、' : '') + targetUser.map(x=> x.name).join('、')
       }
     }
   }
@@ -278,5 +269,11 @@
   }
   .el-checkbox-group .el-checkbox {
     padding-right: 20px;
+  }
+
+  .priv__wrap .el-table__header {
+    th, tr {
+      background-color: #f5f7fa;
+    }
   }
 </style>

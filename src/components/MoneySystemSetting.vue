@@ -2,18 +2,19 @@
   <div class="setting">
     <div v-if="setting.process === null"></div>
 
-    <div class="px-padding-tb50 text-center" v-else-if="setting.process.length === 0">
+    <div class="px-padding-tb50 text-center" v-else-if="setting.process.length === 0 && !isNewProcess">
       <p class="px-margin-b20 color-c666">你还没有配置流程哦~</p>
       <el-button type="danger" @click="newProcess">新建流程</el-button>
     </div>
 
     <div class="w600" v-else-if="isNewProcess">
+      <!--<p class="px-font-18 px-padding-tb10">新增流程</p>-->
       <el-form ref="form" :rules="rules" :model="form" label-width="110px">
-        <el-form-item label="流程名称" prop="processName">
+        <el-form-item label="名称" prop="processName">
           <el-input type="text" v-model="form.processName">
           </el-input>
         </el-form-item>
-        <el-form-item label="流程环节" prop="process">
+        <el-form-item label="流程节点" prop="process">
           <div class="color-c666">
             <i class="el-icon-info color-c999" @click="toMessage('msg1')"></i>
             <span>{{form.process.map(x=> x.name).join('->')}}</span>
@@ -21,7 +22,7 @@
             <span class="cursor-p color-error" @click="clear(1)">清空</span>
           </div>
         </el-form-item>
-        <el-form-item label="流程管理范围" prop="target">
+        <el-form-item label="管理范围" prop="target">
           <div class="color-c666">
             <i class="el-icon-info color-c999" @click="toMessage('msg2')"></i>
             <span>{{form.target | formatDeptUser}}</span>
@@ -47,7 +48,7 @@
             <el-button style="float: right; padding: 3px 5px" type="text" @click="editProcess(item)">编辑</el-button>
           </div>
           <p>
-            <span class="color-c999">流程环节: </span>
+            <span class="color-c999">流程节点: </span>
             <span>{{item.process.map(x=> x.name).join(' -> ')}}</span>
           </p>
           <p>
@@ -76,9 +77,7 @@
   export default {
     name: 'money-system-setting',
     created() {
-      if (this.isActive) {
-        this.getSetting()
-      }
+      this.getSetting()
     },
     data() {
       return {
@@ -95,14 +94,14 @@
         },
         rules: {
           processName: [
-            { required: true, processName: '请流程名称', trigger: 'blur' },
+            { required: true, message: '请流程名称', trigger: 'blur' },
             { min: 2, max: 100, message: '长度在 2 到 100 个字符', trigger: 'blur' }
           ],
           target: [
-            { required: true }
+            { required: true, message: '请选择流程管理范围' }
           ],
           process: [
-            { required: true }
+            { required: true, message: '请选择流程节点' }
           ]
         },
         isNewProcess: false,
@@ -136,18 +135,26 @@
           this.setting.process = res.processList
         })
       },
+
       toMessage(type) {
         let msg1 = '流程环节是指：流程从A到B再到C等等的节点，此处点击按顺序添加即是流程的顺序。'
         let msg2 = '流程管理范围是指：这条流程对哪些人或部门生效，人的优先级要高于部门。例如：A在技术部，对技术部设置了x流程，对A又设置了y流程，此时对A来说生效的是y流程。'
         this.$msgbox.alert(eval(`${type}`))
       },
+
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             if (this.form.target.dept.length === 0 && this.form.target.user.length === 0) {
               this.$msgbox.alert('请选择流程管理范围')
             } else {
-              let data = { ...this.form }
+              const dept = this.form.target.dept.map(x => x.id)
+              const user = this.form.target.user.map(x => x.userId)
+              let data = {
+                ...this.form,
+                target: JSON.stringify({ dept, user }),
+                process: JSON.stringify(this.form.process.map(x => x.userId))
+              }
               if (this.editProcessId) {
                 data.id = this.editProcessId
               }
@@ -161,6 +168,7 @@
           }
         })
       },
+
       toSelect(field) {
         this.currentSelect = field
         if (field === 'processRange') {
@@ -174,6 +182,7 @@
         }
         this.$refs.selectTree.show()
       },
+
       confirmSelectDept(dept, user) {
         if (this.currentSelect === 'processRange') {
           this.form.target.dept = dept
@@ -182,6 +191,7 @@
           this.form.process = user
         }
       },
+
       delProcess(item) {
         this.$msgbox.confirm('确定要删除该条流程吗？').then(()=> {
           this.http('delProcess', { id: item.id }).then(()=> {
@@ -189,10 +199,14 @@
           })
         })
       },
+
       newProcess() {
         this.editProcessId = null
         this.isNewProcess = true
+        this.clear(1)
+        this.clear(2)
       },
+
       editProcess(item) {
         this.editProcessId = item.id
         this.form.processName = item.processName
@@ -200,6 +214,7 @@
         this.form.process = [ ...item.process ]
         this.isNewProcess = true
       },
+
       clear(type) {
         if (type === 1) {
           this.form.process = []

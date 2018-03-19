@@ -98,7 +98,9 @@ export default {
     delProcess: '/api/delProcess',
     getExpenseList: '/api/getExpenseList',
     saveUser: '/api/saveUser',
-    saveDeptUri: '/api/saveDept'
+    saveDeptUri: '/api/saveDept',
+    handleProcessStatus: '/api/handleProcessStatus',
+    delPriv: '/api/delPriv'
   },
 
   login(data) {
@@ -188,5 +190,13 @@ export default {
 
   saveDept(data) {
     return get(this.url.saveDeptUri, data)
+  },
+
+  handleProcessStatus(data) {
+    return get(this.url.handleProcessStatus, data)
+  },
+
+  delPriv(data) {
+    return get(this.url.delPriv, data)
   }
 }
