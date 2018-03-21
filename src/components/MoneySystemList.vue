@@ -116,7 +116,7 @@
               <a href="javascript:" class="color-success" @click="doOption(1, scope.row)">同意</a>
               <a href="javascript:" class="color-error" @click="doOption(2, scope.row)">拒绝</a>
             </template>
-            <template v-else-if="isTotal && scope.row.rstatus === 1">
+            <template v-else-if="isTotal && scope.row.rstatus === 3">
               <a href="javascript:" class="color-success" v-if="scope.row.expenseStatus === 5" @click="doOption(4, scope.row)">打款</a>
             </template>
           </template>

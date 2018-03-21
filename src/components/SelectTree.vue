@@ -60,7 +60,7 @@
           <i class="el-icon-close ib-middle" @click="delDeptSelect(item, i)"></i>
         </div>
 
-        <div class="select-tree__tag" v-for="(item, i) in selectUserArr" :key="'user-' + item.id">
+        <div class="select-tree__tag" v-for="(item, i) in cacheSelectUser" :key="item.departmentId + '-user-' + item.id">
           <span class="over-text ib-middle">{{item.name}}</span>
           <i class="el-icon-close ib-middle" @click="delUserSelect(item, i)"></i>
         </div>
@@ -94,7 +94,8 @@
           label: 'label'
         },
         selectDeptArr: [],
-        selectUserArr: []
+        selectUserArr: [],
+        cacheSelectUser: []
       }
     },
     watch: {
@@ -189,10 +190,12 @@
         // toggleRowSelection
         // clearSelection
         this.selectUserArr = [ ...selection ]
+        this.cacheSelectUser = this.cacheSelectUser.concat(selection)
       },
 
       handleSelectUserAll(selection) {
         this.selectUserArr = [ ...selection ]
+        // this.cacheSelectUser = this.cacheSelectUser.concat(selection)
       },
 
       reset() {

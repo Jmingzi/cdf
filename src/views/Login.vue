@@ -22,6 +22,7 @@
   import http from '../mixins/http'
   import { mapMutations } from 'vuex'
   import cookie from 'js-cookie'
+  import md5 from 'blueimp-md5'
 
   export default {
     data() {
@@ -52,7 +53,10 @@
       submitForm(formName = 'form') {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.http('login', this.form).then(res=> {
+            this.http('login', {
+              ...this.form,
+              pwd: md5(this.form.pwd)
+            }).then(res=> {
               Object.keys(res).forEach(key=> {
                 // is_update -1表示未修改  需提示起对密码进行修改  1表示已经修改  不需要进行修改
                 cookie.set(key, res[key], {expires: 1})
