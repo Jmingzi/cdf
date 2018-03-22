@@ -100,7 +100,9 @@ export default {
     saveUser: '/api/saveUser',
     saveDeptUri: '/api/saveDept',
     handleProcessStatus: '/api/handleProcessStatus',
-    delPriv: '/api/delPriv'
+    delPriv: '/api/delPriv',
+    delAnnous: '/api/delAnnous',
+    optAnnous: '/api/optAnnous'
   },
 
   login(data) {
@@ -198,5 +200,13 @@ export default {
 
   delPriv(data) {
     return get(this.url.delPriv, data)
+  },
+
+  delAnnous(data) {
+    return get(this.url.delAnnous, data)
+  },
+
+  optAnnous(data) {
+    return get(this.url.optAnnous, data)
   }
 }

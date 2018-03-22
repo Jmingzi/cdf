@@ -13,7 +13,7 @@
     </div>
 
     <div class="position-a px-top-50 bottom-0 width-100 overflow-a px-margin-t10 px-padding-lr10">
-      <div class="annous__item bd-gray-lighter" v-for="item in (currentTab === 1 ? fromMeList : toMeList)">
+      <div class="annous__item bd-gray-lighter" v-for="(item, i) in (currentTab === 1 ? fromMeList : toMeList)">
         <p class="annous__item-title">{{item.title}}</p>
         <div class="px-font-12 color-c999">
           <p>
@@ -36,9 +36,9 @@
         <div class="px-padding-t10 text-right">
           <el-button size="mini" @click="lookDetail(item)">查看详情</el-button>
           <template v-if="currentTab === 1">
-            <el-button size="mini" @click="chAnnous(item)" v-if="item.status === 1">撤回</el-button>
-            <el-button type="danger" size="mini" @click="publish(item)" v-else>发布</el-button>
-            <el-button size="mini" @click="delAnnous(item)">删除</el-button>
+            <el-button size="mini" @click="optAnnous(item, i, 0)" v-if="item.status === 1">撤回</el-button>
+            <el-button type="danger" size="mini" @click="optAnnous(item, i, 1)" v-else>发布</el-button>
+            <el-button size="mini" @click="delAnnous(item, i)">删除</el-button>
           </template>
         </div>
       </div>
@@ -113,7 +113,7 @@
       getList() {
         this.http('getAnnous', {
           currentPage: 1,
-          pageSize: 10
+          pageSize: 100
         }).then(res => {
           this.toMeList = res.reclist
           this.fromMeList = res.publist
@@ -126,18 +126,28 @@
         this.currentDetail = null
         this.showAddPanel = false
       },
-      delAnnous(item) {
+      delAnnous(item, index) {
         this.$msgbox.confirm('确定要删除该条公告吗').then(()=> {
-
+          this.http('delAnnous', { id: item.id }).then(() => {
+            this.$message.success('删除成功')
+            // this.getList()
+            this[this.currentTab === 1 ? 'fromMeList' : 'toMeList'].splice(index, 1)
+          })
         })
       },
-      chAnnous(item) {
-        this.$msgbox.confirm('确定要撤回该条公告吗').then(()=> {
-
+      optAnnous(item, index, status) {
+        this.$msgbox.confirm(`确定要${status ? '发布' : '撤回'}该条公告吗`).then(()=> {
+          this.http('optAnnous', { id: item.id, status }).then(() => {
+            this.$message.success('撤回成功')
+            // this.getList()
+            const data = this[this.currentTab === 1 ? 'fromMeList' : 'toMeList']
+            this.$set(
+              data,
+              index,
+              { ...data[index], status: 0 }
+            )
+          })
         })
-      },
-      publish(item) {
-
       },
       changeTab(tab) {
         this.currentTab = tab
