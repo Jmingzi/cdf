@@ -60,6 +60,9 @@
         <div class="ib-middle px-margin-b15">
           <el-button type="danger" @click="confirmSearch">搜索查询</el-button>
         </div>
+        <div class="ib-middle px-margin-b15">
+          <el-button @click="resetSearch">重置</el-button>
+        </div>
       </div>
 
       <el-table
@@ -143,8 +146,10 @@
       :append-to-body="true"
       top="10px"
       width="500px">
-      <detail>
-      </detail>
+      <detail
+        v-if="currentChooseItem"
+        :item="currentChooseItem"
+      />
       <span slot="footer" class="dialog-footer">
         <template v-if="isToMe">
           <el-button type="success" @click="doOption(1)" size="small">同 意</el-button>
@@ -212,7 +217,7 @@
     },
 
     mounted() {
-      console.log('mount')
+      // console.log('mount')
       if (!this.isTotal) {
         this.getExpenseList()
       }
@@ -222,6 +227,17 @@
       confirmSearch() {
         this.reset()
         this.getExpenseList()
+      },
+
+      resetSearch() {
+        this.reset()
+        this.listType = 0
+        this.listPayType = []
+        this.listTime = []
+        this.listKeyword = ''
+        this.listBxStatus = ''
+        this.listBxDept = []
+        this.listBxUser = []
       },
 
       handleSizeChange(val) {

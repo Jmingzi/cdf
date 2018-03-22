@@ -73,9 +73,10 @@ export const PAY_WAY = [
 ]
 
 export const BX_STATUS = [
-  { label: '审批中', value: '2' },
-  { label: '已通过', value: '3' },
-  { label: '已拒绝', value: '4' },
-  { label: '待打款', value: '5' },
-  { label: '已完成', value: '6' }
+  { label: '发起申请', value: '1', color: 'color-success', icon: 'el-icon-circle-check' },
+  { label: '审批中', value: '2', color: 'color-warning', icon: 'el-icon-remove' },
+  { label: '已通过', value: '3', color: 'color-success', icon: 'el-icon-circle-check' },
+  { label: '已拒绝', value: '4', color: 'color-red', icon: 'el-icon-error' },
+  { label: '待打款', value: '5', color: 'color-ccc', icon: 'el-icon-remove' },
+  { label: '已完成', value: '6', color: 'color-success', icon: 'el-icon-circle-check' }
 ]

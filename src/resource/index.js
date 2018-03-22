@@ -102,7 +102,8 @@ export default {
     handleProcessStatus: '/api/handleProcessStatus',
     delPriv: '/api/delPriv',
     delAnnous: '/api/delAnnous',
-    optAnnous: '/api/optAnnous'
+    optAnnous: '/api/optAnnous',
+    expenseDetail: '/api/expenseDetail'
   },
 
   login(data) {
@@ -208,5 +209,9 @@ export default {
 
   optAnnous(data) {
     return get(this.url.optAnnous, data)
+  },
+
+  getExpenseDetail(data) {
+    return get(this.url.expenseDetail, data)
   }
 }
