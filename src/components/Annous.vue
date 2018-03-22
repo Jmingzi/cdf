@@ -13,7 +13,7 @@
     </div>
 
     <div class="position-a px-top-50 bottom-0 width-100 overflow-a px-margin-t10 px-padding-lr10">
-      <div class="annous__item bd-gray-lighter" v-for="item in list">
+      <div class="annous__item bd-gray-lighter" v-for="item in (currentTab === 1 ? fromMeList : toMeList)">
         <p class="annous__item-title">{{item.title}}</p>
         <div class="px-font-12 color-c999">
           <p>
@@ -35,9 +35,11 @@
         </div>
         <div class="px-padding-t10 text-right">
           <el-button size="mini" @click="lookDetail(item)">查看详情</el-button>
-          <el-button size="mini" @click="chAnnous(item)" v-if="item.status === 1">撤回</el-button>
-          <el-button type="danger" size="mini" @click="publish(item)" v-else>发布</el-button>
-          <el-button size="mini" @click="delAnnous(item)">删除</el-button>
+          <template v-if="currentTab === 1">
+            <el-button size="mini" @click="chAnnous(item)" v-if="item.status === 1">撤回</el-button>
+            <el-button type="danger" size="mini" @click="publish(item)" v-else>发布</el-button>
+            <el-button size="mini" @click="delAnnous(item)">删除</el-button>
+          </template>
         </div>
       </div>
     </div>
@@ -92,6 +94,8 @@
     data() {
       return {
         list: [],
+        toMeList: [],
+        fromMeList: [],
         currentDetail: null,
         currentTab: 1,
         showAddPanel: false
@@ -110,8 +114,9 @@
         this.http('getAnnous', {
           currentPage: 1,
           pageSize: 10
-        }).then(res=> {
-          this.list = res
+        }).then(res => {
+          this.toMeList = res.reclist
+          this.fromMeList = res.publist
         })
       },
       lookDetail(item) {

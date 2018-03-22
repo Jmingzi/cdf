@@ -229,7 +229,7 @@
           userId: 0,
           sex: 1,
           birthday: '',
-          department: {},
+          department: null,
           job: '',
           loginAble: true,
           idCardNumber: '',
