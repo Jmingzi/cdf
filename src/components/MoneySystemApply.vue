@@ -82,6 +82,7 @@
       :selectedUser="[]"
       :selectType="1"
       :isNeedUser="false"
+      :isSingleDept="true"
       @confirm="confirmSelectDept">
     </select-tree>
   </div>
