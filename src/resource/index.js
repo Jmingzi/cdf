@@ -133,7 +133,8 @@ export default {
     handleProcessStatus: '/service/logic/controller/IndexController.php?act=expense&met=handle',
     delPriv: '/service/logic/controller/IndexController.php?act=priv&met=del',
     optAnnous: '/service/logic/controller/IndexController.php?act=notice&met=opt',
-    expenseDetail: '/service/logic/controller/IndexController.php?act=expense&met=getById'
+    expenseDetail: '/service/logic/controller/IndexController.php?act=expense&met=getById',
+    delJob: '/service/logic/controller/IndexController.php?act=job&met=del'
   },
 
   login(data) {
@@ -239,5 +240,9 @@ export default {
 
   getExpenseDetail(data) {
     return get(this.url.expenseDetail, data)
+  },
+
+  delJob(data) {
+    return get(this.url.delJob, data)
   }
 }

@@ -4,6 +4,7 @@
       <el-button type="danger" size="mini" @click="addJob()">添加岗位</el-button>
       <template v-if="currJob">
         <el-button type="info" size="mini" @click="addJob(true)">编辑岗位</el-button>
+        <el-button type="info" size="mini" @click="delJob()">删除岗位</el-button>
         <el-button type="info" size="mini" @click="addUserToJob">添加人员</el-button>
       </template>
     </div>
@@ -107,6 +108,12 @@
         this.isEdit = isEdit
         this.dialogVisible = true
         this.dialogTitle = isEdit ? `编辑岗位 - ${this.currJob.name}` : '添加岗位'
+      },
+      delJob() {
+        this.http('delJob', { id: this.currJob.id }).then(() => {
+          this.$message.success('删除岗位成功')
+          this.getJobList()
+        })
       },
       confirmAdd() {
         this.$refs['form'].validate((valid) => {
