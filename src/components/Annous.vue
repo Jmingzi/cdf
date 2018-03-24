@@ -38,7 +38,7 @@
           <template v-if="currentTab === 1">
             <el-button size="mini" @click="optAnnous(item, i, 0)" v-if="item.status === 1">撤回</el-button>
             <el-button type="danger" size="mini" @click="optAnnous(item, i, 1)" v-else>发布</el-button>
-            <el-button size="mini" @click="delAnnous(item, i)">删除</el-button>
+            <el-button size="mini" @click="optAnnous(item, i, 2)">删除</el-button>
           </template>
         </div>
       </div>
@@ -126,26 +126,21 @@
         this.currentDetail = null
         this.showAddPanel = false
       },
-      delAnnous(item, index) {
-        this.$msgbox.confirm('确定要删除该条公告吗').then(()=> {
-          this.http('delAnnous', { id: item.id }).then(() => {
-            this.$message.success('删除成功')
-            // this.getList()
-            this[this.currentTab === 1 ? 'fromMeList' : 'toMeList'].splice(index, 1)
-          })
-        })
-      },
       optAnnous(item, index, status) {
-        this.$msgbox.confirm(`确定要${status ? '发布' : '撤回'}该条公告吗`).then(()=> {
+        const txt = ['撤回', '发布', '删除']
+        this.$msgbox.confirm(`确定要${txt[status]}该条公告吗`).then(()=> {
           this.http('optAnnous', { id: item.id, status }).then(() => {
-            this.$message.success('撤回成功')
-            // this.getList()
+            this.$message.success(`${txt[status]}成功`)
             const data = this[this.currentTab === 1 ? 'fromMeList' : 'toMeList']
-            this.$set(
-              data,
-              index,
-              { ...data[index], status: 0 }
-            )
+            if (status === 2) {
+              data.splice(index, 1)
+            } else {
+              this.$set(
+                data,
+                index,
+                { ...data[index], status: 0 }
+              )
+            }
           })
         })
       },

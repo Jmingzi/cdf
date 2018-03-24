@@ -1,5 +1,5 @@
 <template>
-  <div class="expense-detail">
+  <div class="expense-detail" v-if="detail">
     <div class="detail-item">
       <span class="text-right color-c999">报销状态：</span>
       <span class="color-warning">{{detail.statusText}}</span>
@@ -22,7 +22,7 @@
     </div>
     <div class="detail-item">
       <span class="text-right color-c999">支出时间：</span>
-      <span>{{detail.payTime}}</span>
+      <span>{{$utils.formatTime(detail.payTime)}}</span>
     </div>
     <div class="detail-item">
       <span class="text-right color-c999">报销部门：</span>
@@ -30,7 +30,7 @@
     </div>
     <div class="detail-item">
       <span class="text-right color-c999">报销时间：</span>
-      <span>{{detail.createTime}}</span>
+      <span>{{$utils.formatTime(detail.createTime)}}</span>
     </div>
     <div class="detail-item">
       <span class="text-right color-c999 ib-top">相关图片：</span>
@@ -52,8 +52,8 @@
         </p>
         <div class="process__info text-right bg-f2 cl">
           <span class="fl">{{item.name}}</span>
-          <span class="color-c999">{{item.time}}</span>
-          <p v-if="item.desc">
+          <span class="color-c999">{{$utils.formatTime(item.time)}}</span>
+          <p class="text-left" v-if="item.desc">
             <span class="color-c999">意见：</span>
             <span>{{item.desc}}</span>
           </p>
@@ -78,6 +78,13 @@
       return {
         detail: null,
         BX_STATUS
+      }
+    },
+
+    watch: {
+      item: function (obj) {
+        console.log(1)
+        return obj
       }
     },
 

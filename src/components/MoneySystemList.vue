@@ -71,9 +71,19 @@
         :height="tableWrapHeight"
         style="width: 100%">
         <el-table-column
-          prop="name"
-          label="报销人"
+          prop="no"
+          label="工号"
+          sortable
           width="80">
+        </el-table-column>
+        <el-table-column
+          prop="createTime"
+          label="报销时间"
+          width="130">
+        </el-table-column>
+        <el-table-column
+          prop="desc"
+          label="报销事由">
         </el-table-column>
         <el-table-column
           prop="money"
@@ -82,13 +92,15 @@
           width="120">
         </el-table-column>
         <el-table-column
-          prop="createTime"
-          label="报销时间"
-          width="120">
+          prop="payType[0]"
+          label="支出（大类）"
+          sortable
+          width="140">
         </el-table-column>
         <el-table-column
-          prop="payType"
-          label="支出类别"
+          prop="payType[1]"
+          label="支出（小类）"
+          sortable
           width="140">
         </el-table-column>
         <el-table-column
@@ -97,9 +109,14 @@
           width="80">
         </el-table-column>
         <el-table-column
+          prop="name"
+          label="报销人"
+          width="80">
+        </el-table-column>
+        <el-table-column
           prop="payTime"
           label="支出时间"
-          width="120">
+          width="130">
         </el-table-column>
         <el-table-column
           prop="way"
@@ -107,8 +124,10 @@
           width="80">
         </el-table-column>
         <el-table-column
-          prop="desc"
-          label="报销事由">
+          prop="expenseStatus"
+          label="状态"
+          sortable
+          width="80">
         </el-table-column>
         <el-table-column
           label="操作"
@@ -145,7 +164,8 @@
       :visible.sync="dialogVisible"
       :append-to-body="true"
       top="10px"
-      width="500px">
+      width="500px"
+      :before-close="beforeClose">
       <detail
         v-if="currentChooseItem"
         :item="currentChooseItem"
@@ -224,6 +244,11 @@
     },
 
     methods: {
+      beforeClose(done) {
+        this.currentChooseItem = null
+        done()
+      },
+
       confirmSearch() {
         this.reset()
         this.getExpenseList()
@@ -288,7 +313,14 @@
           keyword: this.listKeyword,      // 关键字
           expenseStatus: this.listBxStatus // 报销状态
         }).then(data=> {
-          this.listData = data
+          this.listData = data.map(item => {
+            return {
+              ...item,
+              createTime: this.$utils.formatTime(item.createTime),
+              payTime: this.$utils.formatTime(item.payTime),
+              expenseStatus: BX_STATUS.find(x => Number(x.value) === Number(item.expenseStatus)).label
+            }
+          })
         })
       },
 
@@ -319,7 +351,7 @@
             this.$msgbox.confirm('确定要撤回吗？')
           } break
           case 4: {
-            this.$msgbox.confirm('即将打款金额为90.00元给杨明，确定要继续吗？').then(() => {
+            this.$msgbox.confirm(`即将打款金额为${item.money}元给${item.name}，确定要继续吗？`).then(() => {
               _do.call(this, { status: 6 })
             })
           } break

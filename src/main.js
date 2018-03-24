@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import store from './store'
 import SelectTree from './components/SelectTree'
+import utils from './assets/utils'
 import {
   Button,
   Select,
@@ -81,6 +82,7 @@ Vue.prototype.$confirm = MessageBox.confirm
 Vue.prototype.$prompt = MessageBox.prompt
 Vue.prototype.$notify = Notification
 Vue.prototype.$message = Message
+Vue.prototype.$utils = utils
 
 Vue.component(SelectTree.name, SelectTree)
 
