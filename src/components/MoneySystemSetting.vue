@@ -8,8 +8,17 @@
     </div>
 
     <div class="w600" v-else-if="isNewProcess">
-      <!--<p class="px-font-18 px-padding-tb10">新增流程</p>-->
       <el-form ref="form" :rules="rules" :model="form" label-width="110px">
+        <el-form-item label="流程类型">
+          <el-select v-model="form.processType" placeholder="请选择">
+            <el-option
+              v-for="item in processType"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="名称" prop="processName">
           <el-input type="text" v-model="form.processName">
           </el-input>
@@ -75,6 +84,7 @@
 <script>
   import http from '../mixins/http'
   import { mapState } from 'vuex'
+  import { PROCESS_TYPE } from '../constant'
 
   export default {
     name: 'money-system-setting',
@@ -86,13 +96,15 @@
         setting: {
           process: null
         },
+        processType: PROCESS_TYPE,
         form: {
           processName: '',
           target: {
             dept: [],
             user: []
           },
-          process: []
+          process: [],
+          processType: 1
         },
         rules: {
           processName: [

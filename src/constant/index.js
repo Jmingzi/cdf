@@ -73,6 +73,11 @@ export const PAY_WAY = [
   { label: '现金', value: '4' }
 ]
 
+export const PROCESS_TYPE = [
+  { label: '普通报销', value: 1 },
+  { label: '推广报销', value: 2 }
+]
+
 export const BX_STATUS = [
   { label: '发起申请', value: '1', color: 'color-success', icon: 'el-icon-circle-check' },
   { label: '审批中', value: '2', color: 'color-warning', icon: 'el-icon-remove' },
