@@ -1,8 +1,8 @@
 <template>
   <div class="position-f width-100 top-0 bottom-0 login-container">
-    <div class="landscape"></div>
-    <div class="filter"></div>
-    <canvas id="canvas"></canvas>
+    <!--<div class="landscape"></div>-->
+    <!--<div class="filter"></div>-->
+    <!--<canvas id="canvas"></canvas>-->
 
     <div class="position-a login-wrap bd-ccc px-padding-20 radius-3">
       <p class="px-font-20 text-center px-padding-b20">相源科技管理后台</p>
@@ -20,6 +20,9 @@
           <el-button @click="resetForm()">重置</el-button>
         </el-form-item>
       </el-form>
+      <p class="color-c666 px-font-12 px-margin-l80">
+        &copy; 相源科技 版权所有
+      </p>
     </div>
   </div>
 </template>
@@ -52,7 +55,7 @@
     },
     mixins: [http],
     mounted() {
-      loginCanvas()
+      // loginCanvas()
     },
     methods: {
       ...mapMutations(['setState']),
@@ -94,9 +97,10 @@
   }
 
   .login-container {
-    cursor:none;
-    background:black;
-    background:linear-gradient(to bottom,#000000 0%,#5788fe 100%);
+    /*cursor:none;*/
+    /*background:black;*/
+    /*background:linear-gradient(to bottom,#000000 0%,#5788fe 100%);*/
+    background-color: #f2f2f2;
   }
   .filter {
     width:100%;

@@ -2,7 +2,7 @@
   <div class="wrap-common position-a top-0 bottom-0 width-100 bg-f2">
     <div class="header px-line-50 px-height-50 bg-fff">
       <div class="left position-a left-0 top-0 height-100">
-        <p class="px-font-20 color-fff text-center">管理后台</p>
+        <p class="px-font-20 color-fff text-center">相源科技</p>
       </div>
       <div class="right position-a top-0 height-100 right-0 text-right">
         <div class="display-ib top-hover px-padding-lr20 cursor-p" @click="logOut">
@@ -12,7 +12,7 @@
     </div>
     <div class="left-aside position-a px-top-50 bottom-0">
       <div class="user color-fff cl px-padding-15" v-if="userInfo">
-        <img src="../assets/avatar3.png" class="px-width-50 px-height-50 avatar fl">
+        <img :src="`http://oa.ixunle.com/upload/icon/${userInfo.avatarUrl}`" class="px-width-50 px-height-50 avatar fl">
         <p class="px-margin-t5">{{userInfo.name}}</p>
         <p class="px-font-12 color-aaa">{{userInfo.dept.name}}</p>
       </div>

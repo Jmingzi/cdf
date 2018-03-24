@@ -125,7 +125,7 @@ export default {
     applyExpense: '/service/logic/controller/IndexController.php?act=expense&met=apply',
     getInfos: '/service/logic/controller/IndexController.php?act=user&met=getInfo',
     getSetting: '/service/logic/controller/IndexController.php?act=process&met=getSetting',
-    addProcess: '/service/logic/controller/IndexController.php?act=process&met=add',
+    addProcess: '/ service/logic/controller/IndexController.php?act=process&met=save',
     delProcess: '/service/logic/controller/IndexController.php?act=process&met=del',
     getExpenseList: '/service/logic/controller/IndexController.php?act=expense&met=getExpenses',
     saveUser: '/service/logic/controller/IndexController.php?act=user&met=save',

@@ -22,7 +22,7 @@ let route = new Router({
       component: Login,
       meta: {
         auth: false,
-        title: '管理系统登录'
+        title: '登录管理系统'
       }
     }
   ]

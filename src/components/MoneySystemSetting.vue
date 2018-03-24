@@ -37,26 +37,28 @@
       </el-form>
     </div>
 
-    <div class="w1000" v-else>
+    <div v-else>
       <el-button type="danger" @click="newProcess">新建流程</el-button>
-      <div class="" v-if="setting.process">
-        <el-card class="box-card px-margin-t20" v-for="item in setting.process" :key="item.id">
-          <div slot="header" class="clearfix">
-            <span class="color-c999">流程名称: </span>
-            <span>{{item.processName}}</span>
-            <el-button style="float: right; padding: 3px 0; color: red;" type="text" @click="delProcess(item)">删除</el-button>
-            <el-button style="float: right; padding: 3px 5px" type="text" @click="editProcess(item)">编辑</el-button>
-          </div>
-          <p>
-            <span class="color-c999">流程节点: </span>
-            <span>{{item.process.map(x=> x.name).join(' -> ')}}</span>
-          </p>
-          <p>
-            <span class="color-c999">流程管理范围: </span>
-            <span>{{item.target | formatDeptUser}}</span>
-          </p>
-        </el-card>
-      </div>
+      <el-row v-if="setting.process" :gutter="20">
+        <el-col v-for="item in setting.process" :key="item.id" :span="12">
+          <el-card class="box-card px-margin-t20">
+            <div slot="header" class="clearfix">
+              <span class="color-c999">流程名称: </span>
+              <span>{{item.processName}}</span>
+              <el-button style="float: right; padding: 3px 0; color: red;" type="text" @click="delProcess(item)">删除</el-button>
+              <el-button style="float: right; padding: 3px 5px" type="text" @click="editProcess(item)">编辑</el-button>
+            </div>
+            <p>
+              <span class="color-c999">流程节点: </span>
+              <span>{{item.process.map(x=> x.name).join(' -> ')}}</span>
+            </p>
+            <p>
+              <span class="color-c999">流程管理范围: </span>
+              <span>{{item.target | formatDeptUser}}</span>
+            </p>
+          </el-card>
+        </el-col>
+      </el-row>
     </div>
 
     <select-tree

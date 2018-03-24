@@ -190,9 +190,9 @@
 </template>
 
 <script>
-  import Detail from './MoneySystemDetail'
-  import http from '../mixins/http'
-  import {PAY_TYPE, BX_STATUS} from '../constant'
+  import Detail from './Detail'
+  import http from '../../mixins/http'
+  import {PAY_TYPE, BX_STATUS} from '../../constant'
 
   export default {
     name: 'money-system-list',

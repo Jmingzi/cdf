@@ -4,6 +4,7 @@ export const menu = [
   { title: '岗位管理', id: 5, icon: 'el-icon-document', componentName: 'Job' },
   { title: '公告管理', id: 2, icon: 'el-icon-bell', componentName: 'Annous' },
   { title: '财务系统', id: 3, icon: 'el-icon-printer', componentName: 'MoneySystem' },
+  { title: '推广报销', id: 6, icon: 'el-icon-rank', componentName: 'SpreadExpense' },
   { title: '权限设置', id: 4, icon: 'el-icon-setting', componentName: 'Priv' }
 ]
 

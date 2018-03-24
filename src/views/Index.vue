@@ -13,6 +13,7 @@
   import Priv from '../components/Priv'
   import Job from '../components/Job'
   import MoneySystem from '../components/MoneySystem'
+  import SpreadExpense from '../components/spreadExpense/Index'
   import { mapState, mapMutations } from 'vuex'
   import { menu } from '../constant'
   import http from '../mixins/http'
@@ -63,7 +64,8 @@
       DeptUser,
       Priv,
       MoneySystem,
-      Job
+      Job,
+      SpreadExpense
     }
   }
 </script>
