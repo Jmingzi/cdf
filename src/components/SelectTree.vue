@@ -28,6 +28,7 @@
         </el-tree>
       </div>
 
+      <!--@selection-change="handleSelectUser"-->
       <div class="select-tree__user overflow-a bd-gray-lighter-l ib-middle" v-if="isNeedUser">
         <el-table
           :data="userList"
@@ -35,7 +36,6 @@
           style="width: 100%"
           @select="handleSelectUser"
           @select-all="handleSelectUserAll"
-          @selection-change="handleSelectUserAll"
           ref="multipleTable">
           <el-table-column
             type="selection"
@@ -61,7 +61,7 @@
           <i class="el-icon-close ib-middle" @click="delDeptSelect(item, i)"></i>
         </div>
 
-        <div class="select-tree__tag" v-for="(item, i) in cacheSelectUser" :key="item.departmentId + '-user-' + item.id">
+        <div class="select-tree__tag" v-for="(item, i) in selectUserArr" :key="item.departmentId + '-user-' + item.id">
           <span class="over-text ib-middle">{{item.name}}</span>
           <i class="el-icon-close ib-middle" @click="delUserSelect(item, i)"></i>
         </div>
@@ -96,7 +96,7 @@
         },
         selectDeptArr: [],
         selectUserArr: [],
-        cacheSelectUser: []
+        currentSelectDeptUser: []
       }
     },
     watch: {
@@ -112,9 +112,11 @@
       ...mapMutations(['setState']),
 
       checkDefaultUser(user) {
+        // 仅仅是全不选时 用
+        this.currentSelectDeptUser = user
         this.$nextTick(()=> {
           let tableSelect
-          this.selectedUser.forEach(select=> {
+          this.selectUserArr.forEach(select=> {
             if (user.some(item=> item.id === select.id)) {
               tableSelect = this.userList.find(x=> x.id === select.id)
               this.$refs.multipleTable.toggleRowSelection(tableSelect, true)
@@ -183,20 +185,37 @@
         }
       },
 
-      delUserSelect(item) {
+      delUserSelect(item, i) {
         this.$refs.multipleTable.toggleRowSelection(item, false)
+        this.selectUserArr.splice(i ,1)
       },
 
-      handleSelectUser(selection) {
+      handleSelectUser(selection, row) {
+        const isAdd = Boolean(selection.find(x => x.id === row.id))
         // toggleRowSelection
         // clearSelection
-        this.selectUserArr = [ ...selection ]
-        this.cacheSelectUser = this.cacheSelectUser.concat(selection)
+        if (isAdd) {
+          this.selectUserArr = this.selectUserArr.concat(selection.filter(x => this.selectUserArr.every(y => x.id !== y.id)))
+        } else {
+          const index = this.selectUserArr.findIndex(x => x.id === row.id)
+          this.selectUserArr.splice(index, 1)
+        }
       },
 
       handleSelectUserAll(selection) {
-        this.selectUserArr = [ ...selection ]
-        // this.cacheSelectUser = this.cacheSelectUser.concat(selection)
+        if (selection.length > 0) {
+          // 全选
+          this.selectUserArr = this.selectUserArr.concat(selection.filter(x => this.selectUserArr.every(y => x.id !== y.id)))
+        } else {
+          // 全不选
+          this.selectUserArr = this.selectUserArr.map(item => {
+            if (this.currentSelectDeptUser.some(x => x.id === item.id)) {
+              return null
+            } else {
+              return item
+            }
+          }).filter(x => x)
+        }
       },
 
       reset() {

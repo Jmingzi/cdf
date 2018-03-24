@@ -74,7 +74,7 @@
           prop="no"
           label="工号"
           sortable
-          width="80">
+          width="130">
         </el-table-column>
         <el-table-column
           prop="createTime"

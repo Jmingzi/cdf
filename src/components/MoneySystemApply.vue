@@ -1,6 +1,6 @@
 <template>
   <div class="money-apply">
-    <div class="px-margin-b20" v-if="!hasSetProcess">
+    <div class="px-margin-b20" v-if="!hasSetProcess && processData.id">
       <el-alert
         title="提示"
         type="error"

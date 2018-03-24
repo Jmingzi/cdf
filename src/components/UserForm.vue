@@ -183,7 +183,6 @@
       title="选择所属部门"
       :selectedDept="form.department ? [form.department] : []"
       :selectedUser="[]"
-      :modal="false"
       :selectType="1"
       :isNeedUser="false"
       @confirm="confirmSelect">
