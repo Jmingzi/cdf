@@ -1,6 +1,6 @@
 <template>
   <div class="money-apply">
-    <div class="px-margin-b20" v-if="!hasSetProcess && processData.id">
+    <div class="px-margin-b20" v-if="!hasSetProcess && processData.id !== undefined">
       <el-alert
         title="提示"
         type="error"
@@ -60,7 +60,7 @@
         </el-upload>
       </el-form-item>
 
-      <div class="process px-margin-b50">
+      <div class="process px-margin-b50" v-if="hasSetProcess">
         <el-alert
           title="系统已设置报销流程"
           type="info"
