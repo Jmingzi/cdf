@@ -47,11 +47,10 @@
     <div class="process__wrap position-r">
       <div class="process__item position-r" v-for="item in detail.process">
         <p :class="`process__state ${item.processColor}`">
-          <span class="ib-middle px-margin-r5">{{item.job || item.name}}</span>
-          <span class="ib-middle">{{item.desc}}</span>
+          <span class="ib-middle px-margin-r5">{{item.name}}<span v-if="item.job">({{item.job}})</span></span>
         </p>
         <div class="process__info text-right bg-f2 cl">
-          <span class="fl">{{item.name}}</span>
+          <span :class="`fl ${item.processColor}`">{{item.processText}}</span>
           <span class="color-c999">{{$utils.formatTime(item.time)}}</span>
           <p class="text-left" v-if="item.desc">
             <span class="color-c999">意见：</span>

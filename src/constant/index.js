@@ -78,5 +78,6 @@ export const BX_STATUS = [
   { label: '已通过', value: '3', color: 'color-success', icon: 'el-icon-circle-check' },
   { label: '已拒绝', value: '4', color: 'color-red', icon: 'el-icon-error' },
   { label: '待打款', value: '5', color: 'color-ccc', icon: 'el-icon-remove' },
-  { label: '已完成', value: '6', color: 'color-success', icon: 'el-icon-circle-check' }
+  { label: '已完成', value: '6', color: 'color-success', icon: 'el-icon-circle-check' },
+  { label: '待审批', value: '7', color: 'color-ccc', icon: 'el-icon-circle-remove' }
 ]
