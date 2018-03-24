@@ -107,6 +107,10 @@
       //   return val
       // }
     },
+    created() {
+      this.selectUserArr = this.selectedUser.slice()
+      this.selectDeptArr = this.selectedDept.slice()
+    },
     methods: {
       ...mapActions(['getUserById']),
       ...mapMutations(['setState']),
@@ -127,7 +131,7 @@
 
       checkDefaultDept() {
         this.$nextTick(()=> {
-          this.selectedDept.forEach(x=> this.$refs.tree.setChecked(x.id, true, false))
+          this.selectDeptArr.forEach(x=> this.$refs.tree.setChecked(x.id, true, false))
         })
       },
 
