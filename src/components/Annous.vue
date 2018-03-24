@@ -12,41 +12,53 @@
       </div>
     </div>
 
-    <div class="position-a px-top-50 bottom-0 width-100 overflow-a px-margin-t10 px-padding-lr10">
-      <div class="annous__item bd-gray-lighter" v-for="(item, i) in (currentTab === 1 ? fromMeList : toMeList)">
-        <template v-if="item.status === 0 && currentTab === 2">
-          <p class="text-center px-padding-tb49">该公告已撤回</p>
-        </template>
-        <template v-else>
-          <p class="annous__item-title">{{item.title}}</p>
-          <div class="px-font-12 color-c999">
-            <p>
-              <span>发布者：</span>
-              <span>{{item.pubUser.name}}</span>
-            </p>
-            <p>
-              <span>发布时间：</span>
-              <span>{{$utils.formatTime(item.pubTime)}}</span>
-            </p>
-            <p>
-              <span>接收人：</span>
-              <span>{{item.receiveUser | formatReceiveUser}}</span>
-            </p>
-            <p class="annous__item-content">
-              <span>公告内容：</span>
-              <span class="color-c666">{{item.content}}</span>
-            </p>
-          </div>
-        </template>
-        <div class="px-padding-t10 text-right">
-          <el-button size="mini" @click="lookDetail(item)">查看详情</el-button>
-          <template v-if="currentTab === 1">
-            <el-button size="mini" @click="optAnnous(item, i, 0)" v-if="item.status === 1">撤回</el-button>
-            <el-button type="danger" size="mini" @click="optAnnous(item, i, 1)" v-else>发布</el-button>
-            <el-button size="mini" @click="optAnnous(item, i, 2)">删除</el-button>
+    <div class="position-a px-top-50 bottom-0 width-100 overflow-a px-padding-lr10">
+      <el-row :gutter="20">
+        <el-col :span="12" v-for="(item, i) in dataList" :key="item.id">
+          <template v-if="item.status === 0 && currentTab === 2">
+            <p class="text-center px-padding-tb49">该公告已撤回</p>
           </template>
-        </div>
-      </div>
+          <template v-else>
+            <el-card class="box-card px-margin-t20">
+              <div slot="header" class="clearfix">
+                <p>{{item.title}}</p>
+              </div>
+              <div class="px-font-12 color-c999">
+                <p>
+                  <span>发布者：</span>
+                  <span>{{item.pubUser.name}}</span>
+                </p>
+                <p>
+                  <span>发布时间：</span>
+                  <span>{{$utils.formatTime(item.pubTime)}}</span>
+                </p>
+                <p>
+                  <span>接收人：</span>
+                  <span>{{item.receiveUser | formatReceiveUser}}</span>
+                </p>
+                <p class="annous__item-content">
+                  <span>公告内容：</span>
+                  <span class="color-c666">{{item.content}}</span>
+                </p>
+              </div>
+              <div class="px-padding-t10 text-right">
+                <el-button size="mini" @click="lookDetail(item)">查看详情</el-button>
+                <template v-if="currentTab === 1">
+                  <el-button size="mini" @click="optAnnous(item, i, 0)" v-if="item.status === 1">撤回</el-button>
+                  <el-button type="danger" size="mini" @click="optAnnous(item, i, 1)" v-else>发布</el-button>
+                  <el-button size="mini" @click="optAnnous(item, i, 2)">删除</el-button>
+                </template>
+              </div>
+            </el-card>
+          </template>
+        </el-col>
+        <el-col :span="24" v-if="dataList.length === 0">
+          <div class="text-center color-c999 px-padding-t100">
+            <i class="el-icon-bell" style="font-size: 40px;"></i>
+            <p class="px-padding-t20">暂无公告~</p>
+          </div>
+        </el-col>
+      </el-row>
     </div>
 
     <div
@@ -63,7 +75,7 @@
           <add-annous>
           </add-annous>
         </template>
-        <template v-else-if="currentDetail.status === 1">
+        <template v-else-if="currentTab === 1 || currentTab === 2 && currentDetail.status === 1">
           <p class="px-font-24">{{currentDetail.title}}</p>
           <p class="color-c999">
             <span class="ib-middle">发布者：{{ currentDetail.pubUser ? currentDetail.pubUser.name : '' }}</span>
@@ -114,6 +126,11 @@
         return arr.map(x=> x ? x.name : '').join('、')
       }
     },
+    computed: {
+      dataList() {
+        return this.currentTab === 1 ? this.fromMeList : this.toMeList
+      }
+    },
     methods: {
       getList() {
         this.http('getAnnous', {
@@ -134,7 +151,7 @@
       optAnnous(item, index, status) {
         const txt = ['撤回', '发布', '删除']
         this.$msgbox.confirm(`确定要${txt[status]}该条公告吗`).then(()=> {
-          this.http('optAnnous', { id: item.id, status }).then(() => {
+          this.http('optAnnous', { id: item.nid, status }).then(() => {
             this.$message.success(`${txt[status]}成功`)
             const data = this[this.currentTab === 1 ? 'fromMeList' : 'toMeList']
             if (status === 2) {

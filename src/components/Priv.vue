@@ -16,7 +16,7 @@
         </el-table-column>
         <el-table-column
           prop="aliasList"
-          label="权限列表">
+          label="允许操作的权限">
         </el-table-column>
         <el-table-column
           label="操作"

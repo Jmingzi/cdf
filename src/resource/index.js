@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import axios from 'axios'
 import qs from 'qs'
 
@@ -47,7 +48,7 @@ instance.interceptors.response.use(function (response) {
   if (responseSafeCode.includes(response.data.code)) {
     return response.data
   } else {
-    alert(response.data.msg)
+    Vue.prototype.$message(response.data.msg)
     return Promise.reject(response)
   }
 }, function (error) {
@@ -62,13 +63,12 @@ let getMockUrl = (str)=> {
 }
 let get = (uri, data = {})=> {
   return post(uri, data)
-
-  if (mock || data.mock) {
-    uri = getMockUrl(uri)
-  }
-  return instance.get(uri, {
-    params: data
-  })
+  // if (mock || data.mock) {
+  //   uri = getMockUrl(uri)
+  // }
+  // return instance.get(uri, {
+  //   params: data
+  // })
 }
 let post = (uri, data = {})=> {
   if (mock || data.mock) {
@@ -231,10 +231,6 @@ export default {
 
   delPriv(data) {
     return get(this.url.delPriv, data)
-  },
-
-  delAnnous(data) {
-    return get(this.url.delAnnous, data)
   },
 
   optAnnous(data) {
