@@ -21,6 +21,7 @@
           :default-expanded-keys="[0]"
           :highlight-current="true"
           :expand-on-click-node="false"
+          :check-strictly="true"
           @node-click="handleClickDept"
           @check-change="handleSelectDept"
           ref="tree">
