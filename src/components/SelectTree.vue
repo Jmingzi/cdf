@@ -171,6 +171,13 @@
 
       handleSelectDept(item, isSelfCheck) {
         if (isSelfCheck) {
+          if (this.isSingleDept) {
+            this.$refs.tree.getCheckedKeys().forEach(key=> {
+              if (item.id !== key) {
+                this.$refs.tree.setChecked(key, false, true)
+              }
+            })
+          }
           this.selectDeptArr.push({ ...item, children: null })
         } else {
           this.selectDeptArr.splice(this.selectDeptArr.findIndex(x=> x.id === item.id), 1)
@@ -294,6 +301,10 @@
         type: Boolean,
         default: true
       },
+      isSingleDept: {
+        type: Boolean,
+        default: false
+      }
     }
   }
 </script>

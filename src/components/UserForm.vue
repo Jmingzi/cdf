@@ -184,6 +184,7 @@
       :selectedDept="form.department ? [form.department] : []"
       :selectedUser="[]"
       :selectType="1"
+      :isSingleDept="true"
       :isNeedUser="false"
       @confirm="confirmSelect">
     </select-tree>
@@ -319,7 +320,7 @@
         if (!this.form.department) {
           this.form.department = { ...this.currentDept }
         }
-        this.$message('当前部门选择为单选，默认选择选中的第一个')
+        // this.$message('当前部门选择为单选，默认选择选中的第一个')
         this.$refs.selectTree.show()
       },
       confirmSelect(dept) {

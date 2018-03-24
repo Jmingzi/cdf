@@ -138,7 +138,7 @@
               <a href="javascript:" class="color-success" @click="doOption(1, scope.row)">同意</a>
               <a href="javascript:" class="color-error" @click="doOption(2, scope.row)">拒绝</a>
             </template>
-            <template v-else-if="isTotal && scope.row.rstatus === 3">
+            <template v-else-if="isToMe && scope.row.rstatus === 3">
               <a href="javascript:" class="color-success" v-if="scope.row.expenseStatus === 5" @click="doOption(4, scope.row)">打款</a>
             </template>
           </template>
@@ -166,18 +166,18 @@
       top="10px"
       width="500px"
       :before-close="beforeClose">
-      <detail
-        v-if="currentChooseItem"
-        :item="currentChooseItem"
-      />
-      <span slot="footer" class="dialog-footer">
-        <template v-if="isToMe">
-          <el-button type="success" @click="doOption(1)" size="small">同 意</el-button>
-          <el-button type="danger" @click="doOption(2)" size="small">拒 绝</el-button>
-        </template>
-        <!--<el-button v-else-if="isFromMe" type="danger" @click="doOption(3)" size="small">撤 回</el-button>-->
-        <el-button v-else-if="isTotal" type="primary" @click="doOption(4)" size="small">打 款</el-button>
-      </span>
+      <template v-if="currentChooseItem">
+        <detail
+          :item="currentChooseItem"
+        />
+        <span slot="footer" class="dialog-footer">
+          <template v-if="isToMe && currentChooseItem.rstatus === 1">
+            <el-button type="success" @click="doOption(1)" size="small">同 意</el-button>
+            <el-button type="danger" @click="doOption(2)" size="small">拒 绝</el-button>
+          </template>
+          <el-button v-else-if="isToMe && currentChooseItem.rstatus === 3" type="primary" @click="doOption(4)" size="small">打 款</el-button>
+        </span>
+      </template>
     </el-dialog>
 
     <select-tree
