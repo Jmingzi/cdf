@@ -100,20 +100,24 @@
       }
     },
     watch: {
-      // selectType: function (val, oldVal) {
-      //   if (val !== oldVal) {
-      //     console.log(val)
-      //   }
-      //   return val
-      // }
+      dialogFormVisible: function (val) {
+        if (val) {
+          this.initCheck()
+        }
+        return val
+      }
     },
     created() {
-      this.selectUserArr = this.selectedUser.slice()
-      this.selectDeptArr = this.selectedDept.slice()
+      // this.initCheck()
     },
     methods: {
       ...mapActions(['getUserById']),
       ...mapMutations(['setState']),
+
+      initCheck() {
+        this.selectUserArr = this.selectedUser.slice()
+        this.selectDeptArr = this.selectedDept.slice()
+      },
 
       checkDefaultUser(user) {
         // 仅仅是全不选时 用
@@ -178,7 +182,9 @@
               }
             })
           }
-          this.selectDeptArr.push({ ...item, children: null })
+          if (this.selectDeptArr.findIndex(x => x.id === item.id) === -1) {
+            this.selectDeptArr.push({ ...item, children: null })
+          }
         } else {
           this.selectDeptArr.splice(this.selectDeptArr.findIndex(x=> x.id === item.id), 1)
         }
