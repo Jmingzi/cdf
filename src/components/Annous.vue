@@ -14,25 +14,30 @@
 
     <div class="position-a px-top-50 bottom-0 width-100 overflow-a px-margin-t10 px-padding-lr10">
       <div class="annous__item bd-gray-lighter" v-for="(item, i) in (currentTab === 1 ? fromMeList : toMeList)">
-        <p class="annous__item-title">{{item.title}}</p>
-        <div class="px-font-12 color-c999">
-          <p>
-            <span>发布者：</span>
-            <span>{{item.pubUser.name}}</span>
-          </p>
-          <p>
-            <span>发布时间：</span>
-            <span>{{item.pubTime}}</span>
-          </p>
-          <p>
-            <span>接收人：</span>
-            <span>{{item.receiveUser | formatReceiveUser}}</span>
-          </p>
-          <p class="annous__item-content">
-            <span>公告内容：</span>
-            <span class="color-c666">{{item.content}}</span>
-          </p>
-        </div>
+        <template v-if="item.status === 0 && currentTab === 2">
+          <p class="text-center px-padding-tb49">该公告已撤回</p>
+        </template>
+        <template v-else>
+          <p class="annous__item-title">{{item.title}}</p>
+          <div class="px-font-12 color-c999">
+            <p>
+              <span>发布者：</span>
+              <span>{{item.pubUser.name}}</span>
+            </p>
+            <p>
+              <span>发布时间：</span>
+              <span>{{$utils.formatTime(item.pubTime)}}</span>
+            </p>
+            <p>
+              <span>接收人：</span>
+              <span>{{item.receiveUser | formatReceiveUser}}</span>
+            </p>
+            <p class="annous__item-content">
+              <span>公告内容：</span>
+              <span class="color-c666">{{item.content}}</span>
+            </p>
+          </div>
+        </template>
         <div class="px-padding-t10 text-right">
           <el-button size="mini" @click="lookDetail(item)">查看详情</el-button>
           <template v-if="currentTab === 1">
@@ -62,7 +67,7 @@
           <p class="px-font-24">{{currentDetail.title}}</p>
           <p class="color-c999">
             <span class="ib-middle">发布者：{{ currentDetail.pubUser ? currentDetail.pubUser.name : '' }}</span>
-            <span class="ib-middle px-margin-l20">发布时间：{{currentDetail.pubTime}}</span>
+            <span class="ib-middle px-margin-l20">发布时间：{{$utils.formatTime(currentDetail.pubTime)}}</span>
             <span class="ib-middle px-margin-l20">接收人：{{currentDetail.receiveUser | formatReceiveUser}}</span>
           </p>
           <div class="px-padding-tb10 bd-gray-lighter-t px-margin-t10">
@@ -183,5 +188,8 @@
     i {
       font-size: 40px;
     }
+  }
+  .px-padding-tb49 {
+    padding: 49px 0;
   }
 </style>
