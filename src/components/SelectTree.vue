@@ -55,7 +55,7 @@
       </div>
 
       <div class="select-tree__selected overflow-a bd-gray-lighter-t px-font-12">
-        <p><span class="color-c999">已选择</span> <span class="cursor-p color-info" @click="delDeptSelect(null)">清空已选择</span></p>
+        <p><span class="color-c999">已选择</span> <span class="cursor-p color-info" @click="clear">清空已选择</span></p>
         <div class="select-tree__tag" v-for="(item, i) in selectDeptArr" :key="'dept-' + item.id">
           <span class="over-text ib-middle">{{item | getLabel}}</span>
           <i class="el-icon-close ib-middle" @click="delDeptSelect(item, i)"></i>
@@ -190,8 +190,12 @@
       },
 
       delUserSelect(item, i) {
-        this.$refs.multipleTable.toggleRowSelection(item, false)
-        this.selectUserArr.splice(i ,1)
+        if (item instanceof Array) {
+          item.forEach(x => this.$refs.multipleTable.toggleRowSelection(x, false))
+        } else {
+          this.$refs.multipleTable.toggleRowSelection(item, false)
+          this.selectUserArr.splice(i ,1)
+        }
       },
 
       handleSelectUser(selection, row) {
@@ -242,6 +246,12 @@
         }), this.selectUserArr)
         this.reset()
         this.dialogFormVisible = false
+      },
+
+      clear() {
+        this.delDeptSelect(null)
+        this.delUserSelect(this.selectUserArr)
+        this.selectUserArr = []
       }
     },
     computed: {
