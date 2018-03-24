@@ -18,7 +18,7 @@
           :data="dept"
           :props="defaultProps"
           :show-checkbox="isNeedDept"
-          :default-expanded-keys="[0]"
+          :default-expanded-keys="['1']"
           :highlight-current="true"
           :expand-on-click-node="false"
           :check-strictly="true"

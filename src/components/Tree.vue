@@ -12,7 +12,7 @@
         @node-expand="handleExpand"
         :data="dept"
         :props="defaultProps"
-        :default-expanded-keys="[0]"
+        :default-expanded-keys="['1']"
         :filter-node-method="filterNode"
         :highlight-current="true"
         :expand-on-click-node="false"
@@ -61,7 +61,6 @@
       },
 
       handleClick(item) {
-        console.log(item)
         if (item.id !== this.currentDept.id) {
           this.setState({
             key: 'currentDept',
