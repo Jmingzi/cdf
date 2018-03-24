@@ -3,7 +3,7 @@ import qs from 'qs'
 
 // post data格式为默认form表单格式
 let instance = axios.create({
-  baseURL: '/',
+  baseURL: 'http://oa.ixunle.com',
   timeout: 10000,
   withCredentials: true,
   // `transformRequest` allows changes to the request data before it is sent to the server
@@ -55,12 +55,14 @@ instance.interceptors.response.use(function (response) {
 })
 
 // a switch
-let mock = true
+let mock = false
 let getMockUrl = (str)=> {
   let index = str.lastIndexOf('/')
   return `./static${str.substr(index, str.length)}.json`
 }
 let get = (uri, data = {})=> {
+  return post(uri, data)
+
   if (mock || data.mock) {
     uri = getMockUrl(uri)
   }
@@ -76,34 +78,62 @@ let post = (uri, data = {})=> {
 }
 
 export default {
+  // url: {
+  //   login: '/api/login',
+  //   getDept: '/api/getDept',
+  //   getUserByDeptId: '/api/getUserByDeptId',
+  //   getAnnous: '/api/getAnnous',
+  //   addAnnous: '/api/addAnnous',
+  //   editAnnous: '/api/editAnnous',
+  //   getPrivList: '/api/getPrivList',
+  //   addPriv: '/api/addPriv',
+  //   editPriv: '/api/editPriv',
+  //   jobList: '/api/jobList',
+  //   addJob: '/api/addJob',
+  //   addUserToJob: '/api/addUserToJob',
+  //   delJobUser: '/api/delJobUser',
+  //   getProcess: '/api/getProcess',
+  //   applyExpense: '/api/applyExpense',
+  //   getInfos: '/service/logic/controller/IndexController.php?act=user&met=login',
+  //   getSetting: '/api/getSetting',
+  //   addProcess: '/api/addProcess',
+  //   delProcess: '/api/delProcess',
+  //   getExpenseList: '/api/getExpenseList',
+  //   saveUser: '/api/saveUser',
+  //   saveDeptUri: '/api/saveDept',
+  //   handleProcessStatus: '/api/handleProcessStatus',
+  //   delPriv: '/api/delPriv',
+  //   delAnnous: '/api/delAnnous',
+  //   optAnnous: '/api/optAnnous',
+  //   expenseDetail: '/api/expenseDetail'
+  // },
   url: {
-    login: '/api/login',
-    getDept: '/api/getDept',
-    getUserByDeptId: '/api/getUserByDeptId',
-    getAnnous: '/api/getAnnous',
-    addAnnous: '/api/addAnnous',
-    editAnnous: '/api/editAnnous',
-    getPrivList: '/api/getPrivList',
-    addPriv: '/api/addPriv',
-    editPriv: '/api/editPriv',
-    jobList: '/api/jobList',
-    addJob: '/api/addJob',
-    addUserToJob: '/api/addUserToJob',
-    delJobUser: '/api/delJobUser',
-    getProcess: '/api/getProcess',
-    applyExpense: '/api/applyExpense',
-    getInfos: '/api/getInfos',
-    getSetting: '/api/getSetting',
-    addProcess: '/api/addProcess',
-    delProcess: '/api/delProcess',
-    getExpenseList: '/api/getExpenseList',
-    saveUser: '/api/saveUser',
-    saveDeptUri: '/api/saveDept',
-    handleProcessStatus: '/api/handleProcessStatus',
-    delPriv: '/api/delPriv',
-    delAnnous: '/api/delAnnous',
-    optAnnous: '/api/optAnnous',
-    expenseDetail: '/api/expenseDetail'
+    login: '/service/logic/controller/IndexController.php?act=user&met=login',
+    getDept: '/service/logic/controller/IndexController.php?act=dept&met=depts',
+    getUserByDeptId: '/service/logic/controller/IndexController.php?act=dept&met=getUserById',
+    getAnnous: '/service/logic/controller/IndexController.php?act=notice&met=notices',
+    addAnnous: '/service/logic/controller/IndexController.php?act=notice&met=add',
+    editAnnous: '/service/logic/controller/IndexController.php?act=notice&met=edit',
+    getPrivList: '/service/logic/controller/IndexController.php?act=priv&met=privs',
+    addPriv: '/service/logic/controller/IndexController.php?act=priv&met=add',
+    editPriv: '/service/logic/controller/IndexController.php?act=priv&met=edit',
+    jobList: '/service/logic/controller/IndexController.php?act=job&met=getJobs',
+    addJob: '/service/logic/controller/IndexController.php?act=job&met=add',
+    addUserToJob: '/service/logic/controller/IndexController.php?act=job&met=addUser',
+    delJobUser: '/service/logic/controller/IndexController.php?act=job&met=delUser',
+    getProcess: '/service/logic/controller/IndexController.php?act=process&met=getProcess',
+    applyExpense: '/service/logic/controller/IndexController.php?act=expense&met=apply',
+    getInfos: '/service/logic/controller/IndexController.php?act=user&met=getInfo',
+    getSetting: '/service/logic/controller/IndexController.php?act=process&met=getSetting',
+    addProcess: '/service/logic/controller/IndexController.php?act=process&met=add',
+    delProcess: '/service/logic/controller/IndexController.php?act=process&met=del',
+    getExpenseList: '/service/logic/controller/IndexController.php?act=expense&met=getExpenses',
+    saveUser: '/service/logic/controller/IndexController.php?act=user&met=save',
+    saveDeptUri: '/service/logic/controller/IndexController.php?act=dept&met=add',
+    handleProcessStatus: '/service/logic/controller/IndexController.php?act=expense&met=handle',
+    delPriv: '/service/logic/controller/IndexController.php?act=priv&met=del',
+    optAnnous: '/service/logic/controller/IndexController.php?act=notice&met=opt',
+    expenseDetail: '/service/logic/controller/IndexController.php?act=expense&met=getById'
   },
 
   login(data) {

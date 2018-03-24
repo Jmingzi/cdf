@@ -313,7 +313,7 @@
           keyword: this.listKeyword,      // 关键字
           expenseStatus: this.listBxStatus // 报销状态
         }).then(data=> {
-          this.listData = data.map(item => {
+          this.listData = data.list.map(item => {
             return {
               ...item,
               createTime: this.$utils.formatTime(item.createTime),
