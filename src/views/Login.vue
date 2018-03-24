@@ -8,7 +8,7 @@
       <p class="px-font-20 text-center px-padding-b20">相源科技管理后台</p>
 
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="用户名" prop="name">
+        <el-form-item label="帐号" prop="name">
           <el-input v-model="form.name" clearable placeholder="请输入"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="pwd">
@@ -43,7 +43,7 @@
         },
         rules: {
           name: [
-            { required: true, message: '请输入用户名', trigger: 'blur' },
+            { required: true, message: '请输入帐号', trigger: 'blur' },
             { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
           ],
           pwd: [
