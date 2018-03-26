@@ -1,16 +1,16 @@
 <template>
   <div class="money-apply">
-    <div class="px-margin-b20" v-if="!hasSetProcess && processData.id">
+    <div class="px-margin-b20" v-if="!hasSetProcess && processData.id !== undefined">
       <el-alert
-        title="提示"
-        type="error"
-        description="当前部门还未设置对应报销流程，请联系管理员设置后使用"
-        :closable="false">
-      </el-alert>
+      title="提示"
+      type="error"
+      description="当前部门还未设置对应报销流程，请联系管理员设置后使用"
+      :closable="false">
+    </el-alert>
     </div>
     <el-form ref="form" :rules="rules" :model="form" label-width="80px">
       <el-form-item label="充值金额" prop="money">
-        <el-input type="number" v-model.number="form.money">
+        <el-input type="number" v-model.number="form.money" placeholder="请输入">
         </el-input>
       </el-form-item>
       <el-form-item label="平台" prop="plate">
@@ -44,20 +44,14 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label=" " prop="targetUserContactType">
-            <el-select v-model="form.targetUserContactType" placeholder="请选择">
-              <el-option
-                v-for="item in contactType"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
+          <el-form-item label=" ">
+            <el-input type="text" v-model="form.targetUserContactQQ" placeholder="对接人QQ">
+            </el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label=" " prop="targetUserContact">
-            <el-input type="text" v-model="form.targetUserContact" placeholder="对接人联系方式">
+          <el-form-item label=" ">
+            <el-input type="text" v-model="form.targetUserContactWx" placeholder="对接人微信">
             </el-input>
           </el-form-item>
         </el-col>
@@ -69,7 +63,7 @@
       </el-form-item>
 
       <el-form-item label="返点" prop="point">
-        <el-input type="text" v-model="form.point">
+        <el-input type="text" v-model="form.point" placeholder="请输入">
         </el-input>
       </el-form-item>
       <el-form-item label="项目" prop="project">
@@ -88,7 +82,7 @@
         </div>
       </el-form-item>
       <el-form-item label="退款金额" prop="refund">
-        <el-input type="number" v-model.number="form.refund">
+        <el-input type="number" v-model.number="form.refund" placeholder="请输入">
         </el-input>
       </el-form-item>
 
@@ -119,7 +113,7 @@
       <!--</el-form-item>-->
 
       <el-form-item label="说明" prop="desc">
-        <el-input type="textarea" v-model="form.desc">
+        <el-input type="textarea" v-model="form.desc" placeholder="请输入">
         </el-input>
       </el-form-item>
 
@@ -188,7 +182,7 @@
       return {
         plate: SPREAD_PLATE,
         project: SPREAD_PROJECT,
-        contactType: CONTACT_TYPE,
+        // contactType: CONTACT_TYPE,
         // payType: PAY_TYPE,
         form: {
           money: '',
@@ -205,8 +199,10 @@
           targetUserName: '',
           targetUserMobile: '',
           targetUserCompany: '',
-          targetUserContact: '',
-          targetUserContactType: 1
+          // targetUserContact: '',
+          targetUserContactQQ: '',
+          targetUserContactWx: '',
+          // targetUserContactType: 1
         },
         rules: {
           desc: [
@@ -217,7 +213,8 @@
           husband: { required: true, message: '请输入账户', min: 1, max: 100, trigger: 'blur' },
           targetUserName: { required: true, message: '请输入对接人姓名', min: 1, max: 10, trigger: 'blur' },
           targetUserMobile: { required: true, message: '请输入对接人手机号', min: 1, max: 11, trigger: 'blur' },
-          targetUserContact: { required: true, message: '请输入对接人联系方式', min: 1, max: 20, trigger: 'blur' },
+          // targetUserContactQQ: { required: true, message: '请输入对接人QQ', min: 1, max: 20, trigger: 'blur' },
+          // targetUserContactWx: { required: true, message: '请输入对接人微信', min: 1, max: 20, trigger: 'blur' },
           targetUserCompany: { required: true, message: '请输入对接人公司名称', min: 1, max: 100, trigger: 'blur' },
           point: { required: true, message: '请输入返点', min: 1, max: 100, trigger: 'blur' },
           money: [
@@ -287,9 +284,14 @@
 
         this.$refs[formName].validate((valid) => {
           if (valid) {
+            const { targetUserContactQQ, targetUserContactWx } = this.form
             const { deptId, id } = this.form.expenseDept
             // const imagesList = this.form.imagesList.map(x => x.iid)
-            console.log(this.form.project)
+            // console.log(this.form.project)
+            if (!targetUserContactQQ && !targetUserContactWx) {
+              this.$message.error('对接人QQ或微信至少填一项')
+              return
+            }
 
             this.http('applySpreadExpense', {
               ...this.form,
