@@ -78,6 +78,23 @@ export const PROCESS_TYPE = [
   { label: '推广报销', value: 2 }
 ]
 
+export const SPREAD_PLATE = [
+  { label: '360', value: 1 },
+  { label: '百度', value: 2 },
+  { label: '搜狗', value: 3 }
+]
+
+export const SPREAD_PROJECT = [
+  { label: '延时', value: 1 },
+  { label: '私护', value: 2 },
+  { label: '红血丝', value: 3 }
+]
+
+export const CONTACT_TYPE = [
+  { label: 'QQ', value: 1 },
+  { label: '微信', value: 2 }
+]
+
 export const BX_STATUS = [
   { label: '发起申请', value: '1', color: 'color-success', icon: 'el-icon-circle-check' },
   { label: '审批中', value: '2', color: 'color-warning', icon: 'el-icon-remove' },

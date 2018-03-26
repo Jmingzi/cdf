@@ -5,7 +5,7 @@
     <!--<canvas id="canvas"></canvas>-->
 
     <div class="position-a login-wrap bd-ccc px-padding-20 radius-3">
-      <p class="px-font-20 text-center px-padding-b20">相源科技管理后台</p>
+      <p class="px-font-20 text-center px-padding-b20"><img :src="require('../assets/logo.png')" width="150px"></p>
 
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="帐号" prop="name">

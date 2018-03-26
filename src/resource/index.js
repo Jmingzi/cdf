@@ -134,7 +134,8 @@ export default {
     delPriv: '/service/logic/controller/IndexController.php?act=priv&met=del',
     optAnnous: '/service/logic/controller/IndexController.php?act=notice&met=opt',
     expenseDetail: '/service/logic/controller/IndexController.php?act=expense&met=getById',
-    delJob: '/service/logic/controller/IndexController.php?act=job&met=del'
+    delJob: '/service/logic/controller/IndexController.php?act=job&met=del',
+    applySpreadExpense: '/service/logic/controller/IndexController.php?act=job&met=del',
   },
 
   login(data) {
@@ -244,5 +245,9 @@ export default {
 
   delJob(data) {
     return get(this.url.delJob, data)
+  },
+
+  applySpreadExpense(data) {
+    return get(this.url.applySpreadExpense, data)
   }
 }
