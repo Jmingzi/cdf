@@ -137,6 +137,7 @@ export default {
     delJob: '/service/logic/controller/IndexController.php?act=job&met=del',
     applySpreadExpense: '/service/logic/controller/IndexController.php?act=job&met=del',
     addSpreadExpenseDetail: '/service/logic/controller/IndexController.php?act=job&met=del',
+    getSpreadExpenseList: '/service/logic/controller/IndexController.php?act=job&met=del',
   },
 
   login(data) {
@@ -254,5 +255,9 @@ export default {
 
   addSpreadExpenseDetail(data) {
     return get(this.url.addSpreadExpenseDetail, data)
+  },
+
+  getSpreadExpenseList(data) {
+    return get(this.url.getSpreadExpenseList, data)
   }
 }

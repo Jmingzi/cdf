@@ -81,7 +81,7 @@
           <span class="color-info" v-if="form.expenseDept">{{form.expenseDept.name}}</span>
         </div>
       </el-form-item>
-      <el-form-item label="退款金额" prop="refund">
+      <el-form-item label="退款金额">
         <el-input type="number" v-model.number="form.refund" placeholder="请输入">
         </el-input>
       </el-form-item>
@@ -222,11 +222,11 @@
             { type: 'number',  message: '金额为数字', trigger: 'blur' },
             { validator: checkMoneySize, min: 0, max: 100000000, message: '金额在0-100,000,000之间', trigger: 'blur' }
           ],
-          refund: [
-            { required: true, message: '请输入退款金额', trigger: 'blur' },
-            { type: 'number',  message: '金额为数字', trigger: 'blur' },
-            { validator: checkMoneySize, min: 0, max: 100000000, message: '金额在0-100,000,000之间', trigger: 'blur' }
-          ],
+          // refund: [
+          //   { required: true, message: '请输入退款金额', trigger: 'blur' },
+          //   { type: 'number',  message: '金额为数字', trigger: 'blur' },
+          //   { validator: checkMoneySize, min: 0, max: 100000000, message: '金额在0-100,000,000之间', trigger: 'blur' }
+          // ],
           project: [
             { required: true, message: '请选择申报项目' }
           ]

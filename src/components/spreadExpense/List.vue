@@ -166,7 +166,7 @@
       :append-to-body="true"
       top="10px"
       width="500px"
-      :before-close="beforeClose">
+      :before-close="beforeClose2">
       <template v-if="currentChooseItem">
         <detail
           :item="currentChooseItem"
@@ -267,6 +267,11 @@
         })
       },
 
+      beforeClose2(done) {
+        this.currentChooseItem = null
+        done()
+      },
+
       confirmSearch() {
         this.reset()
         this.getExpenseList()
@@ -320,7 +325,7 @@
           expenseUserId = this.listBxUser.map(x => x.userId)
         }
 
-        this.http('getExpenseList', {
+        this.http('getSpreadExpenseList', {
           currentPage: 1,
           pageSize: 10,
           listType: this.isFromMe ? 1 : this.isToMe ? 2 : 3, // 1 我发起的 2 我收到的 3 统计列表
