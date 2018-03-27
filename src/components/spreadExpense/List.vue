@@ -134,6 +134,7 @@
           :width="120">
           <template slot-scope="scope">
             <el-button @click="doOption(0, scope.row)" type="text" size="small">查看</el-button>
+            <a href="javascript:" v-if="isFromMe && scope.row.expenseStatus === 3" class="color-info" @click="doOption(-1, scope.row)">添加明细</a>
             <template v-if="isToMe && scope.row.rstatus === 1">
               <a href="javascript:" class="color-success" @click="doOption(1, scope.row)">同意</a>
               <a href="javascript:" class="color-error" @click="doOption(2, scope.row)">拒绝</a>
@@ -180,6 +181,19 @@
       </template>
     </el-dialog>
 
+    <el-dialog
+      title="添加申报明细"
+      :visible.sync="dialogDetailVisible"
+      :append-to-body="true"
+      top="100px"
+      width="650px"
+      :before-close="beforeClose">
+      <add-detail-list
+        v-if="currentChooseItem"
+        @confirm="addDetail"
+      />
+    </el-dialog>
+
     <select-tree
       ref="selectTree"
       :selectedDept="listBxDept"
@@ -193,6 +207,7 @@
   import Detail from './Detail'
   import http from '../../mixins/http'
   import {PAY_TYPE, BX_STATUS} from '../../constant'
+  import AddDetailList from './addDetailList'
 
   export default {
     name: 'money-system-list',
@@ -203,6 +218,7 @@
         tableWrapHeight: this.wrapHeight - 110,
         currentPage: 1,
         dialogVisible: false,
+        dialogDetailVisible: false,
         currentChooseItem: null,
         listData: [],
         bxStatus: BX_STATUS,
@@ -245,8 +261,10 @@
 
     methods: {
       beforeClose(done) {
-        this.currentChooseItem = null
-        done()
+        this.$msgbox.confirm('确认关闭吗？').then(() => {
+          this.currentChooseItem = null
+          done()
+        })
       },
 
       confirmSearch() {
@@ -330,6 +348,9 @@
         }
 
         switch (type) {
+          case -1: {
+            this.dialogDetailVisible = true
+          } break
           case 0: {
             this.dialogVisible = true
           } break
@@ -367,6 +388,16 @@
             this.dialogVisible = false
           })
         }
+      },
+
+      addDetail(data) {
+        this.http('addSpreadExpenseDetail', {
+          expenseId: this.currentChooseItem.id,
+          items: JSON.stringify(data)
+        }).then(() => {
+          this.$message.success('添加明细成功')
+          this.dialogDetailVisible = false
+        })
       }
     },
 
@@ -392,7 +423,7 @@
       }
     },
     components: {
-      Detail
+      Detail, AddDetailList
     }
   }
 </script>
