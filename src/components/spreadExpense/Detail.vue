@@ -85,26 +85,28 @@
       </el-table-column>
     </el-table>
 
-    <p class="px-margin-t20">报销流程</p>
-    <div class="process__wrap position-r">
-      <div class="process__item position-r" v-for="item in detail.process">
-        <p :class="`process__state ${item.processColor}`">
-          <span class="ib-middle px-margin-r5">{{item.name}}<span v-if="item.job">({{item.job}})</span></span>
-        </p>
-        <div class="process__info text-right bg-f2 cl">
-          <span :class="`fl ${item.processColor}`">{{item.processText}}</span>
-          <span class="color-c999">{{$utils.formatTime(item.time)}}</span>
-          <p class="text-left" v-if="item.desc">
-            <span class="color-c999">意见：</span>
-            <span>{{item.desc}}</span>
+    <template v-if="detail.items.length === 0">
+      <p class="px-margin-t20">报销流程</p>
+      <div class="process__wrap position-r">
+        <div class="process__item position-r" v-for="item in detail.process">
+          <p :class="`process__state ${item.processColor}`">
+            <span class="ib-middle px-margin-r5">{{item.name}}<span v-if="item.job">({{item.job}})</span></span>
           </p>
+          <div class="process__info text-right bg-f2 cl">
+            <span :class="`fl ${item.processColor}`">{{item.processText}}</span>
+            <span class="color-c999">{{$utils.formatTime(item.time)}}</span>
+            <p class="text-left" v-if="item.desc">
+              <span class="color-c999">意见：</span>
+              <span>{{item.desc}}</span>
+            </p>
+          </div>
+          <div class="position-a process__item-icon">
+            <i :class="item.processIcon + ' ' + item.processColor"></i>
+          </div>
         </div>
-        <div class="position-a process__item-icon">
-          <i :class="item.processIcon + ' ' + item.processColor"></i>
-        </div>
+        <div class="process_line position-a"></div>
       </div>
-      <div class="process_line position-a"></div>
-    </div>
+    </template>
   </div>
 </template>
 

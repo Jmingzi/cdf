@@ -49,7 +49,7 @@
       <el-form-item label="相关图片" prop="imagesList">
         <el-upload
           class="upload-demo"
-          action="/upload/"
+          :action="expenseUploadUrl"
           :on-preview="handlePreview"
           :on-remove="handleRemove"
           :on-success="handleSuccess"
@@ -123,6 +123,7 @@
       }
 
       return {
+        expenseUploadUrl: (this.$utils.dev ? 'http://oa.ixunle.com' : '') + '/service/logic/controller/IndexController.php?act=upload&met=expenseCred',
         payWay: PAY_WAY,
         payType: PAY_TYPE,
         form: {

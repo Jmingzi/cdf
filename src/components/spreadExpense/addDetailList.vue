@@ -46,10 +46,10 @@
         <el-form-item label="图片">
           <el-upload
             class="upload-demo"
-            action="/upload/"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :on-success="handleSuccess"
+            :action="spreadUploadUrl"
+            :on-preview="handlePreview.bind(this, i)"
+            :on-remove="handleRemove.bind(this, i)"
+            :on-success="handleSuccess.bind(this, i)"
             :file-list="item.imagesList"
             list-type="picture">
             <el-button size="small" type="danger">点击上传</el-button>
@@ -66,12 +66,13 @@
 </template>
 
 <script>
-  import {SPREAD_PROJECT} from '../../constant'
+  import {SPREAD_PROJECT, SPREAD_URL} from '../../constant'
   export default {
     data() {
       return {
         project: SPREAD_PROJECT,
-        form: []
+        form: [],
+        spreadUploadUrl: (this.$utils.dev ? 'http://oa.ixunle.com' : '') + '/service/logic/controller/IndexController.php?act=upload&met=spreadCred'
       }
     },
 
@@ -80,17 +81,17 @@
     },
 
     methods: {
-      handleRemove(file, fileList) {
-        let index = this.form.imagesList.findIndex(x => x.id || x.uid === file.id || file.uid)
-        this.form.imagesList.splice(index, 1)
+      handleRemove(i, file, fileList) {
+        let index = this.form[i].imagesList.findIndex(x => x.iid || x.uid === file.iid || file.uid)
+        this.form[i].imagesList.splice(index, 1)
       },
 
-      handlePreview(file) {
+      handlePreview(i, file) {
         window.open(file.url)
       },
 
-      handleSuccess(file, fileList) {
-        this.form.imagesList.push(file.data)
+      handleSuccess(i, file, fileList) {
+        this.form[i].imagesList.push(file.data)
       },
 
       addDetail() {
@@ -124,7 +125,8 @@
         this.$emit('confirm', this.form.map(item => {
           return {
             ...item,
-            date: item.date.getTime()
+            date: item.date.getTime(),
+            imagesList: item.imagesList.map(x => x.iid)
           }
         }))
       }
