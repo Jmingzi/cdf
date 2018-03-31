@@ -181,6 +181,7 @@
             <el-button type="danger" @click="doOption(2)" size="small">拒 绝</el-button>
           </template>
           <el-button v-else-if="isToMe && currentChooseItem.rstatus === 3" type="primary" @click="doOption(4)" size="small">打 款</el-button>
+          <el-button v-else-if="isFromMe && currentChooseItem.rstatus === 3" type="primary" @click="doOption(-1)" size="small">添加明细</el-button>
         </span>
       </template>
     </el-dialog>

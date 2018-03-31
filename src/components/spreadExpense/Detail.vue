@@ -5,24 +5,36 @@
       <span class="color-warning">{{detail.statusText}}</span>
     </div>
     <div class="detail-item">
-      <span class="text-right color-c999">报销事由：</span>
+      <span class="text-right color-c999">说明：</span>
       <span>{{detail.desc}} </span>
     </div>
     <div class="detail-item">
-      <span class="text-right color-c999">报销金额：</span>
+      <span class="text-right color-c999">充值金额：</span>
       <span>{{detail.money}}元</span>
     </div>
     <div class="detail-item">
-      <span class="text-right color-c999">支出类别：</span>
-      <span>{{detail.payType.join('/')}}</span>
+      <span class="text-right color-c999">项目：</span>
+      <span>{{detail.project}}</span>
     </div>
     <div class="detail-item">
-      <span class="text-right color-c999">支出方式：</span>
-      <span>{{detail.way}}</span>
+      <span class="text-right color-c999">对接人：</span>
+      <span>{{detail.contName}}</span>
     </div>
     <div class="detail-item">
-      <span class="text-right color-c999">支出时间：</span>
-      <span>{{$utils.formatTime(detail.payTime)}}</span>
+      <span class="text-right color-c999">对接人手机号：</span>
+      <span>{{detail.phone}}</span>
+    </div>
+    <div class="detail-item">
+      <span class="text-right color-c999">对接人微信：</span>
+      <span>{{detail.wx}}</span>
+    </div>
+    <div class="detail-item">
+      <span class="text-right color-c999">对接人qq：</span>
+      <span>{{detail.qq}}</span>
+    </div>
+    <div class="detail-item">
+      <span class="text-right color-c999">对接人公司：</span>
+      <span>{{detail.company}}</span>
     </div>
     <div class="detail-item">
       <span class="text-right color-c999">报销部门：</span>
@@ -68,7 +80,7 @@
 
 <script>
   import http from '../../mixins/http'
-  import { BX_STATUS } from "../../constant"
+  import { BX_STATUS, SPREAD_PROJECT, SPREAD_PLATE } from "../../constant"
 
   export default {
     name: 'money-system-detail',
@@ -82,7 +94,6 @@
 
     watch: {
       item: function (obj) {
-        console.log(1)
         return obj
       }
     },
@@ -99,6 +110,7 @@
       getDetail() {
         this.http('getSpreadDetail', { expenseId: this.item.id }).then(res => {
           res.statusText = BX_STATUS.find(x => Number(x.value) === Number(res.status)).label
+          res.project = res.project.map(id => SPREAD_PROJECT.find(x => x.value === Number(id)).label).join('、')
           res.process = res.process.map(item => {
             const y = BX_STATUS.find(x => Number(x.value) === Number(item.status))
             return {
