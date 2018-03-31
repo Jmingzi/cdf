@@ -177,6 +177,11 @@
   }
 </script>
 
-<style lang="scss">
-
+<style lang="scss" sloped>
+  .detail-item {
+    .text-right {
+      display: inline-block;
+      width: 100px;
+    }
+  }
 </style>
