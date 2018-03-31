@@ -14,22 +14,18 @@
         <el-tab-pane name="fourth">
           <span slot="label"><i class="el-icon-tickets"></i> 统计</span>
         </el-tab-pane>
-        <!--<el-tab-pane name="five">-->
-          <!--<span slot="label"><i class="el-icon-setting"></i> 流程配置</span>-->
-        <!--</el-tab-pane>-->
       </el-tabs>
 
-      <money-system-apply
-        v-if="userInfo && activeName === 'first'">
-      </money-system-apply>
-      <!--<money-system-setting-->
-        <!--v-else-if="activeName === 'five'">-->
-      <!--</money-system-setting>-->
-      <money-system-list
-        v-else-if="wrapHeight"
-        :wrap-height="wrapHeight"
-        :active-name="activeName">
-      </money-system-list>
+      <template v-if="userInfo">
+        <money-system-apply
+          v-if="activeName === 'first'">
+        </money-system-apply>
+        <money-system-list
+          v-else-if="wrapHeight"
+          :wrap-height="wrapHeight"
+          :active-name="activeName">
+        </money-system-list>
+      </template>
     </div>
   </div>
 </template>
@@ -37,7 +33,6 @@
 <script>
   import MoneySystemApply from './Apply'
   import MoneySystemList from './List'
-  // import MoneySystemSetting from './MoneySystemSetting'
   import http from '../../mixins/http'
   import { mapState } from 'vuex'
 

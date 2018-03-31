@@ -2,13 +2,6 @@
   <div class="list">
     <div class="position-f px-left-10 px-right-10 px-top-60 px-bottom-50 overflow-a">
       <div v-if="isTotal">
-        <!--<div class="search__wrap ib-middle">-->
-          <!--<span class="ib-middle">报销金额</span>-->
-          <!--<div class="ib-middle">-->
-            <!--<el-input placeholder="请输入">-->
-            <!--</el-input>-->
-          <!--</div>-->
-        <!--</div>-->
         <div class="search__wrap search__wrap-dept ib-middle">
           <span class="ib-middle">报销部门或人</span>
           <div class="ib-middle dept" @click="$refs.selectTree.show()">
@@ -82,49 +75,60 @@
           width="130">
         </el-table-column>
         <el-table-column
-          prop="desc"
-          label="报销事由">
-        </el-table-column>
-        <el-table-column
           prop="money"
-          label="报销金额"
+          label="充值金额"
           sortable
           width="120">
         </el-table-column>
         <el-table-column
-          prop="payType[0]"
-          label="支出（大类）"
+          prop="plantform"
+          label="平台"
           sortable
-          width="140">
+          width="80">
         </el-table-column>
         <el-table-column
-          prop="payType[1]"
-          label="支出（小类）"
-          sortable
-          width="140">
+          prop="account"
+          label="账户"
+          width="150">
         </el-table-column>
         <el-table-column
-          prop="expenseDept"
+          prop="project"
+          label="项目"
+          sortable
+          width="100">
+        </el-table-column>
+        <el-table-column
+          prop="aname"
+          label="对接人"
+          width="80">
+        </el-table-column>
+        <el-table-column
+          prop="aphone"
+          label="对接人电话"
+          width="100">
+        </el-table-column>
+        <el-table-column
+          prop="dept"
           label="报销部门"
           width="80">
         </el-table-column>
         <el-table-column
+          v-if="isToMe"
           prop="name"
           label="报销人"
           width="80">
         </el-table-column>
         <el-table-column
-          prop="payTime"
-          label="支出时间"
-          width="130">
+          prop="point"
+          label="返点"
+          width="60">
         </el-table-column>
         <el-table-column
-          prop="way"
-          label="支出方式"
-          width="80">
+          prop="desc"
+          label="说明">
         </el-table-column>
         <el-table-column
-          prop="expenseStatus"
+          prop="status"
           label="状态"
           sortable
           width="80">
@@ -206,7 +210,7 @@
 <script>
   import Detail from './Detail'
   import http from '../../mixins/http'
-  import {PAY_TYPE, BX_STATUS} from '../../constant'
+  import {PAY_TYPE, BX_STATUS, SPREAD_PLATE, SPREAD_PROJECT} from '../../constant'
   import AddDetailList from './addDetailList'
 
   export default {
@@ -340,8 +344,11 @@
             return {
               ...item,
               createTime: this.$utils.formatTime(item.createTime),
-              payTime: this.$utils.formatTime(item.payTime),
-              expenseStatus: BX_STATUS.find(x => Number(x.value) === Number(item.expenseStatus)).label
+              plantform: SPREAD_PLATE.find(x => x.value === Number(item.plantform)).label,
+              project: item.project instanceof Array
+                ? item.project.map(id => SPREAD_PROJECT.find(x => x.value === Number(id)).label)
+                : '',
+              status: BX_STATUS.find(x => Number(x.value) === Number(item.status)).label
             }
           })
         })

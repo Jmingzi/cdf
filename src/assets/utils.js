@@ -9,5 +9,7 @@ export default {
     function _zero(num) {
       return num > 9 ? num : `0${num}`
     }
-  }
+  },
+
+  dev: process.env !== 'production'
 }

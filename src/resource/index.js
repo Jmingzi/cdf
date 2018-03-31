@@ -1,31 +1,13 @@
 import Vue from 'vue'
 import axios from 'axios'
 import qs from 'qs'
+// import utils from '../assets/utils'
 
 // post data格式为默认form表单格式
 let instance = axios.create({
   baseURL: 'http://oa.ixunle.com',
   timeout: 10000,
   withCredentials: true,
-  // `transformRequest` allows changes to the request data before it is sent to the server
-  // This is only applicable for request methods 'PUT', 'POST', and 'PATCH'
-  // The last function in the array must return a string or an instance of Buffer, ArrayBuffer,
-  // FormData or Stream
-  // You may modify the headers object.
-  // transformRequest: [function (data, headers) {
-  //   // Do whatever you want to transform the data
-  //
-  //   return data
-  // }],
-
-  // `transformResponse` allows changes to the response data to be made before
-  // it is passed to then/catch
-  // transformResponse: [function (data) {
-  //   // Do whatever you want to transform the data
-  //   console.log(data)
-  //   return data
-  // }],
-
   // `paramsSerializer` is an optional function in charge of serializing `params`
   // (e.g. https://www.npmjs.com/package/qs, http://api.jquery.com/jquery.param/)
   paramsSerializer: function(params) {
@@ -62,13 +44,13 @@ let getMockUrl = (str)=> {
   return `./static${str.substr(index, str.length)}.json`
 }
 let get = (uri, data = {})=> {
-  return post(uri, data)
   // if (mock || data.mock) {
   //   uri = getMockUrl(uri)
+  //   return instance.get(uri, {
+  //     params: data
+  //   })
   // }
-  // return instance.get(uri, {
-  //   params: data
-  // })
+  return post(uri, data)
 }
 let post = (uri, data = {})=> {
   if (mock || data.mock) {
@@ -78,35 +60,6 @@ let post = (uri, data = {})=> {
 }
 
 export default {
-  // url: {
-  //   login: '/api/login',
-  //   getDept: '/api/getDept',
-  //   getUserByDeptId: '/api/getUserByDeptId',
-  //   getAnnous: '/api/getAnnous',
-  //   addAnnous: '/api/addAnnous',
-  //   editAnnous: '/api/editAnnous',
-  //   getPrivList: '/api/getPrivList',
-  //   addPriv: '/api/addPriv',
-  //   editPriv: '/api/editPriv',
-  //   jobList: '/api/jobList',
-  //   addJob: '/api/addJob',
-  //   addUserToJob: '/api/addUserToJob',
-  //   delJobUser: '/api/delJobUser',
-  //   getProcess: '/api/getProcess',
-  //   applyExpense: '/api/applyExpense',
-  //   getInfos: '/service/logic/controller/IndexController.php?act=user&met=login',
-  //   getSetting: '/api/getSetting',
-  //   addProcess: '/api/addProcess',
-  //   delProcess: '/api/delProcess',
-  //   getExpenseList: '/api/getExpenseList',
-  //   saveUser: '/api/saveUser',
-  //   saveDeptUri: '/api/saveDept',
-  //   handleProcessStatus: '/api/handleProcessStatus',
-  //   delPriv: '/api/delPriv',
-  //   delAnnous: '/api/delAnnous',
-  //   optAnnous: '/api/optAnnous',
-  //   expenseDetail: '/api/expenseDetail'
-  // },
   url: {
     login: '/service/logic/controller/IndexController.php?act=user&met=login',
     getDept: '/service/logic/controller/IndexController.php?act=dept&met=depts',
@@ -135,9 +88,9 @@ export default {
     optAnnous: '/service/logic/controller/IndexController.php?act=notice&met=opt',
     expenseDetail: '/service/logic/controller/IndexController.php?act=expense&met=getById',
     delJob: '/service/logic/controller/IndexController.php?act=job&met=del',
-    applySpreadExpense: '/service/logic/controller/IndexController.php?act=job&met=del',
-    addSpreadExpenseDetail: '/service/logic/controller/IndexController.php?act=job&met=del',
-    getSpreadExpenseList: '/service/logic/controller/IndexController.php?act=job&met=del',
+    applySpreadExpense: '/service/logic/controller/IndexController.php?act=spread&met=apply',
+    addSpreadExpenseDetail: '/service/logic/controller/IndexController.php?act=spread&met=getById',
+    getSpreadExpenseList: '/service/logic/controller/IndexController.php?act=spread&met=getExpenses',
   },
 
   login(data) {
