@@ -48,40 +48,42 @@
       <span class="text-right color-c999">报销时间：</span>
       <span>{{$utils.formatTime(detail.createTime)}}</span>
     </div>
-    <div class="bd-gray-lighter-b px-padding-b15" v-for="(item, i) in detail.items">
-      <p class="px-margin-t20">申报明细({{i + 1}})</p>
-      <el-row :gutter="20">
-        <el-col :span="12">
-          <span class="color-c999">日期: </span>
-          <span>{{$utils.formatTime(item.date)}}</span>
-        </el-col>
-        <el-col :span="12">
-          <span class="color-c999">消费金额: </span>
-          <span>{{item.money}}</span>
-        </el-col>
-        <el-col :span="12">
-          <span class="color-c999">项目: </span>
-          <span>{{item.project | formatProject}}</span>
-        </el-col>
-        <el-col :span="12">
-          <span class="color-c999">说明: </span>
-          <span>{{item.desc}}</span>
-        </el-col>
-        <el-col :span="24">
-          <div class="detail-item">
-            <span class="text-right color-c999 ib-top">图片：</span>
-            <div class="ib-top" v-if="item.images.length > 0">
-              <a
-                v-for="x in item.images"
-                class="ib-middle px-margin-10" :href="x.url" target="_blank">
-                <img :src="x.url" width="70" height="70">
-              </a>
-            </div>
-            <span v-else>无</span>
-          </div>
-        </el-col>
-      </el-row>
-    </div>
+
+    <p class="px-margin-t20">申报明细</p>
+    <el-table
+      :data="detail.items"
+      style="width: 100%;">
+      <el-table-column
+        prop="index"
+        label="序号"
+        width="50">
+      </el-table-column>
+      <el-table-column
+        prop="date"
+        label="日期"
+        width="140">
+      </el-table-column>
+      <el-table-column
+        prop="money"
+        label="消费金额"
+        width="100">
+      </el-table-column>
+      <el-table-column
+        prop="project"
+        label="项目"
+        width="100">
+      </el-table-column>
+      <el-table-column
+        prop="desc"
+        label="说明">
+      </el-table-column>
+      <el-table-column
+        label="截图">
+        <template slot-scope="scope">
+          <a v-for="(x, i) in scope.row.images" :href="x.url" target="_blank" class="ib-middle px-margin-r5">截图{{i + 1}}</a>
+        </template>
+      </el-table-column>
+    </el-table>
 
     <p class="px-margin-t20">报销流程</p>
     <div class="process__wrap position-r">
@@ -127,13 +129,9 @@
     },
 
     filters: {
-      formatProject(project) {
-        return SPREAD_PROJECT.find(x => x.value === Number(project)).label
-      },
-
       formatPlateForm(plate) {
         return SPREAD_PLATE.find(x => x.value === Number(plate)).label
-      }
+      },
     },
 
     props: ['item'],
@@ -145,8 +143,20 @@
     },
 
     methods: {
+      formatProject(project) {
+        return SPREAD_PROJECT.find(x => x.value === Number(project)).label
+      },
+
       getDetail() {
         this.http('getSpreadDetail', { expenseId: this.item.id }).then(res => {
+          res.items = res.items.map((x, i) => {
+            return {
+              ...x,
+              project: this.formatProject(x.project),
+              date: this.$utils.formatTime(x.date),
+              index: i + 1
+            }
+          })
           res.statusText = BX_STATUS.find(x => Number(x.value) === Number(res.status)).label
           res.project = res.project.map(id => SPREAD_PROJECT.find(x => x.value === Number(id)).label).join('、')
           res.process = res.process.map(item => {
