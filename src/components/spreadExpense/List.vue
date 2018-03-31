@@ -128,7 +128,7 @@
           label="说明">
         </el-table-column>
         <el-table-column
-          prop="status"
+          prop="statusText"
           label="状态"
           sortable
           width="80">
@@ -138,13 +138,13 @@
           :width="120">
           <template slot-scope="scope">
             <el-button @click="doOption(0, scope.row)" type="text" size="small">查看</el-button>
-            <a href="javascript:" v-if="isFromMe && scope.row.expenseStatus === 3" class="color-info" @click="doOption(-1, scope.row)">添加明细</a>
-            <template v-if="isToMe && scope.row.rstatus === 1">
+            <a href="javascript:" v-if="isFromMe && scope.row.status === 3" class="color-info" @click="doOption(-1, scope.row)">添加明细</a>
+            <template v-if="isToMe && scope.row.status === 1">
               <a href="javascript:" class="color-success" @click="doOption(1, scope.row)">同意</a>
               <a href="javascript:" class="color-error" @click="doOption(2, scope.row)">拒绝</a>
             </template>
             <template v-else-if="isToMe && scope.row.rstatus === 3">
-              <a href="javascript:" class="color-success" v-if="scope.row.expenseStatus === 5" @click="doOption(4, scope.row)">打款</a>
+              <a href="javascript:" class="color-success" v-if="scope.row.status === 5" @click="doOption(4, scope.row)">打款</a>
             </template>
           </template>
         </el-table-column>
@@ -176,12 +176,12 @@
           :item="currentChooseItem"
         />
         <span slot="footer" class="dialog-footer">
-          <template v-if="isToMe && currentChooseItem.rstatus === 1">
+          <template v-if="isToMe && currentChooseItem.status === 1">
             <el-button type="success" @click="doOption(1)" size="small">同 意</el-button>
             <el-button type="danger" @click="doOption(2)" size="small">拒 绝</el-button>
           </template>
-          <el-button v-else-if="isToMe && currentChooseItem.rstatus === 3" type="primary" @click="doOption(4)" size="small">打 款</el-button>
-          <el-button v-else-if="isFromMe && currentChooseItem.rstatus === 3" type="primary" @click="doOption(-1)" size="small">添加明细</el-button>
+          <el-button v-else-if="isToMe && currentChooseItem.status === 3" type="primary" @click="doOption(4)" size="small">打 款</el-button>
+          <el-button v-if="isFromMe && currentChooseItem.status === 3" type="primary" @click="doOption(-1)" size="small">添加明细</el-button>
         </span>
       </template>
     </el-dialog>
@@ -349,7 +349,7 @@
               project: item.project instanceof Array
                 ? item.project.map(id => SPREAD_PROJECT.find(x => x.value === Number(id)).label)
                 : '',
-              status: BX_STATUS.find(x => Number(x.value) === Number(item.status)).label
+              statusText: BX_STATUS.find(x => Number(x.value) === Number(item.status)).label
             }
           })
         })
