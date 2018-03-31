@@ -169,7 +169,7 @@
       :visible.sync="dialogVisible"
       :append-to-body="true"
       top="10px"
-      width="500px"
+      width="650px"
       :before-close="beforeClose2">
       <template v-if="currentChooseItem">
         <detail

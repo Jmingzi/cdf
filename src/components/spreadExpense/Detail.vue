@@ -9,6 +9,10 @@
       <span>{{detail.desc}} </span>
     </div>
     <div class="detail-item">
+      <span class="text-right color-c999">平台：</span>
+      <span>{{detail.plantform | formatPlateForm}}</span>
+    </div>
+    <div class="detail-item">
       <span class="text-right color-c999">充值金额：</span>
       <span>{{detail.money}}元</span>
     </div>
@@ -44,17 +48,6 @@
       <span class="text-right color-c999">报销时间：</span>
       <span>{{$utils.formatTime(detail.createTime)}}</span>
     </div>
-    <div class="detail-item">
-      <span class="text-right color-c999 ib-top">相关图片：</span>
-      <div class="ib-top" v-if="detail.images.length > 0">
-        <a
-          v-for="item in detail.images"
-          class="ib-middle px-margin-10" :href="item.url" target="_blank">
-          <img :src="item.url" width="70" height="70">
-        </a>
-      </div>
-      <span v-else>无</span>
-    </div>
     <div class="bd-gray-lighter-b px-padding-b15" v-for="(item, i) in detail.items">
       <p class="px-margin-t20">申报明细({{i + 1}})</p>
       <el-row :gutter="20">
@@ -68,11 +61,24 @@
         </el-col>
         <el-col :span="12">
           <span class="color-c999">项目: </span>
-          <span>{{item.project}}</span>
+          <span>{{item.project | formatProject}}</span>
         </el-col>
         <el-col :span="12">
           <span class="color-c999">说明: </span>
           <span>{{item.desc}}</span>
+        </el-col>
+        <el-col :span="24">
+          <div class="detail-item">
+            <span class="text-right color-c999 ib-top">图片：</span>
+            <div class="ib-top" v-if="item.images.length > 0">
+              <a
+                v-for="x in item.images"
+                class="ib-middle px-margin-10" :href="x.url" target="_blank">
+                <img :src="x.url" width="70" height="70">
+              </a>
+            </div>
+            <span v-else>无</span>
+          </div>
         </el-col>
       </el-row>
     </div>
@@ -117,6 +123,16 @@
     watch: {
       item: function (obj) {
         return obj
+      }
+    },
+
+    filters: {
+      formatProject(project) {
+        return SPREAD_PROJECT.find(x => x.value === Number(project)).label
+      },
+
+      formatPlateForm(plate) {
+        return SPREAD_PLATE.find(x => x.value === Number(plate)).label
       }
     },
 
