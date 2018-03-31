@@ -179,7 +179,7 @@
 
     methods: {
       getProcess(deptId) {
-        this.http('getProcess', { userId: 1, deptId }).then(res=> {
+        this.http('getProcess', { userId: 1, deptId, processType: 1 }).then(res=> {
           this.processData = res
         })
       },
