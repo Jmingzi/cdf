@@ -7,20 +7,20 @@
     <div class="position-a login-wrap bd-ccc px-padding-20 radius-3">
       <p class="px-font-20 text-center px-padding-b20"><img :src="require('../assets/logo.png')" width="150px"></p>
 
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="帐号" prop="name">
-          <el-input v-model="form.name" clearable placeholder="请输入"></el-input>
+      <el-form ref="form" :model="form" :rules="rules" label-width="0px">
+        <el-form-item label="" prop="name">
+          <el-input v-model="form.name" clearable placeholder="请输入用户名"/>
         </el-form-item>
-        <el-form-item label="密码" prop="pwd">
-          <el-input v-model="form.pwd" clearable placeholder="请输入"></el-input>
+        <el-form-item label="" prop="pwd">
+          <el-input v-model="form.pwd" clearable placeholder="请输入密码"/>
         </el-form-item>
 
-        <el-form-item>
-          <el-button type="primary" @click="submitForm()">提交</el-button>
+        <el-form-item class="text-center">
+          <el-button type="primary" @click="submitForm()">登陆</el-button>
           <el-button @click="resetForm()">重置</el-button>
         </el-form-item>
       </el-form>
-      <p class="color-c666 px-font-12 px-margin-l80">
+      <p class="color-c666 px-font-12 text-center">
         &copy; 相源科技 版权所有
       </p>
     </div>

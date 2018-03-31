@@ -105,7 +105,7 @@
         <el-table-column
           prop="aphone"
           label="对接人电话"
-          width="100">
+          width="110">
         </el-table-column>
         <el-table-column
           prop="dept"
