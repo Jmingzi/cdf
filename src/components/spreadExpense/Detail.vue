@@ -97,7 +97,7 @@
 
     methods: {
       getDetail() {
-        this.http('getExpenseDetail', { expenseId: this.item.id }).then(res => {
+        this.http('getSpreadDetail', { expenseId: this.item.id }).then(res => {
           res.statusText = BX_STATUS.find(x => Number(x.value) === Number(res.status)).label
           res.process = res.process.map(item => {
             const y = BX_STATUS.find(x => Number(x.value) === Number(item.status))

@@ -89,8 +89,9 @@ export default {
     expenseDetail: '/service/logic/controller/IndexController.php?act=expense&met=getById',
     delJob: '/service/logic/controller/IndexController.php?act=job&met=del',
     applySpreadExpense: '/service/logic/controller/IndexController.php?act=spread&met=apply',
-    addSpreadExpenseDetail: '/service/logic/controller/IndexController.php?act=spread&met=getById',
+    addSpreadExpenseDetail: '/service/logic/controller/IndexController.php?act=spread&met=addItem',
     getSpreadExpenseList: '/service/logic/controller/IndexController.php?act=spread&met=getExpenses',
+    getSpreadDetail: '/service/logic/controller/IndexController.php?act=spread&met=getById',
   },
 
   login(data) {
@@ -212,5 +213,9 @@ export default {
 
   getSpreadExpenseList(data) {
     return get(this.url.getSpreadExpenseList, data)
+  },
+
+  getSpreadDetail(data) {
+    return get(this.url.getSpreadDetail, data)
   }
 }
