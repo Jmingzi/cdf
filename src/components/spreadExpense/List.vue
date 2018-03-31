@@ -267,7 +267,7 @@
     methods: {
       beforeClose(done) {
         this.$msgbox.confirm('确认关闭吗？').then(() => {
-          this.currentChooseItem = null
+          // this.currentChooseItem = null
           done()
         })
       },

@@ -55,6 +55,28 @@
       </div>
       <span v-else>无</span>
     </div>
+    <div class="bd-gray-lighter-b px-padding-b15" v-for="(item, i) in detail.items">
+      <p class="px-margin-t20">申报明细({{i + 1}})</p>
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <span class="color-c999">日期: </span>
+          <span>{{$utils.formatTime(item.date)}}</span>
+        </el-col>
+        <el-col :span="12">
+          <span class="color-c999">消费金额: </span>
+          <span>{{item.money}}</span>
+        </el-col>
+        <el-col :span="12">
+          <span class="color-c999">项目: </span>
+          <span>{{item.project}}</span>
+        </el-col>
+        <el-col :span="12">
+          <span class="color-c999">说明: </span>
+          <span>{{item.desc}}</span>
+        </el-col>
+      </el-row>
+    </div>
+
     <p class="px-margin-t20">报销流程</p>
     <div class="process__wrap position-r">
       <div class="process__item position-r" v-for="item in detail.process">
