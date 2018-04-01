@@ -35,6 +35,16 @@
       ...mapState(['currMenuId', 'userInfo'])
     },
 
+    watch: {
+      userInfo(v) {
+        if (v) {
+          let queryId = this.$route.query.menuId
+          this.menuChange(queryId ? Number(queryId) : 0)
+        }
+        return v
+      }
+    },
+
     methods: {
       ...mapMutations(['setState']),
 

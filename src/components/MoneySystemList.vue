@@ -135,14 +135,14 @@
           <template slot-scope="scope">
             <el-button @click="doOption(0, scope.row)" type="text" size="small">查看</el-button>
             <template v-if="isFromMe">
-              <a href="javascript:" v-if="scope.row.rstatus === 1" class="color-error" @click="doOption(3, scope.row)">撤回</a>
+              <a href="javascript:" v-if="scope.row.status === 1" class="color-error" @click="doOption(3, scope.row)">撤回</a>
             </template>
             <template v-if="isToMe">
-              <template v-if="scope.row.rstatus === 1">
+              <template v-if="scope.row.status === 1">
                 <a href="javascript:" class="color-success" @click="doOption(1, scope.row)">同意</a>
                 <a href="javascript:" class="color-error" @click="doOption(2, scope.row)">拒绝</a>
               </template>
-              <template v-else-if="scope.row.rstatus === 5">
+              <template v-else-if="scope.row.status === 5">
                 <a href="javascript:" class="color-success" @click="doOption(4, scope.row)">打款</a>
               </template>
             </template>
@@ -177,14 +177,14 @@
         />
         <span slot="footer" class="dialog-footer">
           <template v-if="isFromMe">
-              <a href="javascript:" v-if="currentChooseItem.rstatus === 1" class="color-error" @click="doOption(3)">撤回</a>
+              <a href="javascript:" v-if="currentChooseItem.status === 1" class="color-error" @click="doOption(3)">撤回</a>
             </template>
           <template v-if="isToMe">
-            <template v-if="currentChooseItem.rstatus === 1">
+            <template v-if="currentChooseItem.status === 1">
               <el-button type="success" @click="doOption(1)" size="small">同 意</el-button>
               <el-button type="danger" @click="doOption(2)" size="small">拒 绝</el-button>
             </template>
-            <el-button v-else-if="currentChooseItem.rstatus === 5" type="primary" @click="doOption(4)" size="small">打 款</el-button>
+            <el-button v-else-if="currentChooseItem.status === 5" type="primary" @click="doOption(4)" size="small">打 款</el-button>
           </template>
         </span>
       </template>

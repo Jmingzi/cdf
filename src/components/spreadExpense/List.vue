@@ -273,6 +273,10 @@
     },
 
     methods: {
+      summaryMethod({ columns, data }) {
+        console.log(columns, data)
+      },
+
       beforeClose(done) {
         this.$msgbox.confirm('确认关闭吗？').then(() => {
           // this.currentChooseItem = null
@@ -353,9 +357,10 @@
             return {
               ...item,
               createTime: this.$utils.formatTime(item.createTime),
-              plantform: SPREAD_PLATE.find(x => x.value === Number(item.plantform)).label,
+              plantform: SPREAD_PLATE.find(x => x.value === Number(item.plantform)).label + ',',
+              aphone: item.aphone ? `${item.aphone},` : '',
               project: item.project instanceof Array
-                ? item.project.map(id => SPREAD_PROJECT.find(x => x.value === Number(id)).label)
+                ? item.project.map(id => SPREAD_PROJECT.find(x => x.value === Number(id)).label).join('/')
                 : '',
               statusText: BX_STATUS.find(x => Number(x.value) === Number(item.status)).label
             }
