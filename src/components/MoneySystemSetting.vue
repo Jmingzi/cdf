@@ -65,6 +65,10 @@
               <span class="color-c999">流程管理范围: </span>
               <span>{{item.target | formatDeptUser}}</span>
             </p>
+            <p>
+              <span class="color-c999">适用: </span>
+              <span>{{item.processType === 1 ? '普通报销' : '推广报销'}}</span>
+            </p>
           </el-card>
         </el-col>
       </el-row>

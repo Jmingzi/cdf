@@ -14,7 +14,7 @@
         <el-tab-pane name="fourth">
           <span slot="label"><i class="el-icon-tickets"></i> 统计</span>
         </el-tab-pane>
-        <el-tab-pane name="five">
+        <el-tab-pane name="five" v-if="otherPriv.process">
           <span slot="label"><i class="el-icon-setting"></i> 流程配置</span>
         </el-tab-pane>
       </el-tabs>
@@ -39,7 +39,7 @@
   import MoneySystemList from './MoneySystemList'
   import MoneySystemSetting from './MoneySystemSetting'
   import http from '../mixins/http'
-  import { mapState } from 'vuex'
+  import { mapState, mapGetters } from 'vuex'
 
   export default {
     name: 'money-system',
@@ -57,7 +57,8 @@
       this.wrapHeight = this.$refs.expense.getBoundingClientRect().height
     },
     computed: {
-      ...mapState(['userInfo'])
+      ...mapState(['userInfo']),
+      ...mapGetters(['otherPriv'])
     },
     components: {
       MoneySystemApply,

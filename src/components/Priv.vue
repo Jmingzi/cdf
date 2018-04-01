@@ -29,8 +29,6 @@
       </el-table>
     </div>
 
-
-
     <div class="priv-wrap" v-if="false">
       <h1 class="px-font-18 color-c666">菜单权限<small class="color-ccc">（部门或人）</small></h1>
       <template v-for="item in priv.menu">
@@ -63,7 +61,7 @@
 
     <!--选择菜单-->
     <el-dialog
-      width="400px"
+      width="600px"
       :title="dialogTitle"
       :visible.sync="dialogVisible">
       <el-form ref="form" :model="form" label-width="100px">
@@ -81,7 +79,7 @@
             </el-checkbox>
           </el-checkbox-group>
         </el-form-item>
-        <el-form-item label="通讯录权限">
+        <el-form-item label="综合权限">
           <el-checkbox-group v-model="form.selectedContact">
             <el-checkbox
               v-for="item in contactPriv"

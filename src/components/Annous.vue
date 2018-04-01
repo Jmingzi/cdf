@@ -7,7 +7,7 @@
       <div
         :class="`px-width-100 text-center px-font-16 ib-middle cursor-p ${currentTab === 2 ? 'annous__tab-curr' : ''}`"
         @click="changeTab(2)">我收到的</div>
-      <div class="fr px-margin-r20">
+      <div class="fr px-margin-r20" v-if="otherPriv.annous">
         <el-button type="danger" size="mini" @click="addAnnous()">新建公告</el-button>
       </div>
     </div>
@@ -101,6 +101,7 @@
   // import resource from '../resource'
   import AddAnnous from './AddAnnous'
   import http from '../mixins/http'
+  import { mapGetters } from 'vuex'
 
   export default {
     components: {
@@ -127,6 +128,8 @@
       }
     },
     computed: {
+      ...mapGetters(['otherPriv']),
+
       dataList() {
         return this.currentTab === 1 ? this.fromMeList : this.toMeList
       }

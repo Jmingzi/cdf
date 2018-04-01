@@ -42,6 +42,19 @@ export default new Vuex.Store({
         imp = contactPriv.includes(2)
       }
       return { user, dept, imp }
+    },
+
+    otherPriv(state) {
+      let process = false
+      let annous = false
+      let job = false
+      if (state.userInfo) {
+        const { contactPriv } = state.userInfo
+        process = contactPriv.includes(3)
+        annous = contactPriv.includes(4)
+        job = contactPriv.includes(5)
+      }
+      return { process, annous, job }
     }
   },
   mutations: {

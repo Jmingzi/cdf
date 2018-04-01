@@ -1,6 +1,6 @@
 <template>
   <div class="job height-100 bg-fff position-r">
-    <div class="px-line-50 px-padding-lr10 bd-gray-lighter-b">
+    <div class="px-line-50 px-padding-lr10 bd-gray-lighter-b" v-if="otherPriv.job">
       <el-button type="danger" size="mini" @click="addJob()">添加岗位</el-button>
       <template v-if="currJob">
         <el-button type="info" size="mini" @click="addJob(true)">编辑岗位</el-button>
@@ -8,7 +8,9 @@
         <el-button type="info" size="mini" @click="addUserToJob">添加人员</el-button>
       </template>
     </div>
-    <div class="job__list position-a px-top-50 bottom-0 bd-gray-lighter-r overflow-a">
+    <div
+      class="job__list position-a bottom-0 bd-gray-lighter-r overflow-a"
+      :class="otherPriv.job ? 'px-top-50' : 'top-0'">
       <p class="px-line-40 text-center color-c999">岗位列表</p>
       <div
         v-for="item in jobList"
@@ -19,11 +21,13 @@
         <span class="fr el-icon-arrow-right color-ccc px-margin-t15"></span>
       </div>
     </div>
-    <div class="job__user position-a px-top-50 bottom-0 right-0">
+    <div
+      class="job__user position-a bottom-0 right-0"
+      :class="otherPriv.job ? 'px-top-50' : 'top-0'">
       <div class="bd-gray-lighter-b">
         <div class="px-line-40 text-center w200 color-c999 ib-middle bd-gray-lighter-r">人员列表</div>
         <div class="px-line-40 text-center w200 color-c999 ib-middle bd-gray-lighter-r">所属部门</div>
-        <div class="px-line-40 text-center w200 color-c999 ib-middle bd-gray-lighter-r">操作</div>
+        <div class="px-line-40 text-center w200 color-c999 ib-middle bd-gray-lighter-r" v-if="otherPriv.job">操作</div>
       </div>
       <div
         v-if="currJob && currJob.users.length > 0"
@@ -31,7 +35,7 @@
         v-for="user in currJob ? currJob.users : []">
         <div class="px-line-40 bd-gray-lighter-r px-padding-lr10 w200 ib-middle">{{user.name}}</div>
         <div class="px-line-40 bd-gray-lighter-r px-padding-lr10 w200 ib-middle">{{user.deptName}}</div>
-        <div class="px-line-40 bd-gray-lighter-r px-padding-lr10 w200 ib-middle">
+        <div class="px-line-40 bd-gray-lighter-r px-padding-lr10 w200 ib-middle" v-if="otherPriv.job">
           <a href="javascript:" @click="delJobUser(user)">删除</a>
         </div>
       </div>
@@ -69,6 +73,7 @@
 
 <script>
   import http from '../mixins/http'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'job',
@@ -94,6 +99,9 @@
     mixins: [http],
     created() {
       this.getJobList()
+    },
+    computed: {
+      ...mapGetters(['otherPriv'])
     },
     methods: {
       getJobList() {
