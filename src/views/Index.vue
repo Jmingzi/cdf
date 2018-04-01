@@ -39,8 +39,8 @@
       ...mapMutations(['setState']),
 
       menuChange(menuId) {
-        // if (this.userInfo && this.userInfo.menuPriv.includes(menuId)) {
-        if (this.userInfo) {
+        if (this.userInfo && this.userInfo.menuPriv.includes(menuId)) {
+        // if (this.userInfo) {
           let item = menu.find(x => x.id === menuId)
           this.currentView = item.componentName
         } else {
