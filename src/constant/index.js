@@ -14,7 +14,9 @@ export const contactPriv = [
   { title: '导入通讯录', id: 2, componentName: 'import' },
   { title: '操作流程', id: 3, componentName: 'process' },
   { title: '新建公告', id: 4, componentName: 'annous' },
-  { title: '操作岗位', id: 5, componentName: 'job' }
+  { title: '操作岗位', id: 5, componentName: 'job' },
+  { title: '普通报销统计', id: 6, componentName: 'expense' },
+  { title: '推广报销统计', id: 7, componentName: 'spreadExpense' }
 ]
 
 export const PAY_TYPE = [

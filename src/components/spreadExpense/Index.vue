@@ -11,7 +11,7 @@
         <el-tab-pane name="third">
           <span slot="label"><i class="el-icon-sort-down"></i> 我收到的</span>
         </el-tab-pane>
-        <el-tab-pane name="fourth">
+        <el-tab-pane name="fourth"  v-if="otherPriv.spread">
           <span slot="label"><i class="el-icon-tickets"></i> 统计</span>
         </el-tab-pane>
       </el-tabs>
@@ -34,7 +34,7 @@
   import MoneySystemApply from './Apply'
   import MoneySystemList from './List'
   import http from '../../mixins/http'
-  import { mapState } from 'vuex'
+  import { mapState, mapGetters } from 'vuex'
 
   export default {
     name: 'spread-expense',
@@ -52,7 +52,8 @@
       this.wrapHeight = this.$refs.expense.getBoundingClientRect().height
     },
     computed: {
-      ...mapState(['userInfo'])
+      ...mapState(['userInfo']),
+      ...mapGetters(['otherPriv'])
     },
     components: {
       MoneySystemApply,

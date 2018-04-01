@@ -35,7 +35,7 @@ export default {
           }
         }).catch(error=> {
           loadingService.close()
-          this.$message(error.msg || 'net work error')
+          this.$message.error(error.data.msg || 'net work error')
           reject(error)
         })
       })

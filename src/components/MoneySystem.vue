@@ -11,7 +11,7 @@
         <el-tab-pane name="third">
           <span slot="label"><i class="el-icon-sort-down"></i> 我收到的</span>
         </el-tab-pane>
-        <el-tab-pane name="fourth">
+        <el-tab-pane name="fourth" v-if="otherPriv.expense">
           <span slot="label"><i class="el-icon-tickets"></i> 统计</span>
         </el-tab-pane>
         <el-tab-pane name="five" v-if="otherPriv.process">

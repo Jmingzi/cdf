@@ -48,13 +48,17 @@ export default new Vuex.Store({
       let process = false
       let annous = false
       let job = false
+      let expense = false
+      let spread = false
       if (state.userInfo) {
         const { contactPriv } = state.userInfo
         process = contactPriv.includes(3)
         annous = contactPriv.includes(4)
         job = contactPriv.includes(5)
+        expense = contactPriv.includes(6)
+        spread = contactPriv.includes(7)
       }
-      return { process, annous, job }
+      return { process, annous, job, expense, spread }
     }
   },
   mutations: {

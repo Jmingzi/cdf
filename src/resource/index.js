@@ -30,7 +30,8 @@ instance.interceptors.response.use(function (response) {
   if (responseSafeCode.includes(response.data.code)) {
     return response.data
   } else {
-    Vue.prototype.$message(response.data.msg)
+    // console.log(response.data.msg)
+    // Vue.prototype.$message(response.data.msg)
     return Promise.reject(response)
   }
 }, function (error) {
