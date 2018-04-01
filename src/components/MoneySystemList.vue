@@ -328,7 +328,7 @@
               ...item,
               createTime: this.$utils.formatTime(item.createTime),
               payTime: this.$utils.formatTime(item.payTime),
-              expenseStatus: BX_STATUS.find(x => Number(x.value) === Number(item.expenseStatus)).label
+              expenseStatus: BX_STATUS.find(x => Number(x.value) === Number(item.status)).label
             }
           })
         })
