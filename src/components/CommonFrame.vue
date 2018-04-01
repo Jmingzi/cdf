@@ -5,7 +5,10 @@
         <p class="px-font-20 color-fff text-center">相源科技管理后台</p>
       </div>
       <div class="right position-a top-0 height-100 right-0 text-right">
-        <div class="display-ib top-hover px-padding-lr20 cursor-p" @click="logOut">
+        <div class="ib-middle top-hover px-padding-lr20 cursor-p" @click="showUpPwd = true">
+          <span>修改密码</span>
+        </div>
+        <div class="ib-middle top-hover px-padding-lr20 cursor-p" @click="logOut">
           <span>退出登录</span>
         </div>
       </div>
@@ -31,6 +34,24 @@
     <div class="right-aside position-a right-0 px-top-50 bottom-0 px-padding-15">
       <slot></slot>
     </div>
+
+    <el-dialog
+      width="400px"
+      title="修改密码"
+      :visible.sync="showUpPwd">
+      <el-form ref="form" :model="form" :rules="rules" label-width="0px">
+        <el-form-item label="" prop="oPwd">
+          <el-input v-model="form.oPwd" clearable placeholder="请输入原密码"/>
+        </el-form-item>
+        <el-form-item label="" prop="pwd">
+          <el-input v-model="form.pwd" clearable placeholder="请输入新密码"/>
+        </el-form-item>
+
+        <el-form-item class="text-center">
+          <el-button type="primary" @click="submitForm()">确认修改</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -38,13 +59,31 @@
   import { mapMutations, mapState } from 'vuex'
   import { menu } from '../constant'
   import cookie from 'js-cookie'
+  import md5 from 'blueimp-md5'
+  import http from '../mixins/http'
 
   export default {
     data() {
       return {
-
+        showUpPwd: false,
+        form: {
+          pwd: '',
+          oPwd: ''
+        },
+        rules: {
+          oPwd: [
+            { required: true, message: '请输入原密码', trigger: 'blur' },
+            { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
+          ],
+          pwd: [
+            { required: true, message: '请输入新密码', trigger: 'blur' },
+            { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
+          ],
+        }
       }
     },
+
+    mixins: [http],
 
     watch: {
       currentMenuId: function (nV, oV) {
@@ -84,7 +123,25 @@
       logOut() {
         cookie.remove('_token')
         this.$router.push('/login')
-      }
+      },
+
+      submitForm(formName = 'form') {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.http('updatePwd', {
+              pwd: md5(this.form.pwd),
+              oPwd: md5(this.form.oPwd),
+              userId: this.userInfo.userId
+            }).then(() => {
+              this.$message.success('修改密码成功')
+              this.logOut()
+            })
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
+      },
     }
   }
 </script>

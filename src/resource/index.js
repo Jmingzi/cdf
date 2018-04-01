@@ -93,6 +93,7 @@ export default {
     addSpreadExpenseDetail: '/service/logic/controller/IndexController.php?act=spread&met=addItem',
     getSpreadExpenseList: '/service/logic/controller/IndexController.php?act=spread&met=getExpenses',
     getSpreadDetail: '/service/logic/controller/IndexController.php?act=spread&met=getById',
+    updatePwd: '/service/logic/controller/IndexController.php?act=user&met=updatePass',
   },
 
   login(data) {
@@ -222,5 +223,9 @@ export default {
 
   handleSpreadStatus(data) {
     return get(this.url.handleSpreadStatus, data)
+  },
+
+  updatePwd(data) {
+    return get(this.url.updatePwd, data)
   }
 }
