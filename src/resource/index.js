@@ -84,6 +84,7 @@ export default {
     saveUser: '/service/logic/controller/IndexController.php?act=user&met=save',
     saveDeptUri: '/service/logic/controller/IndexController.php?act=dept&met=add',
     handleProcessStatus: '/service/logic/controller/IndexController.php?act=expense&met=handle',
+    handleSpreadStatus: '/service/logic/controller/IndexController.php?act=spread&met=handle',
     delPriv: '/service/logic/controller/IndexController.php?act=priv&met=del',
     optAnnous: '/service/logic/controller/IndexController.php?act=notice&met=opt',
     expenseDetail: '/service/logic/controller/IndexController.php?act=expense&met=getById',
@@ -217,5 +218,9 @@ export default {
 
   getSpreadDetail(data) {
     return get(this.url.getSpreadDetail, data)
+  },
+
+  handleSpreadStatus(data) {
+    return get(this.url.handleSpreadStatus, data)
   }
 }

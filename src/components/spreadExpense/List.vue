@@ -138,13 +138,16 @@
           :width="120">
           <template slot-scope="scope">
             <el-button @click="doOption(0, scope.row)" type="text" size="small">查看</el-button>
-            <a href="javascript:" v-if="isFromMe && scope.row.status === 3" class="color-info" @click="doOption(-1, scope.row)">添加明细</a>
-            <template v-if="isToMe && scope.row.status === 1">
-              <a href="javascript:" class="color-success" @click="doOption(1, scope.row)">同意</a>
-              <a href="javascript:" class="color-error" @click="doOption(2, scope.row)">拒绝</a>
+            <template v-if="isFromMe">
+              <a href="javascript:" v-if="scope.row.status === 1" class="color-error" @click="doOption(3, scope.row)">撤回</a>
+              <a href="javascript:" v-else-if="scope.row.status === 3" class="color-info" @click="doOption(-1, scope.row)">添加明细</a>
             </template>
-            <template v-else-if="isToMe && scope.row.rstatus === 3">
+            <template v-else-if="isToMe">
               <a href="javascript:" class="color-success" v-if="scope.row.status === 5" @click="doOption(4, scope.row)">打款</a>
+              <template v-if="scope.row.status === 1">
+                <a href="javascript:" class="color-success" @click="doOption(1, scope.row)">同意</a>
+                <a href="javascript:" class="color-error" @click="doOption(2, scope.row)">拒绝</a>
+              </template>
             </template>
           </template>
         </el-table-column>
@@ -176,12 +179,17 @@
           :item="currentChooseItem"
         />
         <span slot="footer" class="dialog-footer">
-          <template v-if="isToMe && currentChooseItem.status === 1">
-            <el-button type="success" @click="doOption(1)" size="small">同 意</el-button>
-            <el-button type="danger" @click="doOption(2)" size="small">拒 绝</el-button>
+          <template v-if="isFromMe">
+            <a href="javascript:" v-if="currentChooseItem.status === 1" class="color-error" @click="doOption(3)">撤回</a>
+            <el-button v-else-if="currentChooseItem.status === 3" type="primary" @click="doOption(-1)" size="small">添加明细</el-button>
           </template>
-          <el-button v-else-if="isToMe && currentChooseItem.status === 3" type="primary" @click="doOption(4)" size="small">打 款</el-button>
-          <el-button v-if="isFromMe && currentChooseItem.status === 3" type="primary" @click="doOption(-1)" size="small">添加明细</el-button>
+          <template v-else-if="isToMe">
+            <template v-if="currentChooseItem.status === 1">
+              <el-button type="success" @click="doOption(1)" size="small">同 意</el-button>
+              <el-button type="danger" @click="doOption(2)" size="small">拒 绝</el-button>
+            </template>
+            <el-button v-else-if="currentChooseItem.status === 5" type="primary" @click="doOption(4)" size="small">打 款</el-button>
+          </template>
         </span>
       </template>
     </el-dialog>
@@ -382,7 +390,9 @@
             })
           } break
           case 3: {
-            this.$msgbox.confirm('确定要撤回吗？')
+            this.$msgbox.confirm('确定要撤回吗？').then(() => {
+              _do.call(this, { status: 8 })
+            })
           } break
           case 4: {
             this.$msgbox.confirm(`即将打款金额为${item.money}元给${item.name}，确定要继续吗？`).then(() => {
@@ -395,8 +405,14 @@
         }
 
         function _do(options) {
-          this.http('handleProcessStatus', { ...options, expenseId: this.currentChooseItem.id }).then(() => {
-            let msg = options.status === 3 ? '同意' : options.status === 4 ? '拒绝' : '打款'
+          this.http('handleSpreadStatus', { ...options, expenseId: this.currentChooseItem.id }).then(() => {
+            let msg = options.status === 3
+              ? '同意'
+              : options.status === 4
+                ? '拒绝'
+                : options.status === 3
+                  ? '撤回'
+                  : '打款'
             this.$message.success(`${msg}成功`)
             this.dialogVisible = false
           })
