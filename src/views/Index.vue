@@ -39,8 +39,13 @@
       ...mapMutations(['setState']),
 
       menuChange(menuId) {
-        let item = menu.find(x => x.id === menuId)
-        this.currentView = item.componentName
+        // if (this.userInfo && this.userInfo.menuPriv.includes(menuId)) {
+        if (this.userInfo) {
+          let item = menu.find(x => x.id === menuId)
+          this.currentView = item.componentName
+        } else {
+          this.currentView = 'Home'
+        }
       },
 
       getUserInfo() {
@@ -49,6 +54,9 @@
         }
 
         this.http('getInfos').then(value=> {
+          value.menuPriv = value.menuPriv.map(x => Number(x))
+          value.contactPriv = value.contactPriv.map(x => Number(x))
+
           this.setState({
             key: 'userInfo',
             value

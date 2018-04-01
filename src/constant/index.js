@@ -11,8 +11,7 @@ export const menu = [
 export const contactPriv = [
   { title: '操作员工', id: 0, componentName: 'user' },
   { title: '操作部门', id: 1, componentName: 'dept' },
-  { title: '导入通讯录', id: 2, componentName: 'import' },
-  // { title: '岗位管理', id: 3, componentName: 'job' }
+  { title: '导入通讯录', id: 2, componentName: 'import' }
 ]
 
 export const PAY_TYPE = [

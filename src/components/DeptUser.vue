@@ -5,23 +5,24 @@
         <tree>
         </tree>
       </div>
-      <div class="position-a px-line-50 font-0 width-100 dept-user__import-contact bottom-0 text-center color-info">
+      <div v-if="isShowOpt.imp" class="position-a px-line-50 font-0 width-100 dept-user__import-contact bottom-0 text-center color-info">
         <div class="ib-middle px-font-14 width-100">导入通讯录</div>
-        <!--<div class="ib-middle px-font-14 width-50">岗位管理</div>-->
       </div>
     </div>
     <div class="dept-user__user height-100 position-a right-0 top-0 bg-fff overflow-a">
       <div class="dept-user__option-panel px-padding-10">
         <div class="fr">
-          <el-button type="danger" size="mini" @click="editUser(false)">添加员工</el-button>
-          <el-button type="danger" size="mini" @click="editDept(false)">添加部门</el-button>
+          <el-button type="danger" size="mini" @click="editUser(false)" v-if="isShowOpt.user">添加员工</el-button>
+          <el-button type="danger" size="mini" @click="editDept(false)" v-if="isShowOpt.dept">添加部门</el-button>
         </div>
         <template v-if="currentDept">
           <span class="color-c999">当前部门：</span>
           <span>{{currentDept | formatLabel}}</span>
-          <a href="javascript:" @click="editDept(true)">编辑</a>
-          <span>/</span>
-          <a href="javascript:" class="color-error" @click="delDept">删除</a>
+          <template v-if="isShowOpt.dept">
+            <a href="javascript:" @click="editDept(true)">编辑</a>
+            <span>/</span>
+            <a href="javascript:" class="color-error" @click="delDept">删除</a>
+          </template>
         </template>
       </div>
       <div class="px-padding-10">
@@ -55,7 +56,7 @@
   import Page from "./Page"
   import DeptForm from './DeptForm'
   import UserForm from './UserForm'
-  import { mapState, mapMutations } from 'vuex'
+  import { mapState, mapMutations, mapGetters } from 'vuex'
   const filterLabel = (item) => {
     return `${item.label.replace(`(${item.userNum})`, '')}`
   }
@@ -81,7 +82,11 @@
 
     },
     computed: {
-      ...mapState(['currentDept'])
+      ...mapState(['currentDept', 'userInfo']),
+      ...mapGetters(['contactPriv']),
+      isShowOpt() {
+        return this.contactPriv
+      }
     },
     methods: {
       ...mapMutations(['setState']),

@@ -18,7 +18,7 @@
       </div>
       <ul class="color-fff">
         <li
-          v-for="item in menu"
+          v-for="item in privMenu"
           @click="setMenu(item)"
           :key="item.id"
           :class="`px-line-45 px-padding-lr15 cursor-p ${currentMenuId === item.id ? 'active' : ''}`">
@@ -42,7 +42,7 @@
   export default {
     data() {
       return {
-        menu
+
       }
     },
 
@@ -59,6 +59,14 @@
       currentMenuId() {
         let { menuId } = this.$route.query
         return menuId ? Number(menuId) : this.currMenuId
+      },
+
+      privMenu() {
+        if (this.userInfo) {
+          const { menuPriv } = this.userInfo
+          return menu.filter(item => menuPriv.includes(item.id))
+        }
+        return []
       }
     },
 

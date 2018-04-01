@@ -29,6 +29,19 @@ export default new Vuex.Store({
   getters: {
     userList(state) {
       return state.userMap[state.currentUserDeptId] || []
+    },
+
+    contactPriv(state) {
+      let user = false
+      let dept = false
+      let imp = false
+      if (state.userInfo) {
+        const { contactPriv } = state.userInfo
+        user = contactPriv.includes(0)
+        dept = contactPriv.includes(1)
+        imp = contactPriv.includes(2)
+      }
+      return { user, dept, imp }
     }
   },
   mutations: {
