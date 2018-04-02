@@ -1,0 +1,14 @@
+{
+  "code": 200,
+  "data": {
+    "name": "jmingzi",
+    "userId": "男",
+    "avatarUrl": "1",
+    "_token": "sdsdsfdsfsdf",
+    "contactPriv": [0, 1],
+    "menuPriv": [0, 1],
+    "dept": {},
+    "is_update": -1
+  },
+  "msg": ""
+}
