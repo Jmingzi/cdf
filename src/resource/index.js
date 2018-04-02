@@ -232,6 +232,6 @@ export default {
   },
 
   logOut() {
-    return get(this.url.logOut, data)
+    return get(this.url.logOut)
   }
 }
