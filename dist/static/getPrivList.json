@@ -1,0 +1,23 @@
+{
+  "code": 200,
+  "data": [
+    {
+      "id": 1,
+      "targetDept": [
+        {
+          "id": 1,
+          "label": "技术部"
+        }
+      ],
+      "targetUser": [
+        {
+          "userId": 22,
+          "name": "杨明"
+        }
+      ],
+      "privMenu": [1, 2],
+      "privContact": [0, 1]
+    }
+  ],
+  "msg": ""
+}

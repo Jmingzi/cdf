@@ -1,0 +1,63 @@
+{
+  "code": 200,
+  "data": {
+    "processList": [
+      {
+        "id": 1,
+        "processName": "技术部专用",
+        "target": {
+          "dept": [
+            {
+              "id": 4,
+              "label": "java部",
+              "userNum": 30,
+              "sequence": 0,
+              "children": []
+            }
+          ],
+          "user": [
+            {
+              "userId": 269840,
+              "name": "杨明",
+              "dept": {
+                "deptId": 1,
+                "name": "技术部"
+              },
+              "jobName": "总经理"
+            }
+          ]
+        },
+        "process": [
+          {
+            "userId": 269840,
+            "name": "杨明",
+            "dept": {
+              "deptId": 1,
+              "name": "技术部"
+            },
+            "jobName": "总经理"
+          },
+          {
+            "userId": 269840,
+            "name": "才登封",
+            "dept": {
+              "deptId": 2,
+              "name": "技术部"
+            },
+            "jobName": "大佬"
+          },
+          {
+            "userId": 269840,
+            "name": "牛逼",
+            "dept": {
+              "deptId": 3,
+              "name": "技术部"
+            },
+            "jobName": "老大佬"
+          }
+        ]
+      }
+    ]
+  },
+  "msg": ""
+}

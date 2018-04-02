@@ -1,0 +1,36 @@
+{
+  "code": 200,
+  "data": {
+    "id": 1,
+    "process": [
+      {
+        "userId": 269840,
+        "name": "杨明",
+        "dept": {
+          "deptId": 1,
+          "name": "技术部"
+        },
+        "jobName": "总经理"
+      },
+      {
+        "userId": 269840,
+        "name": "才登封",
+        "dept": {
+          "deptId": 2,
+          "name": "技术部"
+        },
+        "jobName": "大佬"
+      },
+      {
+        "userId": 269840,
+        "name": "牛逼",
+        "dept": {
+          "deptId": 3,
+          "name": "技术部"
+        },
+        "jobName": "老大佬"
+      }
+    ]
+  },
+  "msg": ""
+}
