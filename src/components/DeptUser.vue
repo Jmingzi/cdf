@@ -6,7 +6,7 @@
         </tree>
       </div>
       <div v-if="isShowOpt.imp" class="position-a px-line-50 font-0 width-100 dept-user__import-contact bottom-0 text-center color-info">
-        <div class="ib-middle px-font-14 width-100">导入通讯录</div>
+        <!--<div class="ib-middle px-font-14 width-100">导入通讯录</div>-->
       </div>
     </div>
     <div class="dept-user__user height-100 position-a right-0 top-0 bg-fff overflow-a">

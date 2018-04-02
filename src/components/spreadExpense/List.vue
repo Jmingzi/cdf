@@ -359,6 +359,7 @@
               createTime: this.$utils.formatTime(item.createTime),
               plantform: SPREAD_PLATE.find(x => x.value === Number(item.plantform)).label + ',',
               aphone: item.aphone ? `${item.aphone},` : '',
+              point: `${item.point}%`,
               project: item.project instanceof Array
                 ? item.project.map(id => SPREAD_PROJECT.find(x => x.value === Number(id)).label).join('/')
                 : '',

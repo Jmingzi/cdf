@@ -21,7 +21,7 @@
               <span>{{ props.row.mobile }}</span>
             </el-form-item>
             <el-form-item label="出生日期">
-              <span>{{ props.row.birthday }}</span>
+              <span>{{ props.row.birthdayF }}</span>
             </el-form-item><br>
             <el-form-item label="所属部门">
               <span>{{ props.row.department }}</span>
@@ -33,19 +33,22 @@
               <span>{{ props.row.idCardNumber }}</span>
             </el-form-item>
             <el-form-item label="入职日期">
-              <span>{{ props.row.joinDate }}</span>
+              <span>{{ props.row.joinDateF }}</span>
             </el-form-item><br>
             <el-form-item label="转正日期">
-              <span>{{ props.row.transferDate }}</span>
+              <span>{{ props.row.transferDateF }}</span>
             </el-form-item>
             <el-form-item label="离职日期">
-              <span>{{ props.row.leaveDate }}</span>
+              <span>{{ props.row.leaveDateF }}</span>
             </el-form-item><br>
             <el-form-item label="居住地址">
               <span>{{ props.row.detailAddress }}</span>
             </el-form-item>
             <el-form-item label="备注">
               <span>{{ props.row.remark }}</span>
+            </el-form-item><br>
+            <el-form-item label="紧急联系人">
+              <span>{{ props.row.urgent }}</span>
             </el-form-item><br>
           </el-form>
         </template>
@@ -66,7 +69,7 @@
         width="80">
       </el-table-column>
       <el-table-column
-        prop="birthday"
+        prop="birthdayF"
         label="出生日期"
         width="100">
       </el-table-column>
@@ -86,17 +89,17 @@
         width="150">
       </el-table-column>
       <el-table-column
-        prop="joinDate"
+        prop="joinDateF"
         label="入职日期"
         width="100">
       </el-table-column>
       <el-table-column
-        prop="transferDate"
+        prop="transferDateF"
         label="转正日期"
         width="100">
       </el-table-column>
       <el-table-column
-        prop="leaveDate"
+        prop="leaveDateF"
         label="离职日期"
         width="100">
       </el-table-column>
@@ -111,7 +114,7 @@
         width="100">
         <template slot-scope="scope" v-if="contactPriv.user">
           <el-button type="text" size="mini" @click="handleClick(scope.row)">编辑</el-button>
-          <el-button type="text" size="mini" @click="delUser(scope.row)">删除</el-button>
+          <!--<el-button type="text" size="mini" @click="delUser(scope.row)">删除</el-button>-->
         </template>
       </el-table-column>
     </el-table>

@@ -1,6 +1,6 @@
 <template>
   <div class="user-form">
-    <el-form ref="form" :rules="rules" :model="form" label-width="80px">
+    <el-form ref="form" :rules="rules" :model="form" label-width="95px">
       <el-row :gutter="10">
         <el-col :span="12">
           <el-form-item label="姓名" size="mini" prop="name">
@@ -165,12 +165,24 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="备注说明" size="mini">
-        <el-input
-          type="textarea"
-          v-model="form.remark">
-        </el-input>
-      </el-form-item>
+      <el-col :span="12">
+        <el-form-item label="紧急联系人" size="mini" prop="urgent">
+          <el-input
+            size="mini"
+            v-model="form.urgent"
+            placeholder="请输入紧急联系人电话">
+          </el-input>
+        </el-form-item>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item label="备注说明" size="mini">
+          <el-input
+            type="textarea"
+            v-model="form.remark">
+          </el-input>
+        </el-form-item>
+      </el-col>
+
       <el-form-item size="mini">
         <div class="text-right">
           <el-button type="primary" size="mini" @click="onSubmit">确定</el-button>
@@ -238,6 +250,7 @@
           transferDate: '',
           leaveDate: '',
           remark: '',
+          urgent: '',
           userStatus: 1
         },
         rules: {
@@ -248,6 +261,10 @@
           mobile: [
             { required: true, message: '请输入手机号', trigger: 'blur' },
             { validator: checkSolidField, len: 11, pre: '手机号' }
+          ],
+          urgent: [
+            { required: true, message: '请输入紧急联系人电话', trigger: 'blur' },
+            { validator: checkSolidField, len: 11, pre: '紧急联系人电话' }
           ],
           birthday: [
             { required: true, message: '请选择出生年月', trigger: 'blur' }

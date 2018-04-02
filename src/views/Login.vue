@@ -5,14 +5,14 @@
     <!--<canvas id="canvas"></canvas>-->
 
     <div class="position-a login-wrap bd-ccc px-padding-20 radius-3">
-      <p class="px-font-20 text-center px-padding-b20"><img :src="require('../assets/logo.png')" width="150px"></p>
+      <p class="px-font-20 text-center px-padding-b20"><img class="px-padding-tb10" :src="require('../assets/logo.png')" width="150px"></p>
 
       <el-form ref="form" :model="form" :rules="rules" label-width="0px">
         <el-form-item label="" prop="name">
           <el-input v-model="form.name" clearable placeholder="请输入用户名"/>
         </el-form-item>
         <el-form-item label="" prop="pwd">
-          <el-input v-model="form.pwd" clearable placeholder="请输入密码"/>
+          <el-input type="password" v-model="form.pwd" clearable placeholder="请输入密码"/>
         </el-form-item>
 
         <el-form-item class="text-center">
@@ -32,7 +32,7 @@
   import { mapMutations } from 'vuex'
   import cookie from 'js-cookie'
   import md5 from 'blueimp-md5'
-  import loginCanvas from './loginCanvas'
+  // import loginCanvas from './loginCanvas'
 
   export default {
     data() {
@@ -89,7 +89,7 @@
 <style lang="scss" scoped>
   .login-wrap {
     width: 400px;
-    height: 300px;
+    height: 320px;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);

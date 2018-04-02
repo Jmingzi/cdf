@@ -121,8 +121,10 @@
       },
 
       logOut() {
-        cookie.remove('_token')
-        this.$router.push('/login')
+        this.http('logOut').then(() => {
+          cookie.remove('_token')
+          this.$router.push('/login')
+        })
       },
 
       submitForm(formName = 'form') {

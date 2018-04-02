@@ -28,7 +28,15 @@ export default new Vuex.Store({
   },
   getters: {
     userList(state) {
-      return state.userMap[state.currentUserDeptId] || []
+      return (state.userMap[state.currentUserDeptId] || []).map(item => {
+        return {
+          ...item,
+          joinDateF: Vue.prototype.$utils.formatTime(item.joinDate),
+          transferDateF: Vue.prototype.$utils.formatTime(item.transferDate),
+          leaveDateF: Vue.prototype.$utils.formatTime(item.leaveDate),
+          birthdayF: Vue.prototype.$utils.formatTime(item.birthday),
+        }
+      })
     },
 
     contactPriv(state) {
@@ -88,6 +96,7 @@ export default new Vuex.Store({
         if (!res.data) {
           return void 0
         }
+
         Vue.set(state.userMap, deptId, res.data)
         callback && callback(res.data)
       })

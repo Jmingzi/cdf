@@ -15,8 +15,12 @@
           label="权限对象">
         </el-table-column>
         <el-table-column
-          prop="aliasList"
-          label="允许操作的权限">
+          prop="aliasMenu"
+          label="菜单权限">
+        </el-table-column>
+        <el-table-column
+          prop="aliasContact"
+          label="操作权限">
         </el-table-column>
         <el-table-column
           label="操作"
@@ -79,7 +83,7 @@
             </el-checkbox>
           </el-checkbox-group>
         </el-form-item>
-        <el-form-item label="综合权限">
+        <el-form-item label="操作权限">
           <el-checkbox-group v-model="form.selectedContact">
             <el-checkbox
               v-for="item in contactPriv"
@@ -145,14 +149,22 @@
               item.targetDept.map(x => x.label),
               item.targetUser.map(x => x.name)
             ).join('、')
-            item.aliasList = [].concat(
-              item.privMenu.map(id => {
-                return menu.find(x => x.id === id).title
-              }),
-              item.privContact.map(id => {
-                return contactPriv.find(x => x.id === id).title
-              })
-            ).join('、')
+
+            item.aliasMenu = item.privMenu.map(id => {
+              return (menu.find(x => x.id === id) || {}).title
+            }).join('、')
+
+            item.aliasContact = item.privContact.map(id => {
+              return (contactPriv.find(x => x.id === id) || {}).title
+            }).join('、')
+            // item.aliasList = [].concat(
+            //   item.privMenu.map(id => {
+            //     return (menu.find(x => x.id === id) || {}).title
+            //   }),
+            //   item.privContact.map(id => {
+            //     return (contactPriv.find(x => x.id === id) || {}).title
+            //   })
+            // ).join('、')
             return item
           })
           // function _handleRes(data, privConstant) {
