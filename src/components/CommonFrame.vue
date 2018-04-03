@@ -110,7 +110,7 @@
     },
 
     methods: {
-      ...mapMutations(['setState']),
+      ...mapMutations(['setState', 'clear']),
 
       setMenu(item) {
         this.setState({
@@ -123,6 +123,7 @@
       logOut() {
         this.http('logOut').then(() => {
           cookie.remove('_token')
+          this.clear()
           this.$router.push('/login')
         })
       },

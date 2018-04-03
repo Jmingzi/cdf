@@ -23,7 +23,7 @@ export default new Vuex.Store({
     userInfo: null,
     // 权限
     // 部门和人员权限的范围都是针对部门
-    priv: [{ dept: [1, 2] }, { user: [1, 2] }, 'menu', 'annous', 'money'],
+    // priv: [{ dept: [1, 2] }, { user: [1, 2] }, 'menu', 'annous', 'money'],
     isSuperAdmin: false
   },
   getters: {
@@ -70,6 +70,11 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    clear(state) {
+      state.userMap = {}
+      state.userInfo = null
+      state.isSuperAdmin = false
+    },
     setState(state, payload) {
       if (payload.key === 'array') {
         Object.keys(payload.value).forEach(field=> {
