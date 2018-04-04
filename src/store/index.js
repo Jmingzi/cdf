@@ -28,8 +28,8 @@ export default new Vuex.Store({
   },
   getters: {
     userList(state) {
-      const id = state.currentDept ? state.currentDept.id : 0
-      console.log(id, state.userMap)
+      const id = state.currentUserDeptId
+      // console.log(id, state.userMap)
       return (state.userMap[id] || []).map(item => {
         return {
           ...item,
