@@ -28,7 +28,9 @@ export default new Vuex.Store({
   },
   getters: {
     userList(state) {
-      return (state.userMap[state.currentUserDeptId] || []).map(item => {
+      const id = state.currentDept ? state.currentDept.id : 0
+      console.log(id, state.userMap)
+      return (state.userMap[id] || []).map(item => {
         return {
           ...item,
           joinDateF: Vue.prototype.$utils.formatTime(item.joinDate),
@@ -83,6 +85,9 @@ export default new Vuex.Store({
       } else {
         state[payload.key] = payload.value
       }
+    },
+    setCacheUser(state, payload) {
+      Vue.set(state.userMap, payload.deptId, payload.users)
     }
   },
   actions: {

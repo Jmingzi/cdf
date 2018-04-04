@@ -43,7 +43,7 @@
       <component
         :is="currentDialogComponent"
         @handleClick="editUser"
-        @toggle="dialogVisible = false"
+        @toggle="toggle"
         ref="dialog">
       </component>
     </el-dialog>
@@ -90,11 +90,17 @@
     },
     methods: {
       ...mapMutations(['setState']),
+
+      toggle() {
+        this.dialogVisible = false
+      },
+
       handleClose(done) {
         this.$confirm('确认关闭？').then(_ => {
           done()
         }).catch(_ => {})
       },
+
       editDept(type) {
         this.dialogWidth = '30%'
         this.currentDialogComponent = DeptForm.name

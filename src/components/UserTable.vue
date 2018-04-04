@@ -124,7 +124,9 @@
       title="编辑人员"
       :visible.sync="dialogVisible"
       :before-close="handleClose">
-      <user-form ref="editUserPanel">
+      <user-form
+        ref="editUserPanel"
+        @toggle="dialogVisible = false">
       </user-form>
     </el-dialog>
   </div>
@@ -157,7 +159,17 @@
           value: row
         })
         this.$nextTick(()=> {
-          this.$refs['editUserPanel'].form = { ...row }
+          this.$refs['editUserPanel'].form = {
+            ...row,
+            birthday: row.birthday ? new Date(row.birthday) : '',
+            joinDate: row.joinDate ? new Date(row.joinDate) : '',
+            transferDate: row.transferDate ? new Date(row.transferDate) : '',
+            leaveDate: row.leaveDate ? new Date(row.leaveDate) : '',
+            department: {
+              label: row.department,
+              id: row.departmentId
+            }
+          }
         })
       },
 

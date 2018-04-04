@@ -165,23 +165,25 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-col :span="12">
-        <el-form-item label="紧急联系人" size="mini" prop="urgent">
-          <el-input
-            size="mini"
-            v-model="form.urgent"
-            placeholder="请输入紧急联系人电话">
-          </el-input>
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item label="备注说明" size="mini">
-          <el-input
-            type="textarea"
-            v-model="form.remark">
-          </el-input>
-        </el-form-item>
-      </el-col>
+      <el-row :gutter="10">
+        <el-col :span="12">
+          <el-form-item label="紧急联系人" size="mini" prop="urgent">
+            <el-input
+              size="mini"
+              v-model="form.urgent"
+              placeholder="请输入紧急联系人电话">
+            </el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="备注说明" size="mini">
+            <el-input
+              type="textarea"
+              v-model="form.remark">
+            </el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
 
       <el-form-item size="mini">
         <div class="text-right">
@@ -204,12 +206,14 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
+  import { mapState, mapMutations, mapGetters } from 'vuex'
   import http from '../mixins/http'
 
   export default {
     name: 'user-form',
+
     mixins: [http],
+
     data() {
       const checkSolidField = (rule, value, callback)=> {
         if (value.length !== rule.len) {
@@ -293,15 +297,26 @@
         }
       }
     },
+
     filters: {
       getLabel(item) {
         return item && item.label ? item.label.replace(` (${item.userNum})`, '') : ''
       }
     },
+
     computed: {
-      ...mapState(['currentDept', 'handleType', 'currentUser'])
+      ...mapState([
+        'currentDept',
+        'handleType',
+        'currentUser'
+      ]),
+
+      ...mapGetters(['userList'])
     },
+
     methods: {
+      ...mapMutations(['setCacheUser']),
+
       onSubmit() {
         this.$refs['form'].validate((valid) => {
           if (valid) {
@@ -309,7 +324,7 @@
 
             let data = {
               ...this.form,
-              departmentId: department.id,
+              departmentId: department ? department.id : this.currentDept.id,
               birthday: birthday ? birthday.getTime() : '',
               joinDate: joinDate ? joinDate.getTime() : '',
               transferDate: transferDate ? transferDate.getTime() : '',
@@ -317,14 +332,36 @@
             }
             delete data.department
 
-            if (this.handleType === 'edit') {
+            const isEdit = this.handleType === 'edit'
+            if (isEdit) {
               data.id = this.currentUser.id
             }
-            this.http('saveUser', data).then(()=> {
+            this.http('saveUser', data).then(addId=> {
               this.$message({
                 message: '保存成功',
                 type: 'success'
               })
+
+              if (isEdit) {
+                const copy = this.userList.map(item => {
+                  if (Number(item.id) === Number(data.id)) {
+                    return { ...item, ...data }
+                  } else {
+                    return item
+                  }
+                })
+                this.setCacheUser({
+                  deptId: this.currentDept.id,
+                  users: copy
+                })
+              } else {
+                const copy = this.userList.slice()
+                copy.push({ ...data, id: addId })
+                this.setCacheUser({
+                  deptId: this.currentDept.id,
+                  users: copy
+                })
+              }
               this.$emit('toggle')
             })
           } else {
@@ -337,7 +374,6 @@
         if (!this.form.department) {
           this.form.department = { ...this.currentDept }
         }
-        // this.$message('当前部门选择为单选，默认选择选中的第一个')
         this.$refs.selectTree.show()
       },
       confirmSelect(dept) {
