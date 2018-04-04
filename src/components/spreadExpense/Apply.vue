@@ -117,7 +117,7 @@
         </el-input>
       </el-form-item>
 
-      <div class="process px-margin-b50">
+      <div class="process px-margin-b50" v-if="hasSetProcess">
         <el-alert
           title="系统已设置报销流程"
           type="info"

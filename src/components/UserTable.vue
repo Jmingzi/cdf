@@ -1,7 +1,7 @@
 <template>
   <div class="user-table">
     <el-table
-      :data="userList"
+      :data="userData"
       :stripe="true"
       :highlight-current-row="true"
       :height="userTableHeight"
@@ -191,8 +191,10 @@
 
     computed: {
       ...mapState(['userTableHeight']),
-      ...mapGetters(['userList', 'contactPriv']),
+      ...mapGetters(['contactPriv', 'userList']),
     },
+
+    props: ['userData'],
 
     data() {
       return {
