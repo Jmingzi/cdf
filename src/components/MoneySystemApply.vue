@@ -10,7 +10,7 @@
     </div>
     <el-form ref="form" :rules="rules" :model="form" label-width="80px">
       <el-form-item label="报销事由" prop="desc">
-        <el-input type="textarea" v-model="form.desc">
+        <el-input type="textarea" v-model="form.desc" placeholder="填写遵循 为什么支出  在哪里支出  单价多少  使用用途在哪">
         </el-input>
       </el-form-item>
       <el-form-item label="报销金额" prop="money">
@@ -42,9 +42,10 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item label="报销部门">
-        <div class="display-ib cursor-p" @click="toSelectDept">
+        <div class="ib-middle cursor-p" @click="toSelectDept">
           <span class="color-info" v-if="form.expenseDept">{{form.expenseDept.name}}</span>
         </div>
+        <p class="px-font-12 color-c666">tips: 部门选择遵循如任务谁派发谁审批，选择对应部门</p>
       </el-form-item>
       <el-form-item label="相关图片" prop="imagesList">
         <el-upload

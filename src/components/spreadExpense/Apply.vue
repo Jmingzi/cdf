@@ -2,10 +2,11 @@
   <div class="money-apply">
     <div class="px-margin-b20" v-if="!hasSetProcess && processData.id !== undefined">
       <el-alert
-      title="提示"
-      type="error"
-      description="当前部门还未设置对应报销流程，请联系管理员设置后使用"
-      :closable="false">
+        title="提示"
+        type="error"
+        description="当前部门还未设置对应报销流程，请联系管理员设置后使用"
+        :closable="false"
+      >
     </el-alert>
     </div>
     <el-form ref="form" :rules="rules" :model="form" label-width="80px">
@@ -80,6 +81,7 @@
         <div class="display-ib cursor-p" @click="toSelectDept">
           <span class="color-info" v-if="form.expenseDept">{{form.expenseDept.name}}</span>
         </div>
+        <p class="px-font-12 color-c666">tips: 部门选择遵循如任务谁派发谁审批，选择对应部门</p>
       </el-form-item>
       <el-form-item label="退款金额">
         <el-input type="number" v-model.number="form.refund" placeholder="请输入">
@@ -113,7 +115,11 @@
       <!--</el-form-item>-->
 
       <el-form-item label="说明" prop="desc">
-        <el-input type="textarea" v-model="form.desc" placeholder="请输入">
+        <el-input
+          type="textarea"
+          v-model="form.desc"
+          placeholder="请输入"
+        >
         </el-input>
       </el-form-item>
 

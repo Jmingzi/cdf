@@ -184,7 +184,8 @@
       if (this.userTableHeight === 0) {
         this.setState({
           key: 'userTableHeight',
-          value: document.body.clientHeight - 200
+          // value: document.body.clientHeight - 200
+          value: window.screen.availHeight - 200
         })
       }
     },

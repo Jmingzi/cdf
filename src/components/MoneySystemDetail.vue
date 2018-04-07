@@ -5,8 +5,8 @@
       <span class="color-warning">{{detail.statusText}}</span>
     </div>
     <div class="detail-item">
-      <span class="text-right color-c999">报销事由：</span>
-      <span>{{detail.desc}} </span>
+      <span class="text-right color-c999 ib-top">报销事由：</span>
+      <span class="ib-top" style="width: 385px" v-html="formatBr(detail.desc)"></span>
     </div>
     <div class="detail-item">
       <span class="text-right color-c999">报销金额：</span>
@@ -30,7 +30,7 @@
     </div>
     <div class="detail-item">
       <span class="text-right color-c999">报销时间：</span>
-      <span>{{$utils.formatTime(detail.createTime)}}</span>
+      <span>{{$utils.formatTime(detail.createTime, 1)}}</span>
     </div>
     <div class="detail-item">
       <span class="text-right color-c999 ib-top">相关图片：</span>
@@ -51,7 +51,7 @@
         </p>
         <div class="process__info text-right bg-f2 cl">
           <span :class="`fl ${item.processColor}`">{{item.processText}}</span>
-          <span class="color-c999">{{$utils.formatTime(item.time)}}</span>
+          <span class="color-c999">{{$utils.formatTime(item.time, 1)}}</span>
           <p class="text-left" v-if="item.desc">
             <span class="color-c999">意见：</span>
             <span>{{item.desc}}</span>
@@ -87,6 +87,10 @@
       }
     },
 
+    filters: {
+
+    },
+
     props: ['item'],
 
     mixins: [http],
@@ -96,6 +100,10 @@
     },
 
     methods: {
+      formatBr(str) {
+        return `<div style="white-space: pre-wrap;">${str}</div>`
+      },
+
       getDetail() {
         this.http('getExpenseDetail', { expenseId: this.item.id }).then(res => {
           res.statusText = BX_STATUS.find(x => Number(x.value) === Number(res.status)).label

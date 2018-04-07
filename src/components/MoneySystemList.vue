@@ -211,7 +211,6 @@
       return {
         payType: PAY_TYPE,
         tableWrapHeight: this.wrapHeight - 110,
-        currentPage: 1,
         dialogVisible: false,
         currentChooseItem: null,
         listData: [],
@@ -224,7 +223,10 @@
         listKeyword: '',
         listBxStatus: '',
         listBxDept: [],
-        listBxUser: []
+        listBxUser: [],
+
+        currentPage: 1,
+        pageSize: 10
       }
     },
 
@@ -276,11 +278,12 @@
       },
 
       handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+        this.currentPage = 1
+        this.pageSize = val
       },
 
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+        this.currentPage = val
       },
 
       confirmSelectTree(dept, user) {
@@ -313,8 +316,8 @@
         }
 
         this.http('getExpenseList', {
-          currentPage: 1,
-          pageSize: 10,
+          currentPage: this.currentPage,
+          pageSize: this.pageSize,
           listType: this.isFromMe ? 1 : this.isToMe ? 2 : 3, // 1 我发起的 2 我收到的 3 统计列表
           payType: JSON.stringify(this.listPayType), // 支出类别 [1, 2]
           createTimeBetween: JSON.stringify(createTimeBetween),  // 筛选时间段 - [开始时间, 结束时间]
@@ -454,19 +457,5 @@
   }
   .search__wrap-date {
     width: 480px;
-  }
-
-  .expense .el-table__header {
-    th, tr {
-      background-color: #f5f7fa;
-    }
-  }
-
-  .expense .el-table .cell {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    word-break: break-all;
   }
 </style>

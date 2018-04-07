@@ -503,18 +503,4 @@
   .search__wrap-date {
     width: 480px;
   }
-
-  .expense .el-table__header {
-    th, tr {
-      background-color: #f5f7fa;
-    }
-  }
-
-  .expense .el-table .cell {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    word-break: break-all;
-  }
 </style>
