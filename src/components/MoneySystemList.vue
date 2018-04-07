@@ -386,6 +386,9 @@
                   : '打款'
             this.$message.success(`${msg}成功`)
             this.dialogVisible = false
+
+            // reset
+            this.getExpenseList()
           })
         }
       }
