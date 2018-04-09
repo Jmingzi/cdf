@@ -92,6 +92,11 @@
           width="120">
         </el-table-column>
         <el-table-column
+          prop="payee"
+          label="收款人"
+          width="120">
+        </el-table-column>
+        <el-table-column
           prop="payType[0]"
           label="支出（大类）"
           sortable
@@ -144,6 +149,7 @@
               </template>
               <template v-else-if="scope.row.rstatus === 5">
                 <a href="javascript:" class="color-success" @click="doOption(4, scope.row)">打款</a>
+                <a href="javascript:" class="color-error" @click="doOption(2, scope.row)">拒绝</a>
               </template>
             </template>
           </template>
@@ -184,7 +190,10 @@
               <el-button type="success" @click="doOption(1)" size="small">同 意</el-button>
               <el-button type="danger" @click="doOption(2)" size="small">拒 绝</el-button>
             </template>
-            <el-button v-else-if="currentChooseItem.rstatus === 5" type="primary" @click="doOption(4)" size="small">打 款</el-button>
+            <template v-else-if="currentChooseItem.rstatus === 5">
+               <el-button type="primary" @click="doOption(4)" size="small">打 款</el-button>
+               <el-button type="danger" @click="doOption(2)" size="small">拒 绝</el-button>
+            </template>
           </template>
         </span>
       </template>

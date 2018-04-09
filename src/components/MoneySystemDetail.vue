@@ -13,6 +13,10 @@
       <span>{{detail.money}}元</span>
     </div>
     <div class="detail-item">
+      <span class="text-right color-c999 ib-top px-width-70">收款人：</span>
+      <span class="ib-top" style="width: 385px" v-html="formatBr(detail.payee)"></span>
+    </div>
+    <div class="detail-item">
       <span class="text-right color-c999">支出类别：</span>
       <span>{{detail.payType.join('/')}}</span>
     </div>
@@ -101,7 +105,7 @@
 
     methods: {
       formatBr(str) {
-        return `<div style="white-space: pre-wrap;">${str}</div>`
+        return `<div style="white-space: pre-wrap;">${str || ''}</div>`
       },
 
       getDetail() {

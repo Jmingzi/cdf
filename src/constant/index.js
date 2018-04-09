@@ -74,7 +74,10 @@ export const PAY_WAY = [
   { label: '支付宝', value: '1' },
   { label: '微信', value: '2' },
   { label: '银行转账', value: '3' },
-  { label: '现金', value: '4' }
+  { label: '现金', value: '4' },
+  { label: '淘宝（天猫）', value: '5' },
+  { label: '京东', value: '6' },
+  { label: '乐捐箱', value: '7' }
 ]
 
 export const PROCESS_TYPE = [
