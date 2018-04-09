@@ -180,6 +180,7 @@
     ul {
       li {
         border-bottom: 1px solid #425164;
+        &:hover,
         &.active {
           background-color: #425164;
         }

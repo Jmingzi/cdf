@@ -6,12 +6,18 @@
     </div>
 
     <div class="text-center px-margin-50">
-      <div @click="$router.push('/?menuId=3')" class="px-width-100 px-height-100 fl bd-gray-lighter px-padding-t20 px-margin-r50 cursor-p">
+      <div
+        @click="$router.push('/?menuId=3')"
+        class="hover px-width-100 px-height-100 fl bd-gray-lighter px-padding-t20 px-margin-r50 cursor-p"
+      >
         <i class="el-icon-printer px-font-32"></i>
         <p class="px-margin-t5">我的报销</p>
       </div>
 
-      <div @click="$router.push('/?menuId=2')" class="px-width-100 px-height-100 fl bd-gray-lighter px-padding-t20 cursor-p px-margin-r50">
+      <div
+        @click="$router.push('/?menuId=2')"
+        class="hover px-width-100 px-height-100 fl bd-gray-lighter px-padding-t20 cursor-p px-margin-r50"
+      >
         <i class="el-icon-bell px-font-32"></i>
         <p class="px-margin-t5">我的公告</p>
       </div>
