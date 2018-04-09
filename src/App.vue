@@ -45,4 +45,8 @@
       }
     }
   }
+
+  .el-tabs__item {
+    font-weight: bold;
+  }
 </style>
