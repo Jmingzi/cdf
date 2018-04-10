@@ -6,7 +6,7 @@
     </div>
     <div class="detail-item">
       <span class="text-right color-c999 ib-top">报销事由：</span>
-      <span class="ib-top" style="width: 385px" v-html="formatBr(detail.desc)"></span>
+      <span class="ib-top break-all" style="width: 375px" v-html="formatBr(detail.desc)"></span>
     </div>
     <div class="detail-item">
       <span class="text-right color-c999">报销金额：</span>
@@ -14,7 +14,7 @@
     </div>
     <div class="detail-item">
       <span class="text-right color-c999 ib-top px-width-70">收款人：</span>
-      <span class="ib-top" style="width: 385px" v-html="formatBr(detail.payee)"></span>
+      <span class="ib-top break-all" style="width: 375px" v-html="formatBr(detail.payee)"></span>
     </div>
     <div class="detail-item">
       <span class="text-right color-c999">支出类别：</span>
@@ -37,8 +37,8 @@
       <span>{{$utils.formatTime(detail.createTime, 1)}}</span>
     </div>
     <div class="detail-item">
-      <span class="text-right color-c999 ib-top">相关图片：</span>
-      <div class="ib-top" v-if="detail.images.length > 0">
+      <span class="text-right color-c999 ib-top px-width-70">相关图片：</span>
+      <div class="ib-top" style="width: 375px" v-if="detail.images.length > 0">
         <a
           v-for="item in detail.images"
           class="ib-middle px-margin-10" :href="item.url" target="_blank">

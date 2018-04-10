@@ -162,8 +162,8 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page.sync="currentPage"
-        :page-sizes="[20, 30, 40, 50, 100]"
-        :page-size="20"
+        :page-sizes="[10, 20, 30, 40, 50, 100]"
+        :page-size="10"
         background
         layout="prev, pager, next, sizes, jumper"
         :total="listData.length">

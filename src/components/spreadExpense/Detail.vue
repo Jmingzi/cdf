@@ -6,7 +6,7 @@
     </div>
     <div class="detail-item">
       <span class="text-right color-c999 ib-top">说明：</span>
-      <span class="ib-top" style="width: 385px" v-html="formatBr(detail.desc)"></span>
+      <span class="ib-top break-all" style="width: 385px" v-html="formatBr(detail.desc)"></span>
     </div>
     <div class="detail-item">
       <span class="text-right color-c999">平台：</span>
