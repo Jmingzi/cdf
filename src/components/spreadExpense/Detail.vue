@@ -6,7 +6,7 @@
     </div>
     <div class="detail-item">
       <span class="text-right color-c999 ib-top">说明：</span>
-      <span class="ib-top break-all" style="width: 385px" v-html="formatBr(detail.desc)"></span>
+      <span class="ib-top break-all" style="width: 355px" v-html="formatBr(detail.desc)"></span>
     </div>
     <div class="detail-item">
       <span class="text-right color-c999">平台：</span>
@@ -14,7 +14,7 @@
     </div>
     <div class="detail-item">
       <span class="text-right color-c999">充值金额：</span>
-      <span>{{detail.money}}元</span>
+      <span class="color-error font-bold">{{detail.money}}元</span>
     </div>
     <div class="detail-item">
       <span class="text-right color-c999">项目：</span>

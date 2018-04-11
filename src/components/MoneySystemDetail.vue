@@ -4,17 +4,17 @@
       <span class="text-right color-c999">报销状态：</span>
       <span class="color-warning">{{detail.statusText}}</span>
     </div>
-    <div class="detail-item">
+    <div class="detail-item px-margin-tb10">
       <span class="text-right color-c999 ib-top">报销事由：</span>
-      <span class="ib-top break-all" style="width: 375px" v-html="formatBr(detail.desc)"></span>
+      <span class="ib-top break-all" style="width: 355px" v-html="formatBr(detail.desc)"></span>
     </div>
     <div class="detail-item">
       <span class="text-right color-c999">报销金额：</span>
-      <span>{{detail.money}}元</span>
+      <span class="color-error font-bold">{{detail.money}}元</span>
     </div>
-    <div class="detail-item">
+    <div class="detail-item px-margin-tb10">
       <span class="text-right color-c999 ib-top px-width-70">收款人：</span>
-      <span class="ib-top break-all" style="width: 375px" v-html="formatBr(detail.payee)"></span>
+      <span class="ib-top break-all" style="width: 355px" v-html="formatBr(detail.payee)"></span>
     </div>
     <div class="detail-item">
       <span class="text-right color-c999">支出类别：</span>
@@ -38,7 +38,7 @@
     </div>
     <div class="detail-item">
       <span class="text-right color-c999 ib-top px-width-70">相关图片：</span>
-      <div class="ib-top" style="width: 375px" v-if="detail.images.length > 0">
+      <div class="ib-top" style="width: 355px" v-if="detail.images.length > 0">
         <a
           v-for="item in detail.images"
           class="ib-middle px-margin-10" :href="item.url" target="_blank">
@@ -86,7 +86,6 @@
 
     watch: {
       item: function (obj) {
-        console.log(1)
         return obj
       }
     },

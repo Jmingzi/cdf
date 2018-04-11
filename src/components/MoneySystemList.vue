@@ -162,8 +162,8 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page.sync="currentPage"
-        :page-sizes="[10, 20, 30, 40, 50, 100]"
-        :page-size="10"
+        :page-sizes="[20, 30, 40, 50, 100]"
+        :page-size="pageSize"
         background
         layout="prev, pager, next, sizes, jumper"
         :total="listData.length">
@@ -235,7 +235,7 @@
         listBxUser: [],
 
         currentPage: 1,
-        pageSize: 10
+        pageSize: 20
       }
     },
 
@@ -289,10 +289,12 @@
       handleSizeChange(val) {
         this.currentPage = 1
         this.pageSize = val
+        this.getExpenseList()
       },
 
       handleCurrentChange(val) {
         this.currentPage = val
+        this.getExpenseList()
       },
 
       confirmSelectTree(dept, user) {

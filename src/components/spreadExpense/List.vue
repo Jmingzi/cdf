@@ -162,8 +162,8 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page.sync="currentPage"
-        :page-sizes="[10, 20, 30, 40, 50, 100]"
-        :page-size="10"
+        :page-sizes="[20, 30, 40, 50, 100]"
+        :page-size="pageSize"
         background
         layout="prev, pager, next, sizes, jumper"
         :total="listData.length">
@@ -236,6 +236,7 @@
         payType: PAY_TYPE,
         tableWrapHeight: this.wrapHeight - 110,
         currentPage: 1,
+        pageSize: 20,
         dialogVisible: false,
         dialogDetailVisible: false,
         currentChooseItem: null,
@@ -312,11 +313,14 @@
       },
 
       handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+        this.currentPage = 1
+        this.pageSize = val
+        this.getExpenseList()
       },
 
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+        this.currentPage = val
+        this.getExpenseList()
       },
 
       confirmSelectTree(dept, user) {
@@ -349,8 +353,8 @@
         }
 
         this.http('getSpreadExpenseList', {
-          currentPage: 1,
-          pageSize: 10,
+          currentPage: this.currentPage,
+          pageSize: this.pageSize,
           listType: this.isFromMe ? 1 : this.isToMe ? 2 : 3, // 1 我发起的 2 我收到的 3 统计列表
           payType: JSON.stringify(this.listPayType), // 支出类别 [1, 2]
           createTimeBetween: JSON.stringify(createTimeBetween),  // 筛选时间段 - [开始时间, 结束时间]
