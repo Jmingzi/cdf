@@ -90,6 +90,9 @@
           label="报销金额"
           sortable
           width="120">
+          <template slot-scope="scope">
+            <span class="color-error font-bold">{{ scope.row.money }}</span>
+          </template>
         </el-table-column>
         <el-table-column
           prop="payee"
@@ -129,10 +132,12 @@
           width="80">
         </el-table-column>
         <el-table-column
-          prop="expenseStatus"
           label="状态"
           sortable
           width="80">
+          <template slot-scope="scope">
+            <span :class="scope.row.statusItem.color">{{ scope.row.statusItem.label }}</span>
+          </template>
         </el-table-column>
         <el-table-column
           label="操作"
@@ -342,7 +347,7 @@
               ...item,
               createTime: this.$utils.formatTime(item.createTime),
               payTime: this.$utils.formatTime(item.payTime),
-              expenseStatus: BX_STATUS.find(x => Number(x.value) === Number(item.status)).label
+              statusItem: BX_STATUS.find(x => Number(x.value) === Number(item.status))
             }
           })
         })

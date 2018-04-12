@@ -79,6 +79,9 @@
           label="充值金额"
           sortable
           width="120">
+          <template slot-scope="scope">
+            <span class="color-error font-bold">{{ scope.row.money }}</span>
+          </template>
         </el-table-column>
         <el-table-column
           prop="plantform"
@@ -128,10 +131,12 @@
           label="说明">
         </el-table-column>
         <el-table-column
-          prop="statusText"
           label="状态"
           sortable
           width="80">
+          <template slot-scope="scope">
+            <span :class="scope.row.statusItem.color">{{ scope.row.statusItem.label }}</span>
+          </template>
         </el-table-column>
         <el-table-column
           label="操作"
@@ -373,7 +378,7 @@
               project: item.project instanceof Array
                 ? item.project.map(id => SPREAD_PROJECT.find(x => x.value === Number(id)).label).join('/')
                 : '',
-              statusText: BX_STATUS.find(x => Number(x.value) === Number(item.status)).label
+              statusItem: BX_STATUS.find(x => Number(x.value) === Number(item.status))
             }
           })
         })

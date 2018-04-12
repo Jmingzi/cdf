@@ -44,9 +44,16 @@
         background-color: #f5f7fa;
       }
     }
+
+    td.el-table_1_column_16.is-leaf .cell,
+    td.el-table_1_column_4.is-leaf .cell {
+      font-weight: bold;
+      color: #d9534f;
+    }
   }
 
   .el-tabs__item {
     font-weight: bold;
   }
+
 </style>
