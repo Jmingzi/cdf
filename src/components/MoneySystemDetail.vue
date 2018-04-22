@@ -49,7 +49,7 @@
     </div>
     <p class="px-margin-t20">报销流程</p>
     <div class="process__wrap position-r">
-      <div class="process__item position-r" v-for="item in detail.process">
+      <div class="process__item position-r" v-for="(item, i) in detail.process">
         <p :class="`process__state ${item.processColor}`">
           <span class="ib-middle px-margin-r5">{{item.name}}<span v-if="item.job">({{item.job}})</span></span>
         </p>
@@ -64,6 +64,8 @@
         <div class="position-a process__item-icon">
           <i :class="item.processIcon + ' ' + item.processColor"></i>
         </div>
+
+        <div class="empty-fff" v-if="i === detail.process.length - 1"></div>
       </div>
       <div class="process_line position-a"></div>
     </div>
@@ -127,5 +129,13 @@
 </script>
 
 <style lang="scss">
-
+  .empty-fff {
+    position: absolute;
+    top: 18px;
+    bottom: 0;
+    left: -30px;
+    width: 20px;
+    background-color: #fff;
+    z-index: 111;
+  }
 </style>

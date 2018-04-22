@@ -1,24 +1,18 @@
 <template>
   <div class="list">
     <div class="position-f px-left-10 px-right-10 px-top-60 px-bottom-50 overflow-a">
-      <div v-if="isTotal">
-        <!--<div class="search__wrap ib-middle">-->
-          <!--<span class="ib-middle">报销金额</span>-->
-          <!--<div class="ib-middle">-->
-            <!--<el-input placeholder="请输入">-->
-            <!--</el-input>-->
-          <!--</div>-->
-        <!--</div>-->
+      <div class="px-font-12" v-if="isTotal || isToMe">
         <div class="search__wrap search__wrap-dept ib-middle">
           <span class="ib-middle">报销部门或人</span>
           <div class="ib-middle dept" @click="$refs.selectTree.show()">
-            <span class="color-info">请选择</span>
+            <span class="color-info">{{ formatListDeptUser }}</span>
           </div>
         </div>
         <div class="search__wrap ib-middle">
           <span class="ib-middle">支出类别</span>
           <div class="ib-middle">
             <el-cascader
+              size="mini"
               v-model="listPayType"
               expand-trigger="hover"
               :options="payType"
@@ -29,7 +23,7 @@
         </div>
         <div class="search__wrap ib-middle">
           <span class="ib-middle">审批状态</span>
-          <el-select v-model="listBxStatus" placeholder="请选择">
+          <el-select size="mini" v-model="listBxStatus" placeholder="请选择">
             <el-option
               v-for="item in bxStatus"
               :key="item.value"
@@ -37,11 +31,30 @@
               :value="item.value">
             </el-option>
           </el-select>
-        </div><br>
+        </div>
+        <div class="search__wrap ib-middle">
+          <span class="ib-middle">支出方式</span>
+          <el-select size="mini" v-model="listPayWay" placeholder="请选择">
+            <el-option
+              v-for="item in payWay"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
+        <div class="search__wrap ib-middle">
+          <span class="ib-middle">关键字</span>
+          <div class="ib-middle">
+            <el-input placeholder="请输入" size="mini" v-model="listKeyword">
+            </el-input>
+          </div>
+        </div>
         <div class="search__wrap search__wrap-date ib-middle">
           <span class="ib-middle px-width-90">报销发起时间</span>
           <div class="ib-middle">
             <el-date-picker
+              size="mini"
               v-model="listTime"
               type="daterange"
               range-separator="至"
@@ -50,18 +63,11 @@
             </el-date-picker>
           </div>
         </div>
-        <div class="search__wrap ib-middle">
-          <span class="ib-middle">关键字</span>
-          <div class="ib-middle">
-            <el-input placeholder="请输入" v-model="listKeyword">
-            </el-input>
-          </div>
+        <div class="ib-middle px-margin-b15">
+          <el-button type="danger" size="mini" @click="confirmSearch">搜索查询</el-button>
         </div>
         <div class="ib-middle px-margin-b15">
-          <el-button type="danger" @click="confirmSearch">搜索查询</el-button>
-        </div>
-        <div class="ib-middle px-margin-b15">
-          <el-button @click="resetSearch">重置</el-button>
+          <el-button size="mini" @click="resetSearch">重置</el-button>
         </div>
       </div>
 
@@ -216,7 +222,7 @@
 <script>
   import Detail from './MoneySystemDetail'
   import http from '../mixins/http'
-  import {PAY_TYPE, BX_STATUS} from '../constant'
+  import {PAY_TYPE, BX_STATUS, PAY_WAY} from '../constant'
 
   export default {
     name: 'money-system-list',
@@ -229,9 +235,11 @@
         currentChooseItem: null,
         listData: [],
         bxStatus: BX_STATUS,
+        payWay: PAY_WAY,
 
         // 筛选条件
         listType: 0,
+        listPayWay: '',
         listPayType: [],
         listTime: [],
         listKeyword: '',
@@ -289,6 +297,7 @@
         this.listBxStatus = ''
         this.listBxDept = []
         this.listBxUser = []
+        this.listPayWay = ''
       },
 
       handleSizeChange(val) {
@@ -340,6 +349,7 @@
           expenseDept: JSON.stringify(expenseDept),  // 报销部门  [2]
           expenseUserId: JSON.stringify(expenseUserId), // 报销人 [1]
           keyword: this.listKeyword,      // 关键字
+          payWay: this.listPayWay,
           expenseStatus: this.listBxStatus // 报销状态
         }).then(data=> {
           this.listData = data.list.map(item => {
@@ -429,6 +439,14 @@
       },
       isCaiWu() {
         return true
+      },
+
+      formatListDeptUser() {
+        const hasDept = this.listBxDept.length > 0
+        const hasUser = this.listBxUser.length > 0
+        return hasDept || hasUser ?
+          this.listBxDept.map(x => x.label.replace(` (${x.userNum})`, '')).concat(this.listBxUser.map(x => x.name)).join('、')
+          : '请选择'
       }
     },
     components: {
@@ -465,9 +483,9 @@
   .search__wrap-dept {
     width: 300px;
     .dept {
-      width: 200px;
-      height: 40px;
-      line-height: 40px;
+      width: 194px;
+      height: 28px;
+      line-height: 28px;
       border: 1px solid #dcdfe6;
       border-radius: 4px;
       padding: 0 10px;

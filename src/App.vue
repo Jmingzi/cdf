@@ -23,6 +23,12 @@
   .w200 { width: 200px; }
   .w600 { width: 600px; }
 
+  .el-table {
+    color: #333;
+  }
+  .el-table td, .el-table th.is-leaf {
+    border-color: #ddd;
+  }
   .expense {
     .el-table {
       th, td {

@@ -103,6 +103,8 @@
           <div class="position-a process__item-icon">
             <i :class="item.processIcon + ' ' + item.processColor"></i>
           </div>
+
+          <div class="empty-fff" v-if="i === detail.process.length - 1"></div>
         </div>
         <div class="process_line position-a"></div>
       </div>
@@ -187,5 +189,14 @@
       display: inline-block;
       width: 100px;
     }
+  }
+  .empty-fff {
+    position: absolute;
+    top: 18px;
+    bottom: 0;
+    left: -30px;
+    width: 20px;
+    background-color: #fff;
+    z-index: 111;
   }
 </style>
