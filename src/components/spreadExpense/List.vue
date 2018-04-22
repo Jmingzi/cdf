@@ -184,7 +184,7 @@
         :page-size="pageSize"
         background
         layout="prev, pager, next, sizes, jumper"
-        :total="listData.length">
+        :total="total">
       </el-pagination>
     </div>
 
@@ -255,6 +255,7 @@
         tableWrapHeight: this.wrapHeight - 110,
         currentPage: 1,
         pageSize: 20,
+        total: 0,
         dialogVisible: false,
         dialogDetailVisible: false,
         currentChooseItem: null,
@@ -385,6 +386,7 @@
           payWay: this.listPayWay,
           expenseStatus: this.listBxStatus // 报销状态
         }).then(data=> {
+          this.total = data.length
           this.listData = (data.list || []).map(item => {
             return {
               ...item,
