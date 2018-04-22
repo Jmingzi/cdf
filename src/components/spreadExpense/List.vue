@@ -202,7 +202,7 @@
         <span slot="footer" class="dialog-footer">
           <template v-if="isFromMe">
             <a href="javascript:" v-if="currentChooseItem.rstatus === 1" class="color-error" @click="doOption(3)">撤回</a>
-            <el-button v-else-if="currentChooseItem.rstatus === 3" type="primary" @click="doOption(-1)" size="small">添加明细</el-button>
+            <el-button v-else-if="currentChooseItem.rstatus === 6" type="primary" @click="doOption(-1)" size="small">添加明细</el-button>
           </template>
           <template v-else-if="isToMe">
             <template v-if="currentChooseItem.rstatus === 1">
