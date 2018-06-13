@@ -84,10 +84,17 @@
       item: function (obj) {
         console.log(1)
         return obj
+      },
+      visible(val) {
+        if (val) {
+          this.getDetail()
+        } else {
+          this.detail = null
+        }
       }
     },
 
-    props: ['item'],
+    props: ['item', 'visible'],
 
     mixins: [http],
 
