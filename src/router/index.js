@@ -13,7 +13,7 @@ let route = new Router({
       component: Index,
       meta: {
         auth: true,
-        title: '管理系统'
+        title: '相源科技管理系统'
       }
     },
     {

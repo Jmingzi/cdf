@@ -1,11 +1,11 @@
 <template>
   <div class="list">
     <div class="position-f px-left-10 px-right-10 px-top-60 px-bottom-50 overflow-a">
-      <div v-if="isTotal">
+      <div class="px-font-12" v-if="isTotal || isToMe">
         <div class="search__wrap search__wrap-dept ib-middle">
           <span class="ib-middle">报销部门或人</span>
           <div class="ib-middle dept" @click="$refs.selectTree.show()">
-            <span class="color-info">请选择</span>
+            <span class="color-info">{{ formatListDeptUser }}</span>
           </div>
         </div>
         <div class="search__wrap ib-middle">
@@ -16,13 +16,14 @@
               expand-trigger="hover"
               :options="payType"
               filterable
+              size="mini"
               change-on-select>
             </el-cascader>
           </div>
         </div>
         <div class="search__wrap ib-middle">
           <span class="ib-middle">审批状态</span>
-          <el-select v-model="listBxStatus" placeholder="请选择">
+          <el-select size="mini" v-model="listBxStatus" placeholder="请选择">
             <el-option
               v-for="item in bxStatus"
               :key="item.value"
@@ -30,11 +31,30 @@
               :value="item.value">
             </el-option>
           </el-select>
-        </div><br>
+        </div>
+        <div class="search__wrap ib-middle">
+          <span class="ib-middle">支出方式</span>
+          <el-select size="mini" v-model="listPayWay" placeholder="请选择">
+            <el-option
+              v-for="item in payWay"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
+        <div class="search__wrap ib-middle">
+          <span class="ib-middle">关键字</span>
+          <div class="ib-middle">
+            <el-input placeholder="请输入" size="mini" v-model="listKeyword">
+            </el-input>
+          </div>
+        </div>
         <div class="search__wrap search__wrap-date ib-middle">
           <span class="ib-middle px-width-90">报销发起时间</span>
           <div class="ib-middle">
             <el-date-picker
+              size="mini"
               v-model="listTime"
               type="daterange"
               range-separator="至"
@@ -43,18 +63,11 @@
             </el-date-picker>
           </div>
         </div>
-        <div class="search__wrap ib-middle">
-          <span class="ib-middle">关键字</span>
-          <div class="ib-middle">
-            <el-input placeholder="请输入" v-model="listKeyword">
-            </el-input>
-          </div>
+        <div class="ib-middle px-margin-b15">
+          <el-button type="danger" size="mini" @click="confirmSearch">搜索查询</el-button>
         </div>
         <div class="ib-middle px-margin-b15">
-          <el-button type="danger" @click="confirmSearch">搜索查询</el-button>
-        </div>
-        <div class="ib-middle px-margin-b15">
-          <el-button @click="resetSearch">重置</el-button>
+          <el-button @click="resetSearch" size="mini">重置</el-button>
         </div>
       </div>
 
@@ -79,6 +92,9 @@
           label="充值金额"
           sortable
           width="120">
+          <template slot-scope="scope">
+            <span class="color-error font-bold">{{ scope.row.money }}</span>
+          </template>
         </el-table-column>
         <el-table-column
           prop="plantform"
@@ -128,10 +144,12 @@
           label="说明">
         </el-table-column>
         <el-table-column
-          prop="statusText"
           label="状态"
           sortable
           width="80">
+          <template slot-scope="scope">
+            <span :class="scope.row.statusItem.color">{{ scope.row.statusItem.label }}</span>
+          </template>
         </el-table-column>
         <el-table-column
           label="操作"
@@ -140,10 +158,13 @@
             <el-button @click="doOption(0, scope.row)" type="text" size="small">查看</el-button>
             <template v-if="isFromMe">
               <a href="javascript:" v-if="scope.row.rstatus === 1" class="color-error" @click="doOption(3, scope.row)">撤回</a>
-              <a href="javascript:" v-else-if="scope.row.rstatus === 3" class="color-info" @click="doOption(-1, scope.row)">添加明细</a>
+              <a href="javascript:" v-else-if="scope.row.rstatus === 6" class="color-info" @click="doOption(-1, scope.row)">添加明细</a>
             </template>
             <template v-else-if="isToMe">
-              <a href="javascript:" class="color-success" v-if="scope.row.rstatus === 5" @click="doOption(4, scope.row)">打款</a>
+              <template v-if="scope.row.rstatus === 5">
+                <a href="javascript:" class="color-success" @click="doOption(4, scope.row)">打款</a>
+                <a href="javascript:" class="color-error" @click="doOption(2, scope.row)">拒绝</a>
+              </template>
               <template v-if="scope.row.rstatus === 1">
                 <a href="javascript:" class="color-success" @click="doOption(1, scope.row)">同意</a>
                 <a href="javascript:" class="color-error" @click="doOption(2, scope.row)">拒绝</a>
@@ -160,10 +181,10 @@
         @current-change="handleCurrentChange"
         :current-page.sync="currentPage"
         :page-sizes="[20, 30, 40, 50, 100]"
-        :page-size="20"
+        :page-size="pageSize"
         background
         layout="prev, pager, next, sizes, jumper"
-        :total="listData.length">
+        :total="total">
       </el-pagination>
     </div>
 
@@ -181,14 +202,17 @@
         <span slot="footer" class="dialog-footer">
           <template v-if="isFromMe">
             <a href="javascript:" v-if="currentChooseItem.rstatus === 1" class="color-error" @click="doOption(3)">撤回</a>
-            <el-button v-else-if="currentChooseItem.rstatus === 3" type="primary" @click="doOption(-1)" size="small">添加明细</el-button>
+            <el-button v-else-if="currentChooseItem.rstatus === 6" type="primary" @click="doOption(-1)" size="small">添加明细</el-button>
           </template>
           <template v-else-if="isToMe">
             <template v-if="currentChooseItem.rstatus === 1">
               <el-button type="success" @click="doOption(1)" size="small">同 意</el-button>
               <el-button type="danger" @click="doOption(2)" size="small">拒 绝</el-button>
             </template>
-            <el-button v-else-if="currentChooseItem.rstatus === 5" type="primary" @click="doOption(4)" size="small">打 款</el-button>
+            <template v-else-if="currentChooseItem.rstatus === 5">
+              <el-button type="primary" @click="doOption(4)" size="small">打 款</el-button>
+              <el-button type="danger" @click="doOption(2)" size="small">拒 绝</el-button>
+            </template>
           </template>
         </span>
       </template>
@@ -219,7 +243,7 @@
 <script>
   import Detail from './Detail'
   import http from '../../mixins/http'
-  import {PAY_TYPE, BX_STATUS, SPREAD_PLATE, SPREAD_PROJECT} from '../../constant'
+  import {PAY_TYPE, BX_STATUS, SPREAD_PLATE, SPREAD_PROJECT, PAY_WAY} from '../../constant'
   import AddDetailList from './addDetailList'
 
   export default {
@@ -230,17 +254,21 @@
         payType: PAY_TYPE,
         tableWrapHeight: this.wrapHeight - 110,
         currentPage: 1,
+        pageSize: 20,
+        total: 0,
         dialogVisible: false,
         dialogDetailVisible: false,
         currentChooseItem: null,
         listData: [],
         bxStatus: BX_STATUS,
+        payWay: PAY_WAY,
 
         // 筛选条件
         listType: 0,
         listPayType: [],
         listTime: [],
         listKeyword: '',
+        listPayWay: '',
         listBxStatus: '',
         listBxDept: [],
         listBxUser: []
@@ -303,14 +331,18 @@
         this.listBxStatus = ''
         this.listBxDept = []
         this.listBxUser = []
+        this.listPayWay = ''
       },
 
       handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+        this.currentPage = 1
+        this.pageSize = val
+        this.getExpenseList()
       },
 
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+        this.currentPage = val
+        this.getExpenseList()
       },
 
       confirmSelectTree(dept, user) {
@@ -343,16 +375,18 @@
         }
 
         this.http('getSpreadExpenseList', {
-          currentPage: 1,
-          pageSize: 10,
+          currentPage: this.currentPage,
+          pageSize: this.pageSize,
           listType: this.isFromMe ? 1 : this.isToMe ? 2 : 3, // 1 我发起的 2 我收到的 3 统计列表
           payType: JSON.stringify(this.listPayType), // 支出类别 [1, 2]
           createTimeBetween: JSON.stringify(createTimeBetween),  // 筛选时间段 - [开始时间, 结束时间]
           expenseDept: JSON.stringify(expenseDept),  // 报销部门  [2]
           expenseUserId: JSON.stringify(expenseUserId), // 报销人 [1]
           keyword: this.listKeyword,      // 关键字
+          payWay: this.listPayWay,
           expenseStatus: this.listBxStatus // 报销状态
         }).then(data=> {
+          this.total = data.length
           this.listData = (data.list || []).map(item => {
             return {
               ...item,
@@ -363,7 +397,7 @@
               project: item.project instanceof Array
                 ? item.project.map(id => SPREAD_PROJECT.find(x => x.value === Number(id)).label).join('/')
                 : '',
-              statusText: BX_STATUS.find(x => Number(x.value) === Number(item.status)).label
+              statusItem: BX_STATUS.find(x => Number(x.value) === Number(item.status))
             }
           })
         })
@@ -421,6 +455,8 @@
                   : '打款'
             this.$message.success(`${msg}成功`)
             this.dialogVisible = false
+
+            this.getExpenseList()
           })
         }
       },
@@ -455,6 +491,14 @@
       },
       isCaiWu() {
         return true
+      },
+
+      formatListDeptUser() {
+        const hasDept = this.listBxDept.length > 0
+        const hasUser = this.listBxUser.length > 0
+        return hasDept || hasUser ?
+          this.listBxDept.map(x => x.label.replace(` (${x.userNum})`, '')).concat(this.listBxUser.map(x => x.name)).join('、')
+          : '请选择'
       }
     },
     components: {
@@ -491,9 +535,9 @@
   .search__wrap-dept {
     width: 300px;
     .dept {
-      width: 200px;
-      height: 40px;
-      line-height: 40px;
+      width: 194px;
+      height: 28px;
+      line-height: 28px;
       border: 1px solid #dcdfe6;
       border-radius: 4px;
       padding: 0 10px;
@@ -502,19 +546,5 @@
   }
   .search__wrap-date {
     width: 480px;
-  }
-
-  .expense .el-table__header {
-    th, tr {
-      background-color: #f5f7fa;
-    }
-  }
-
-  .expense .el-table .cell {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    word-break: break-all;
   }
 </style>

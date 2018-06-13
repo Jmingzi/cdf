@@ -1,7 +1,7 @@
 <template>
   <div class="user-table">
     <el-table
-      :data="userList"
+      :data="userData"
       :stripe="true"
       :highlight-current-row="true"
       :height="userTableHeight"
@@ -184,15 +184,18 @@
       if (this.userTableHeight === 0) {
         this.setState({
           key: 'userTableHeight',
-          value: document.body.clientHeight - 200
+          // value: document.body.clientHeight - 200
+          value: window.screen.availHeight - 200
         })
       }
     },
 
     computed: {
       ...mapState(['userTableHeight']),
-      ...mapGetters(['userList', 'contactPriv']),
+      ...mapGetters(['contactPriv', 'userList']),
     },
+
+    props: ['userData'],
 
     data() {
       return {

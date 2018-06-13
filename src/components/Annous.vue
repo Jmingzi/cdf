@@ -1,11 +1,11 @@
 <template>
-  <div class="annous width-100 height-100 bg-fff position-r">
-    <div class="px-line-50 color-c666 bd-gray-lighter-b">
+  <div class="annous width-100 height-100 bg-fff position-r px-padding-t10">
+    <div class="px-height-40 color-c666 bd-gray-lighter-b">
       <div
-        :class="`px-width-100 text-center px-font-16 ib-middle cursor-p ${currentTab === 1 ? 'annous__tab-curr' : ''}`"
+        :class="`annous__tab font-bold px-width-100 text-center ib-middle cursor-p ${currentTab === 1 ? 'annous__tab-curr' : ''}`"
         @click="changeTab(1)">我发出的</div>
       <div
-        :class="`px-width-100 text-center px-font-16 ib-middle cursor-p ${currentTab === 2 ? 'annous__tab-curr' : ''}`"
+        :class="`annous__tab font-bold px-width-100 text-center ib-middle cursor-p ${currentTab === 2 ? 'annous__tab-curr' : ''}`"
         @click="changeTab(2)">我收到的</div>
       <div class="fr px-margin-r20" v-if="otherPriv.annous">
         <el-button type="danger" size="mini" @click="addAnnous()">新建公告</el-button>
@@ -181,8 +181,13 @@
 </script>
 
 <style lang="scss">
-  .annous__tab-curr {
-    border-bottom: 2px red solid;
+
+  .annous__tab {
+    line-height: 38px;
+    border-bottom: 2px transparent solid;
+    &.annous__tab-curr {
+      border-bottom-color: red;
+    }
   }
   .annous__item {
     float: left;

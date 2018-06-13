@@ -10,11 +10,15 @@
     </div>
     <el-form ref="form" :rules="rules" :model="form" label-width="80px">
       <el-form-item label="报销事由" prop="desc">
-        <el-input type="textarea" v-model="form.desc">
+        <el-input type="textarea" v-model="form.desc" placeholder="填写遵循 为什么支出  在哪里支出  单价多少  使用用途在哪">
         </el-input>
       </el-form-item>
       <el-form-item label="报销金额" prop="money">
         <el-input type="number" v-model.number="form.money">
+        </el-input>
+      </el-form-item>
+      <el-form-item label="收款人" prop="payee">
+        <el-input type="textarea" v-model="form.payee" placeholder="购买链接，数量 收款人姓名，支付宝账号或微信">
         </el-input>
       </el-form-item>
       <el-form-item label="支出类别" prop="payType">
@@ -42,9 +46,10 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item label="报销部门">
-        <div class="display-ib cursor-p" @click="toSelectDept">
+        <div class="ib-middle cursor-p" @click="toSelectDept">
           <span class="color-info" v-if="form.expenseDept">{{form.expenseDept.name}}</span>
         </div>
+        <p class="px-font-12 color-c666">tips: 部门选择遵循如任务谁派发谁审批，选择对应部门</p>
       </el-form-item>
       <el-form-item label="相关图片" prop="imagesList">
         <el-upload
@@ -130,6 +135,7 @@
           money: '',
           way: '',
           desc: '',
+          payee: '',
           payTime: '',
           payType: [],
           expenseDept: null,
@@ -138,6 +144,10 @@
         rules: {
           desc: [
             { required: true, message: '请输入报销事由', trigger: 'blur' },
+            { min: 1, max: 500, message: '长度在 1 到 500 个字符', trigger: 'blur' }
+          ],
+          payee: [
+            { required: true, message: '请输入收款人', trigger: 'blur' },
             { min: 1, max: 500, message: '长度在 1 到 500 个字符', trigger: 'blur' }
           ],
           money: [

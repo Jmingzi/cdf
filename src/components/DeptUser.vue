@@ -26,11 +26,17 @@
         </template>
       </div>
       <div class="px-padding-10">
-        <user-table>
+        <user-table
+          :user-data="userTableData">
         </user-table>
       </div>
       <div class="text-center">
-        <page>
+        <page
+          :curr-page="currentPage"
+          :size="pageSize"
+          :total="userList.length"
+          @change-size="changeSize"
+          @change-page="changePage">
         </page>
       </div>
     </div>
@@ -63,6 +69,7 @@
 
   export default {
     name: 'dept-user',
+
     components: {
       Page,
       UserTable,
@@ -70,29 +77,47 @@
       [DeptForm.name]: DeptForm,
       [UserForm.name]: UserForm,
     },
+
     data() {
       return {
         dialogVisible: false,
         deptDialogTitle: '',
         currentDialogComponent: '',
-        dialogWidth: ''
+        dialogWidth: '',
+
+        currentPage: 1,
+        pageSize: 20
       }
     },
-    created() {
 
-    },
     computed: {
       ...mapState(['currentDept', 'userInfo']),
-      ...mapGetters(['contactPriv']),
+      ...mapGetters(['contactPriv', 'userList']),
+
       isShowOpt() {
         return this.contactPriv
+      },
+
+      userTableData() {
+        const start = this.pageSize * (this.currentPage - 1)
+        return this.userList.slice(start, this.pageSize)
       }
     },
+
     methods: {
       ...mapMutations(['setState']),
 
       toggle() {
         this.dialogVisible = false
+      },
+
+      changeSize(size) {
+        this.currentPage = 1
+        this.pageSize = size
+      },
+
+      changePage(newPage) {
+        this.currentPage = newPage
       },
 
       handleClose(done) {
@@ -138,6 +163,7 @@
         })
       }
     },
+
     filters: {
       formatLabel(item) {
         return filterLabel(item)

@@ -102,7 +102,11 @@ export default new Vuex.Store({
         return cacheDept
       }
 
-      resource.getUserByDeptId({ deptId }).then(res=> {
+      resource.getUserByDeptId({
+        deptId,
+        currentPage: 1,
+        pageSize: 10000
+      }).then(res=> {
         if (!res.data) {
           return void 0
         }
