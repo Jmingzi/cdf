@@ -190,6 +190,7 @@
       :before-close="beforeClose">
       <template v-if="currentChooseItem">
         <detail
+          :visible="dialogVisible"
           :item="currentChooseItem"
         />
         <span slot="footer" class="dialog-footer">

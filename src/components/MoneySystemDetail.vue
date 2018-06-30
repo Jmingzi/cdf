@@ -89,14 +89,17 @@
     watch: {
       item: function (obj) {
         return obj
+      },
+      visible(val) {
+        if (val) {
+          this.getDetail()
+        } else {
+          this.detail = null
+        }
       }
     },
 
-    filters: {
-
-    },
-
-    props: ['item'],
+    props: ['item', 'visible'],
 
     mixins: [http],
 
