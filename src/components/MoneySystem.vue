@@ -27,7 +27,7 @@
       </money-system-setting>
       <money-system-list
         v-else-if="wrapHeight"
-        :wrap-height="wrapHeight"
+        :wrap-height="listHeight"
         :active-name="activeName">
       </money-system-list>
     </div>
@@ -47,14 +47,24 @@
     data() {
       return {
         activeName: 'first',
-        wrapHeight: 0
+        wrapHeight: 0,
+        listHeight: 0
       }
     },
     created() {
 
     },
+    watch: {
+      activeName(val) {
+        if (val === 'third' || val === 'fourth') {
+          this.listHeight = this.wrapHeight - 130
+        } else {
+          this.listHeight = this.wrapHeight
+        }
+      }
+    },
     mounted() {
-      this.wrapHeight = this.$refs.expense.getBoundingClientRect().height
+      this.listHeight = this.wrapHeight = this.$refs.expense.getBoundingClientRect().height
     },
     computed: {
       ...mapState(['userInfo']),
